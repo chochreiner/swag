@@ -2,8 +2,7 @@ package at.ac.tuwien;
 
 import org.apache.wicket.protocol.http.WebApplication;
 
-import at.ac.tuwien.in.InPage;
-import at.ac.tuwien.out.StartPage;
+import at.ac.tuwien.out.OutPage;
 
 /**
  * Application object for your web application. If you want to run this application without deploying, run the Start
@@ -16,8 +15,8 @@ public class WicketApplication extends WebApplication {
      * @see org.apache.wicket.Application#getHomePage()
      */
     @Override
-    public Class<InPage> getHomePage() {
-        return InPage.class;
+    public Class<OutPage> getHomePage() {
+        return OutPage.class;
     }
 
     /**
