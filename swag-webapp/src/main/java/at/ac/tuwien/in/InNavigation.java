@@ -1,10 +1,10 @@
-package at.ac.tuwien;
+package at.ac.tuwien.in;
 
 import org.apache.wicket.markup.html.panel.Panel;
 
-public class MainNavigation extends Panel {
+public class InNavigation extends Panel {
 
-    public MainNavigation(String id) {
+    public InNavigation(String id) {
         super(id);
         // TODO Auto-generated constructor stub
     }
