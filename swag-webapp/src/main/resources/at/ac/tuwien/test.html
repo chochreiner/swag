@@ -32,11 +32,7 @@
     <!-- begin: main navigation #nav -->
     <div id="nav" role="navigation">
       <div class="hlist">
-        <ul>
-          <li><a href="../index.html">Table Of Contents</a></li>
-          <li><a href="../02_layouts_2col/2col_left_13.html">Next Example</a></li>
-          <li><a href="building_forms.html">Previous Example</a></li>
-        </ul>
+       <div id="mainNavigation"><span wicket:id="mainNavigation"/></div>
       </div>
     </div>
     <!-- end: main navigation -->
@@ -57,123 +53,9 @@
       <!-- begin: #col3 static column -->
       <div id="col3" role="main">
         <div id="col3_content" class="clearfix">
-          <h2>YAML-based styling multicolumnar forms</h2>
-	  <p>There are two ways to create a multicolumnar form. First: You can create multicolumnar fieldsets by putting a subtemplate in your fieldset. Second: You can put a subtemplate in your form and open individual fielsets within the content boxes to create columns. The following example demonstrates both ways.</p>
-   	    <h3>Multicolumnar Fieldsets</h3>
-        <p>Within a fieldset you can use YAML's subtemplates to divide the available space into columns, right to your need.</p>
-          <form method="post" action="" class="yform full" role="application">
-            <fieldset>
-              <legend>Multicolumnar Fieldset</legend>
-		<!-- Subtemplate: 2 columns with 50/50 division -->
-		<div class="subcolumns">
-		  <div class="c50l">
-		    <div class="subcl type-select">
-			<label for="select-1">Select Field</label>
-			<select name="select-1" id="select-1" size="1">
-			  <option value="0" selected="selected" disabled="disabled">Please choose</option>
-			  <option value="Test 1">Test 1</option>
-			  <option value="Test 2">Test 2</option>
-			  <option value="Test 3">Test 3</option>
-			</select>
-		    </div>
-		    <div class="subcl type-text">
-		      <label for="textarea-1">Textarea</label>
-		      <textarea name="textarea-1" id="textarea-1" cols="30" rows="3"></textarea>
-		    </div>
-		  </div>
-		
-		  <div class="c50r">
-		    <div class="subcr type-text">
-		      <label for="input-1">Input Field</label>
-		      <input type="text" name="input-1" id="input-1" size="20" />
-		    </div>
-		    <div class="subcr type-check">
-              <p>A set of radio buttons</p>
-              <div>
-                  <input type="radio" name="vote" value="Option 1" id="vote4" />
-                  <label for="vote4">Option 1</label>
-              </div>
-              <div>
-                  <input type="radio" name="vote" id="vote5" />
-                  <label for="vote5">Option 2</label>
-              </div>
-              <div>
-                  <input type="radio" name="vote" id="vote6" />
-                  <label for="vote6">Option 3</label>
-              </div>
-		    </div>
-		  </div>
-		</div>
-        </fieldset>
-        <div class="type-button">
-          <input type="button" value="button" id="button1" name="button1" />
-          <input type="reset" value="reset" class="reset" id="reset1" name="reset1" />
-          <input type="submit" value="submit" class="submit" id="submit1" name="submit1" />
-        </div>
-        </form>
-	    <h3>Fieldset Columns</h3>
-        <p>The columns are made with subtemplates. In this special example the <code>.subtemplates_oldgecko</code> class is used, to avoid legends to be clipped in Internet Explorer. The clipping is a side effect of the relative positioning, used in the fieldset/legend fix, and it's recommended if ther is no upper margin or padding defined for your fieldsets. In addition, this subtemplate construction have to be wrapped in a <code>.clearfix</code> container to avoid clearing problems within the form.</p>
-        <form method="post" action="" class="yform full" role="application">
-		<div class="clearfix">
-	    	<!-- Subtemplate: 2 columns with 50/50 division -->
-            <div class="subcolumns_oldgecko">
-              <div class="c50l">
-                <div class="subcl">
-		    <fieldset>
-		      <legend>Fieldset Column A</legend>
-		      <div class="type-select">
-			<label for="select-2">Select Field</label>
-			<select name="select-2" id="select-2" size="1">
-			  <option value="0" selected="selected" disabled="disabled">Please choose</option>
-			  <option value="Test 1">Test 1</option>
-			  <option value="Test 2">Test 2</option>
-			  <option value="Test 3">Test 3</option>
-			</select>
-		      </div>
-		      <div class="type-text">
-			<label for="textarea-2">Textarea</label>
-			<textarea name="textarea-2" id="textarea-2" cols="30" rows="3"></textarea>
-		      </div>
-		    </fieldset>
-                </div>
-              </div>
-		
-              <div class="c50r">
-                <div class="subcr">
-                  <!-- right content block -->
-		    <fieldset>
-		      <legend>Fieldset Column B</legend>
-		      <div class="type-text">
-		        <label for="input-2">Input Field</label>
-		        <input type="text" name="input-2" id="input-2" size="20" />
-		      </div>
-		      <div class="type-check">
-  		        <p>A set of radio buttons</p>
-                <div>
-                    <input type="radio" name="vote2" value="Option 1" id="vote7" />
-                    <label for="vote7">Option 1</label>
-                </div>
-                <div>
-                    <input type="radio" name="vote2" id="vote8" />
-                    <label for="vote8">Option 2</label>
-                </div>
-                <div>
-                    <input type="radio" name="vote2" id="vote9" />
-                    <label for="vote9">Option 3</label>
-                </div>
-		      </div>
-		    </fieldset>
-                </div>
-              </div>
-            </div>
-		</div>	    
-            <div class="type-button">
-              <input type="button" value="button" id="button12" name="button2" />
-              <input type="reset" value="reset" class="reset" id="reset2" name="reset2" />
-              <input type="submit" value="submit" class="submit" id="submit2" name="submit2" />
-            </div>
-          </form>
-        </div>
+        
+         <div id="content"><wicket:child/></div>
+        
         <!-- IE Column Clearing -->
         <div id="ie_clearing">&nbsp;</div>
         <!-- End: IE Column Clearing -->
