@@ -1,0 +1,52 @@
+import metamodel;
+
+//*** MODEL        ***************
+
+List[Entity] entities(Model this):
+	types.typeSelect(Entity);
+
+List[EnumType] enums(Model this):	
+	types.typeSelect(EnumType);
+	
+//*** TYPE         ***************
+
+Model model(Type this):
+	eContainer;
+
+String package(Type this):	
+	model(this).package;
+
+//*** ENTITY       ***************
+
+List[Field] fields(Entity this):
+	{attributes, associations}.flatten();
+	
+//*** FIELD        ***************
+
+Entity entity( Field this ):
+	eContainer;
+	
+//*** ASSOCIATIONS ***************
+
+boolean isMapped( Association this ):
+	isMapped || isNotEmpty( mappedBy );
+
+//*** MULTIPLICITY ***************
+
+Multiplicity opposite( Multiplicity this ):
+	switch ( this ) {
+		case Multiplicity::OneToOne:   Multiplicity::OneToOne
+		case Multiplicity::OneToMany:  Multiplicity::ManyToOne
+		case Multiplicity::ManyToOne:  Multiplicity::OneToMany
+		case Multiplicity::ManyToMany: Multiplicity::ManyToMany
+		default:                       "'ERROR: ILLEGAL enum constant : " + this + "'"
+	};
+
+//*** MISC         ***************
+
+boolean isEmpty( String str ):
+	str == null || str.trim() == "";
+
+boolean isNotEmpty( String str ):
+	!isEmpty( str );
+	

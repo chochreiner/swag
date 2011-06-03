@@ -1,0 +1,51 @@
+import metamodel;
+
+extension metamodel::Extensions reexport;
+
+tableName( Entity this ):
+	if isNotEmpty(tableName) then
+		tableName
+	else 
+		name.toFirstLower();
+
+getter( Field this):
+	"get" + name.toFirstUpper();
+
+setter( Field this ):
+	"set" + name.toFirstUpper();
+
+typeName( Field this ):
+	"'ERROR: YOU SHOULD NEVER EVER SEE THIS, AND IM TOO LAZY TO WRITE A HELPFUL MESSAGE NOW'";
+
+typeName( Attribute this ):
+	type.name;
+
+typeName( Association this ):
+	switch ( multiplicity ) {
+		case Multiplicity::OneToOne:   type.name
+		case Multiplicity::OneToMany:  "List<"+type.name+">"
+		case Multiplicity::ManyToOne:  type.name
+		case Multiplicity::ManyToMany: "Set<"+type.name+">"
+		default:                       "'ERROR: ILLEGAL enum constant : " + multiplicity + "'"
+	};
+	
+concreteType( Association this ):
+	switch ( multiplicity ) {
+		case Multiplicity::OneToMany:  "ArrayList<"+type.name+">"
+		case Multiplicity::ManyToMany: "HashSet<"+type.name+">"
+		default:                       "'ERROR: ILLEGAL enum constant : " + multiplicity + "'"
+	};
+	
+String mappedBy( Association this ):
+	if ( isNotEmpty( mappedBy )  ) then
+		mappedBy
+	else
+		switch ( multiplicity ) {
+			case Multiplicity::OneToOne:   entity().name.toFirstLower()
+			case Multiplicity::OneToMany:  entity().name.toFirstLower()
+			case Multiplicity::ManyToOne:  entity().name.toFirstLower()
+			case Multiplicity::ManyToMany: entity().name.toFirstLower() + "s"
+			default:                       "'ERROR: ILLEGAL enum constant : " + multiplicity + "'"
+		}
+	;
+	

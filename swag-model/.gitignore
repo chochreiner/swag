@@ -1,0 +1,22 @@
+
+#=================
+#eclipse-workspace
+#=================
+eclipse-workspace
+
+#=================
+#eclipse-project
+#=================
+*.project
+*.classpath
+*.settings
+build/
+src/gen/
+
+#================
+#Mac OS X hidden files/folders
+#================
+.DS_Store
+
+target/
+
