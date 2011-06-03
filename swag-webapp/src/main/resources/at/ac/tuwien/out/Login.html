@@ -1,11 +1,18 @@
 <wicket:extend>
     <div id="login">
-    <form wicket:id="loginForm">
-    <table>
-    <tr><td>Username:</td><td><input type="text" wicket:id="name" /></td></tr>
-    <tr><td>Password:</td><td><input type="password" wicket:id="password" /></td></tr>
-    <tr><td/><td><input type="submit" value="login" /></td></tr>
-    </table>
+    <form wicket:id="loginForm" class="yform">
+    <div class="type-text">
+  		<label for="name">Username:</label>
+  		<input type="text" name="name" id="name" wicket:id="name" size="20" />
+	</div>
+    <div class="type-text">
+  		<label for="password">Password:</label>
+  		<input type="password" name="password" id="password" wicket:id="password" size="20" />
+	</div>
+	<div class="type-button">
+  		<input type="reset" value="reset" id="reset" name="reset" />
+  		<input type="submit" value="login" id="login" name="login" />
+	</div>
 	</form>
 	<span wicket:id="feedback"></span>
     </div>
