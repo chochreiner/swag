@@ -1,0 +1,40 @@
+<wicket:extend>
+<span wicket:id="feedback"></span>
+    <form wicket:id="registerForm" class="yform">
+		<fieldset>
+        <legend>Register</legend>
+        
+		<!--  -->
+		<div class="subcolumns">
+			<div class="type-text">
+		  		<label for="fistname">Firstname:</label>
+		  		<input type="text" name="firstname" id="firstname" wicket:id="firstname" size="20" />
+			</div>
+		    <div class="type-text">
+		  		<label for="surname">Surname:</label>
+		  		<input type="text" name="surname" id="surname" wicket:id="surname" size="20" />
+			</div>
+			<div class="type-text">
+		  		<label for="email">Email:</label>
+		  		<input type="text" name="email" id="email" wicket:id="email" size="40" />
+			</div>
+		    <div class="type-text">
+		  		<label for="username">Username:</label>
+		  		<input type="text" name="username" id="username" wicket:id="username" size="20" />
+			</div>
+			<div class="type-text">
+  				<label for="password">Password:</label>
+  				<input type="password" name="password" id="password" wicket:id="password" size="20" />
+			</div>
+			<div class="type-text">
+  				<label for="password2">Password:</label>
+  				<input type="password" name="password2" id="password2" wicket:id="password2" size="20" />
+			</div>
+		</div>
+        </fieldset>
+        <div class="type-button">
+		  	<input type="reset" value="reset" id="reset" name="reset" />
+		  	<input type="submit" value="register" id="register" name="register" />
+		</div>
+	</form>
+</wicket:extend>
