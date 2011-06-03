@@ -2,7 +2,7 @@ package at.ac.tuwien.swag.dao;
 
 import javax.persistence.EntityManager;
 
-import swag.domain.AbstractEntity;
+import at.ac.tuwien.swag.domain.AbstractEntity;
 
 public abstract class AbstractDAO<E extends AbstractEntity> {
 	public AbstractDAO( EntityManager em ) {
