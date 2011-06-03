@@ -11,7 +11,7 @@
 «ENDDEFINE»
 
 «DEFINE javaClass FOR Entity»
-	«FILE "java/" + package() + "/domain/" + name + ".java"»
+	«FILE "java/" + packagePath() + "/domain/" + name + ".java"»
 		package «package()».domain;
 
 		import java.util.*;
@@ -98,7 +98,7 @@
 			«ENDFOREACH»
 		}
 	«ENDFILE»
-	«FILE "java/" + package() + "/dao/" + name + "DAO.java"»
+	«FILE "java/" + packagePath() + "/dao/" + name + "DAO.java"»
 		package «package()».dao;
 		
 		import java.util.Date;
@@ -145,7 +145,7 @@
 «ENDDEFINE»
 
 «DEFINE javaEnum FOR EnumType»
-	«FILE "java/" + package() + "/domain/" + name + ".java"»
+	«FILE "java/" + packagePath() + "/domain/" + name + ".java"»
 		package «package()».domain;
 	
 		public enum «name» {
@@ -200,7 +200,7 @@
 «ENDDEFINE»
 
 «DEFINE hackyHelper FOR Model»
-	«FILE "java/" + package + "/Helper.java"»
+	«FILE "java/" + packagePath() + "/Helper.java"»
 		package «package»;
 		
 		import javax.persistence.*;

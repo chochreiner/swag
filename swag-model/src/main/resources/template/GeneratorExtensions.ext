@@ -28,6 +28,12 @@ typeName( Association this ):
 		case Multiplicity::ManyToMany: "Set<"+type.name+">"
 		default:                       "'ERROR: ILLEGAL enum constant : " + multiplicity + "'"
 	};
+
+String packagePath(Model this):	
+	package.replaceAll("\\.","/");
+	
+String packagePath(Type this):	
+	model(this).package.replaceAll("\\.","/");
 	
 concreteType( Association this ):
 	switch ( multiplicity ) {
