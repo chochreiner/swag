@@ -1,0 +1,97 @@
+«IMPORT metamodel»
+
+«EXTENSION template::GeneratorExtensions»
+
+«DEFINE main FOR Model»
+	«EXPAND entity FOREACH entities()»
+«ENDDEFINE»
+
+«DEFINE entity FOR Entity»
+	«FILE "java/" + packagePath() + "/domain/" + name + ".java"»
+		package «package()».domain;
+
+		import java.util.*;
+		import javax.persistence.*;
+	
+		@Entity
+		@Table(
+			name="«tableName()»",
+			uniqueConstraints={
+				«FOREACH attributes.select(a|a.unique) AS attr SEPARATOR ", \n"»
+					@UniqueConstraint(columnNames={"«attr.name»"})
+				«ENDFOREACH»
+			}
+		)
+		public class «name» extends AbstractEntity {
+			//*** constructors
+			
+			public «name»() {/**/}
+			
+			«IF fields().exists(f|f.nullable)»
+				public «name»(«FOREACH fields().select(f|f.nullable) AS f SEPARATOR ", "»«f.typeName()» «f.name»«ENDFOREACH») {
+					«FOREACH fields().select(f|f.nullable) AS f»
+						this.«f.name» = «f.name»;
+					«ENDFOREACH»
+				}
+			«ENDIF»
+		
+			//*** getters
+			«FOREACH attributes AS attr»
+				@Basic( optional = «attr.nullable» )
+				«IF attr.type.name == "Date"»
+					@Temporal(TemporalType.TIMESTAMP)
+				«ENDIF»
+				«IF model().enums().contains( attr.type )»
+					@Enumerated(EnumType.STRING)
+				«ENDIF»
+				public «attr.typeName()» «attr.getter()»() {
+					return «attr.name»;
+				}
+			«ENDFOREACH»
+			
+			«FOREACH associations AS assoc»
+				@«assoc.multiplicity»«IF assoc.isMapped()»( mappedBy="«assoc.mappedBy()»" )«ENDIF»
+				public «assoc.typeName()» «assoc.getter()»() {
+					«IF assoc.multiplicity == Multiplicity::ManyToMany || assoc.multiplicity == Multiplicity::OneToMany»
+						if ( «assoc.name» == null ) «assoc.name» = new «assoc.concreteType()»();
+					«ENDIF»
+
+					return «assoc.name»;
+				}
+			«ENDFOREACH»
+			
+			//*** setters
+			«FOREACH fields() AS f»
+				public void «f.setter()»(«f.typeName()» «f.name») {
+					this.«f.name» = «f.name»;
+				}
+			«ENDFOREACH»
+			
+			//*** alternate setters which allow method chaining
+			
+			«FOREACH fields() AS f»
+				public «name» «f.name»(«f.typeName()» «f.name») {
+					this.«f.name» = «f.name»;
+					return this;
+				}
+			«ENDFOREACH»
+			
+			//*** misc
+			
+			public String toString() {
+				return 
+					"«name»[" +
+						«FOREACH fields().sortBy(e|e.name) AS f SEPARATOR " + \", \" + "»
+							"«f.name»: " + toString( «f.getter()»() )
+						«ENDFOREACH»
+					+ "]"
+				;
+			}
+			
+			//*** PRIVATE PARTS
+			«FOREACH fields() AS f»
+				private «f.typeName()» «f.name»;
+			«ENDFOREACH»
+		}
+	«ENDFILE»
+«ENDDEFINE»

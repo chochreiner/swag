@@ -1,6 +1,5 @@
-package at.ac.tuwien.swag;
+package at.ac.tuwien.swag.model;
 
-import java.sql.BatchUpdateException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -11,46 +10,32 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import javax.persistence.PersistenceException;
 
-import org.apache.log4j.Logger;
-
-import at.ac.tuwien.swag.dao.MapDAO;
-import at.ac.tuwien.swag.dao.MessageDAO;
-import at.ac.tuwien.swag.dao.SquareDAO;
-import at.ac.tuwien.swag.dao.UserDAO;
-import at.ac.tuwien.swag.domain.BaseBuilding;
-import at.ac.tuwien.swag.domain.BaseBuildingType;
-import at.ac.tuwien.swag.domain.Map;
-import at.ac.tuwien.swag.domain.MapUser;
-import at.ac.tuwien.swag.domain.Message;
-import at.ac.tuwien.swag.domain.RessourceBuilding;
-import at.ac.tuwien.swag.domain.RessourceBuildingType;
-import at.ac.tuwien.swag.domain.Square;
-import at.ac.tuwien.swag.domain.User;
+import at.ac.tuwien.swag.model.dao.MapDAO;
+import at.ac.tuwien.swag.model.dao.MessageDAO;
+import at.ac.tuwien.swag.model.dao.SquareDAO;
+import at.ac.tuwien.swag.model.dao.UserDAO;
+import at.ac.tuwien.swag.model.domain.BaseBuilding;
+import at.ac.tuwien.swag.model.domain.BaseBuildingType;
+import at.ac.tuwien.swag.model.domain.Map;
+import at.ac.tuwien.swag.model.domain.MapUser;
+import at.ac.tuwien.swag.model.domain.Message;
+import at.ac.tuwien.swag.model.domain.RessourceBuilding;
+import at.ac.tuwien.swag.model.domain.RessourceBuildingType;
+import at.ac.tuwien.swag.model.domain.Square;
+import at.ac.tuwien.swag.model.domain.User;
 
 
 public class Main {
-    private static Logger logger = Logger.getLogger(Main.class);
-
-    public static void main(String[] args) {
-    	try {
-    		foo();
-    	} catch ( PersistenceException pe ) {
-//    		BatchUpdateException bue = (BatchUpdateException) pe.getCause().getCause().getCause();
-//    		System.err.println( bue.getNextException() );
-    		pe.printStackTrace();
-    	}
-    }
-    static void foo() {	
+    public static void main(String[] args) throws Exception {
     	EntityManagerFactory factory = Persistence.createEntityManagerFactory("swag");
         EntityManager em = factory.createEntityManager();
 
         EntityTransaction tx = em.getTransaction();
-        UserDAO userDao = new UserDAO(em);
-        MapDAO mapDao = new MapDAO(em);
+        UserDAO    userDao = new UserDAO(em);
+        MapDAO     mapDao = new MapDAO(em);
         MessageDAO messageDao = new MessageDAO(em);
-        SquareDAO squareDao = new SquareDAO(em);
+        SquareDAO  squareDao = new SquareDAO(em);
 
         System.out.println("####### Register users #######");
 
@@ -167,7 +152,7 @@ public class Main {
 
         System.out.println("####### Build Building for Nero #######");
 
-        List<BaseBuilding> basebuilding = new ArrayList<BaseBuilding>();
+        List<BaseBuilding>      basebuilding      = new ArrayList<BaseBuilding>();
         List<RessourceBuilding> ressourcebuilding = new ArrayList<RessourceBuilding>();
 
         BaseBuilding neroBarrack = new BaseBuilding();

@@ -1,9 +1,8 @@
-package at.ac.tuwien.swag.domain;
+package at.ac.tuwien.swag.model.domain;
 
 import java.util.Iterator;
 
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 

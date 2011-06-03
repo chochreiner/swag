@@ -1,0 +1,24 @@
+«IMPORT metamodel»
+
+«EXTENSION template::GeneratorExtensions»
+
+«DEFINE main FOR Model»
+	«FILE "java/" + packagePath() + "/Helper.java"»
+		package «package»;
+		
+		import javax.persistence.*;
+		
+		public abstract class Helper {
+			public static void dropDatabase( EntityManager em ) {
+				EntityTransaction tx = em.getTransaction();
+				tx.begin();
+			
+				«FOREACH entities() AS e»
+					em.createNativeQuery("DROP TABLE «e.tableName()» CASCADE").executeUpdate();					
+				«ENDFOREACH»
+				
+				tx.commit();
+			}
+		}
+	«ENDFILE»
+«ENDDEFINE»

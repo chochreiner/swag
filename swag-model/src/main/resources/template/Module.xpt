@@ -1,0 +1,7 @@
+«IMPORT metamodel»
+
+«EXTENSION template::GeneratorExtensions»
+
+«DEFINE main FOR Model»
+	«FILE "java/" + packagePath() + "/Helper.java"»
+«ENDDEFINE»
