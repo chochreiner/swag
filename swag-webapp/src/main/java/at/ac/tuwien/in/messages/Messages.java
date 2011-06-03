@@ -19,7 +19,7 @@ public class Messages extends InPage {
         super(parameters);
 
         List<ITab> tabs = new ArrayList<ITab>();
-        tabs.add(new AbstractTab(new Model("new Message")) {
+        tabs.add(new AbstractTab(new Model<String>("new Message")) {
             private static final long serialVersionUID = -5211908135285482567L;
 
             @Override
@@ -28,7 +28,7 @@ public class Messages extends InPage {
             }
         });
 
-        tabs.add(new AbstractTab(new Model("Inbox")) {
+        tabs.add(new AbstractTab(new Model<String>("Inbox")) {
             private static final long serialVersionUID = 2022873278626286072L;
 
             @Override
@@ -37,7 +37,7 @@ public class Messages extends InPage {
             }
         });
 
-        tabs.add(new AbstractTab(new Model("Outbox")) {
+        tabs.add(new AbstractTab(new Model<String>("Outbox")) {
             private static final long serialVersionUID = 1949786863242491270L;
 
             @Override
@@ -46,7 +46,7 @@ public class Messages extends InPage {
             }
         });
 
-        tabs.add(new AbstractTab(new Model("Notifications")) {
+        tabs.add(new AbstractTab(new Model<String>("Notifications")) {
             private static final long serialVersionUID = 1949786864242491270L;
 
             @Override

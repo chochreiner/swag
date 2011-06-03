@@ -2,10 +2,11 @@ package at.ac.tuwien.out.form;
 
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
+import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.Model;
 
-public class LoginForm extends Form {
+public class LoginForm extends Form<Object> {
     private static final long serialVersionUID = 6040480253914226510L;
 
     private TextField<String> name;
@@ -14,7 +15,7 @@ public class LoginForm extends Form {
     public LoginForm(String id) {
         super(id);
 
-        name = new TextField<String>("name", new Model<String>());
+        name = new RequiredTextField<String>("name", new Model<String>());
         password = new PasswordTextField("password", new Model<String>());
 
         add(name);
