@@ -10,6 +10,5 @@ public class InPage extends WebPage {
         add(new InTopNavigation("topNavigation"));
         add(new InNavigation("mainNavigation"));
         add(new InSideNavigation("sideNavigation"));
-
     }
 }

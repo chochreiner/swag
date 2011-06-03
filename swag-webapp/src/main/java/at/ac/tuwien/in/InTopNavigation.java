@@ -9,6 +9,7 @@ public class InTopNavigation extends Panel {
     public InTopNavigation(String id) {
         super(id);
         add(new BookmarkablePageLink<String>("settings", Settings.class));
+        add(new BookmarkablePageLink<String>("changeMap", ChangeMap.class));
     }
 
 }
