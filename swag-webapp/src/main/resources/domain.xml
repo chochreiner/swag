@@ -1,0 +1,30 @@
+<domain>
+ <resources>
+  <admin-object-resource enabled="true" jndi-name="jms/Mail"
+   res-adapter="jmsra" res-type="javax.jms.Queue">
+   <property name="Name" value="MailQueue" />
+  </admin-object-resource>
+  <admin-object-resource enabled="true" jndi-name="jms/Action"
+   res-adapter="jmsra" res-type="javax.jms.Queue">
+   <property name="Name" value="ActionQueue" />
+  </admin-object-resource>
+
+  <!-- FACTORY & POOL -->
+  <connector-resource jndi-name="jms/ConnectionFactory"
+   pool-name="jms/ConnectionFactoryPool" />
+  <connector-connection-pool name="jms/ConnectionFactoryPool"
+   connection-definition-name="javax.jms.ConnectionFactory"
+   resource-adapter-name="jmsra" />
+  <jdbc-resource jndi-name="swag_ds" pool-name="swag_pool" />
+  <jdbc-connection-pool name="swag_pool"
+   datasource-classname="org.postgresql.jdbc2.optional.ConnectionPool">
+   <property name="databaseName" value="swa" />
+   <property name="serverName" value="localhost" />
+   <property name="portNumber" value="5432" />
+   <property name="User" value="swa" />
+   <property name="Password" value="swa11" />
+   <property name="URL" value="jdbc:postgresql://localhost:5432/swa" />
+   <property name="driverClass" value="org.postgresql.Driver" />
+  </jdbc-connection-pool>
+ </resources>
+</domain>
