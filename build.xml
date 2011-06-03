@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="swa2" default="build" basedir=".">
+
+    <target name="init" description="Initialize settings.">
+        <property name="src.dir" value="src"/>
+        <property name="build.dir" value="build"/>
+        <property name="lib.dir" value="lib"/>
+        
+        <path id="project.classpath" >
+            <fileset dir="${lib.dir}">
+                <include name="**/*.jar"/>
+            </fileset>
+            <pathelement location="${build.dir}"/>
+        </path>
+    </target>
+
+    
+    <target name="build" depends="init" description="Compile project.">
+        <mkdir dir="${build.dir}"/>
+        <javac srcdir ="${src.dir}" 
+               destdir="${build.dir}" 
+               classpathref="project.classpath" 
+               debug="true" 
+               deprecation="true" 
+               includeantruntime="false"/>
+        <copy todir="${build.dir}">
+            <fileset dir="${src.dir}" includes="*.class"/>
+        </copy>
+        <copy todir="${build.dir}/META-INF">
+            <fileset dir="${src.dir}/gen/resources/META-INF" includes="persistence.xml"/>
+        </copy>
+    </target>
+    
+    <target name="run" depends="build" description="Run project.">
+        <java classname="swag.Main" fork="true" classpathref="project.classpath"/>
+    </target>
+    
+    <target name="clean" depends="init" description="Clean build products.">
+        <delete dir="${build.dir}"/>
+    </target>
+</project>

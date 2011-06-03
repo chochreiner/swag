@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="hochi"
+    nsURI="http://www.example.org/hochi" nsPrefix="hochi">
+  <eClassifiers xsi:type="ecore:EClass" name="User">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="address : String"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="username : String"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="password: String"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="email: String"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="fullname: String"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="EReference0" eType="#//Mapuser"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="EReference1" eType="#//Message"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Map">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id : Integer"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="numberOfUser : Integer"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="xSize"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="ySize"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="EReference0" eType="#//Square"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Mapuser">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="EReference0" eType="#//Map"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="EReference1" eType="#//StoredRessource"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="StoredRessource">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="amount : Integer"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="ressourceType : Enum"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="lastUpdate : Date"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="increasRate : Double"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Message">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="timestamp : Date"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="subject : String"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="from : String"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="text : String"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Square">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isHomeBase : Boolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="coordX : Integer"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="coordY : Integer"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="EReference0" eType="#//Mapuser"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Troop">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="EReference0" eType="#//Square"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Soldiers">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type : Enum"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="EReference0" eType="#//Troop"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="attackStrength: Integer"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="amount : Integer"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="speed : Double"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Boost">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="EReference0" eType="#//Square"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RessourceType">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="EReference0" eType="#//Boost"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Building">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="level : Integer"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="EReference0" eType="#//Square"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RessourceBuilding">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="EReference0" eType="#//Building"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type : Enum"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="BaseBuilding">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="EReference0" eType="#//Building"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type : Enum"/>
+  </eClassifiers>
+</ecore:EPackage>

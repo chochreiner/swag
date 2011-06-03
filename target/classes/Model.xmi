@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="ASCII"?>
+<metamodel:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:metamodel="http://www.example.org/metamodel" xsi:schemaLocation="http://www.example.org/metamodel metamodel/metamodel.ecore" package="swag" logSQL="true" autocreateDatabaseSchema="true">
+  <types xsi:type="metamodel:BuiltinType" name="String"/>
+  <types xsi:type="metamodel:BuiltinType" name="int"/>
+  <types xsi:type="metamodel:BuiltinType" name="double"/>
+  <types xsi:type="metamodel:BuiltinType" name="Date"/>
+  <types xsi:type="metamodel:BuiltinType" name="boolean"/>
+  <types xsi:type="metamodel:EnumType" name="SharedRessourceType" values="WOOD, IRON, GOLD, CLAY, WHEAT"/>
+  <types xsi:type="metamodel:EnumType" name="RessourceBuildingType" values="LUMBERJACK, MINE, GOLDWASHER, CLAYPIT, FARMER"/>
+  <types xsi:type="metamodel:EnumType" name="BaseBuildingType" values="TOWNHALL, BARRACKS, STABLE, BLACKSMITH, MILL"/>
+  <types xsi:type="metamodel:EnumType" name="RessourceType" values="WOOD, IRON, GOLD, CLAY, WHEAT"/>
+  <types xsi:type="metamodel:EnumType" name="SoldierType" values="PEASANT, FOOTSOLDIER, HORSEMAN, ELEFANTSOLDIER, ALMIGHTYFABIAN"/>
+  <types xsi:type="metamodel:Entity" name="Message">
+    <attributes name="timestamp" type="//@types.3"/>
+    <attributes name="subject" type="//@types.0"/>
+    <attributes name="text" type="//@types.0"/>
+    <associations name="from" type="//@types.11" multiplicity="ManyToOne"/>
+    <associations name="to" type="//@types.11" multiplicity="ManyToMany"/>
+  </types>
+  <types xsi:type="metamodel:Entity" name="User" tableName="users">
+    <attributes name="name" type="//@types.0"/>
+    <attributes name="password" type="//@types.0"/>
+    <attributes name="address" type="//@types.0"/>
+    <attributes name="email" type="//@types.0"/>
+    <attributes name="fullname" type="//@types.0"/>
+    <associations name="maps" nullable="true" type="//@types.13" multiplicity="OneToMany" isMapped="true"/>
+    <associations name="sentMessages" type="//@types.10" multiplicity="OneToMany"/>
+    <associations name="receivedMessages" type="//@types.10" multiplicity="ManyToMany"/>
+  </types>
+  <types xsi:type="metamodel:Entity" name="Map">
+    <attributes name="maxNumUsers" type="//@types.1"/>
+    <attributes name="xSize" type="//@types.1"/>
+    <attributes name="ySize" type="//@types.1"/>
+    <attributes name="name" type="//@types.0" unique="true"/>
+    <associations name="users" nullable="true" type="//@types.13" multiplicity="OneToMany" isMapped="true"/>
+    <associations name="squares" nullable="true" type="//@types.15" multiplicity="OneToMany" isMapped="true"/>
+  </types>
+  <types xsi:type="metamodel:Entity" name="MapUser">
+    <associations name="map" type="//@types.12" multiplicity="ManyToOne"/>
+    <associations name="user" type="//@types.11" multiplicity="ManyToOne"/>
+    <associations name="storedResources" type="//@types.14" multiplicity="OneToMany"/>
+    <associations name="squares" type="//@types.15" multiplicity="OneToMany"/>
+  </types>
+  <types xsi:type="metamodel:Entity" name="StoredRessource">
+    <attributes name="amount" type="//@types.1"/>
+    <attributes name="ressourceType" type="//@types.5"/>
+    <attributes name="lastUpdate" type="//@types.3"/>
+    <attributes name="currentRate" type="//@types.2"/>
+    <associations name="mapUser" type="//@types.13" multiplicity="ManyToOne"/>
+  </types>
+  <types xsi:type="metamodel:Entity" name="Square">
+    <attributes name="coordX" type="//@types.1"/>
+    <attributes name="coordY" type="//@types.1"/>
+    <attributes name="isHomeBase" type="//@types.4"/>
+    <associations name="map" type="//@types.12" multiplicity="ManyToOne"/>
+    <associations name="boosts" nullable="true" type="//@types.18" multiplicity="OneToMany" isMapped="true"/>
+    <associations name="user" type="//@types.13" multiplicity="ManyToOne"/>
+    <associations name="resourceBuildings" nullable="true" type="//@types.16" multiplicity="OneToMany" isMapped="true"/>
+    <associations name="troops" nullable="true" type="//@types.19" multiplicity="OneToMany" isMapped="true"/>
+    <associations name="baseBuildings" nullable="true" type="//@types.17" multiplicity="OneToMany" isMapped="true"/>
+  </types>
+  <types xsi:type="metamodel:Entity" name="RessourceBuilding">
+    <attributes name="level" type="//@types.1"/>
+    <attributes name="type" type="//@types.6"/>
+    <associations name="square" type="//@types.15" multiplicity="ManyToOne"/>
+  </types>
+  <types xsi:type="metamodel:Entity" name="BaseBuilding">
+    <attributes name="level" type="//@types.1"/>
+    <attributes name="type" type="//@types.7"/>
+    <associations name="square" type="//@types.15" multiplicity="ManyToOne"/>
+  </types>
+  <types xsi:type="metamodel:Entity" name="Boost">
+    <attributes name="type" type="//@types.8"/>
+    <associations name="square" type="//@types.15" multiplicity="ManyToOne"/>
+  </types>
+  <types xsi:type="metamodel:Entity" name="Troop">
+    <attributes name="number" type="//@types.1"/>
+    <associations name="square" type="//@types.15" multiplicity="ManyToOne"/>
+    <associations name="soldiers" type="//@types.20" multiplicity="OneToMany" isMapped="true"/>
+  </types>
+  <types xsi:type="metamodel:Entity" name="Soldier">
+    <attributes name="type" type="//@types.9"/>
+    <attributes name="attackStrength" type="//@types.2"/>
+    <attributes name="amount" type="//@types.1"/>
+    <attributes name="speed" type="//@types.2"/>
+    <associations name="troop" type="//@types.19" multiplicity="ManyToOne"/>
+  </types>
+</metamodel:Model>
