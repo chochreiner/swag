@@ -217,6 +217,8 @@
 .tab-row li {
 	float: left;
 	list-style: none outside none;
+	line-height: 1em;
+	margin: 0;
 }
 
 .tab-row li.selected {
