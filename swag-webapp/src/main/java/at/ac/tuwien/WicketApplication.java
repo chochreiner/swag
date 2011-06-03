@@ -2,12 +2,12 @@ package at.ac.tuwien;
 
 import org.apache.wicket.protocol.http.WebApplication;
 
-import at.ac.tuwien.out.OutPage;
+import at.ac.tuwien.out.StartPage;
 
 public class WicketApplication extends WebApplication {
     @Override
-    public Class<OutPage> getHomePage() {
-        return OutPage.class;
+    public Class<StartPage> getHomePage() {
+        return StartPage.class;
     }
 
     @Override
