@@ -10,5 +10,4 @@ public class OutNavigation extends Panel {
         super(id);
         add(new BookmarkablePageLink<String>("login", Login.class));
     }
-
 }
