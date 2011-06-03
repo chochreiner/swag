@@ -6,6 +6,8 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 public class OutPage extends WebPage {
 
     public OutPage(final PageParameters parameters) {
+        add(new OutTopNavigation("topNavigation"));
         add(new OutNavigation("mainNavigation"));
+        add(new OutSideNavigation("sideNavigation"));
     }
 }
