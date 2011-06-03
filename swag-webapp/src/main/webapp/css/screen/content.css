@@ -194,6 +194,77 @@
   tbody tr:hover tbody th.sub { background:#f0e8e8; }
   tbody tr:hover td { background:#fff8f8; }
 
+
+	/**
+  * ------------------------------------------------------------------------------------------------- #
+  *
+  *Tabbed Pane
+  *
+  * @section Tabbed Pane
+  */
+  
+.tab-row {
+	overflow: hidden;
+	widows: 100%;
+	border-bottom: 5px solid #215B87;
+}
+
+
+.tab-row ul{
+	padding: 0px 0px 0px 10px;
+}
+
+.tab-row li {
+	float: left;
+	list-style: none outside none;
+}
+
+.tab-row li.selected {
+	font-weight: bolder;
+	margin-left: -4px;
+	margin-right: -4px;
+}
+
+.tab-row li:first-child  a{
+	border-left-width: 1px;
+}
+
+.tab-row li a{
+	background-image:url("../../images/tab.png");
+	background-position: 0% 0%;
+	background-repeat: repeat-x;
+	border:1px solid #999;
+	border-width: 1px 1px 0px 0px;
+	display: block;
+	padding: 8px 9px 5px;
+	position: relative;
+	text-decoration: none;
+	white-space: nowrap;
+}
+
+.tab-row li.selected a{
+	background-image:url("../../images/tabActive.png");
+	background-color: #215b87;
+	color: white;
+	z-index: 10;
+}
+
+.tab-row li.selected a span {
+	text-shadow: black	0px	1px	0px;	
+}
+
+.tab-panel {
+	border: 1px solid #999;
+	background-color: #f2f3f5;
+	padding: 7px 10px;
+}
+	
+.tabpanel{
+	
+	min-width:640px;
+}
+	
+	
  /**
   * ------------------------------------------------------------------------------------------------- #
   *
