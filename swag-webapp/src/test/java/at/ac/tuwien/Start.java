@@ -1,5 +1,6 @@
 package at.ac.tuwien;
 
+import org.apache.wicket.Session;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.bio.SocketConnector;
