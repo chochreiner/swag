@@ -53,11 +53,6 @@
     <artifactId>gson</artifactId>
     <version>1.7.1</version>
    </dependency>
-   <dependency>
-    <groupId>com.sun.xml.bind</groupId>
-    <artifactId>jaxb-impl</artifactId>
-    <version>2.2.3-2</version>
-   </dependency>
    <!-- util -->
    <dependency>
     <groupId>org.projectlombok</groupId>
