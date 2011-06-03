@@ -5,7 +5,7 @@ import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.model.Model;
 
-public class RegisterForm extends Form<Object> {
+public class RegisterForm extends Form<Void> {
     private static final long serialVersionUID = 6040480253914226510L;
 
     private RequiredTextField<String> firstname;

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
  <modelVersion>4.0.0</modelVersion>
  <groupId>at.ac.tuwien</groupId>
  <artifactId>swag</artifactId>
@@ -12,7 +11,8 @@
   <module>swag-executor</module>
   <module>swag-mail</module>
   <module>swag-webapp</module>
- </modules>
+  <module>swag-util</module>
+  </modules>
  <properties>
   <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -21,6 +21,11 @@
  </properties>
  <dependencyManagement>
   <dependencies>
+   <dependency>
+    <groupId>at.ac.tuwien</groupId>
+    <artifactId>swag-model</artifactId>
+    <version>1.0-SNAPSHOT</version>
+   </dependency>
    <!-- guice DI -->
    <dependency>
     <groupId>com.google.inject</groupId>
@@ -86,9 +91,26 @@
     <type>pom</type>
    </dependency>
    <dependency>
+    <groupId>org.apache.wicket</groupId>
+    <artifactId>wicket-guice</artifactId>
+    <version>${wicket.version}</version>
+   </dependency>
+   <dependency>
+     <groupId>org.apache.wicket</groupId> 
+     <artifactId>wicket-extensions</artifactId>
+     <version>${wicket.version}</version>
+   </dependency>
+   <!-- LOGGING -->
+   <dependency>
     <groupId>log4j</groupId>
     <artifactId>log4j</artifactId>
     <version>1.2.16</version>
+   </dependency>
+   <!-- JMS DEPENDENCY -->
+   <dependency>
+     <groupId>javax.jms</groupId>
+     <artifactId>jms</artifactId>
+     <version>1.1</version>
    </dependency>
    <!-- JETTY DEPENDENCIES FOR TESTING -->
    <dependency>
@@ -149,14 +171,26 @@
  </build>
  <repositories>
   <repository>
-   <id>Apache Nexus</id>
-   <url>https://repository.apache.org/content/repositories/snapshots/</url>
-   <releases>
-    <enabled>false</enabled>
-   </releases>
+   <id>glassfish-repository</id>
+   <name>Java.net Repository for Glassfish</name>
+   <url>http://download.java.net/maven/glassfish</url>
+   <layout>default</layout>
    <snapshots>
     <enabled>true</enabled>
+    <updatePolicy>never</updatePolicy>
    </snapshots>
   </repository>
  </repositories>
+ <pluginRepositories>
+  <pluginRepository>
+   <id>glassfish-repository</id>
+   <name>Java.net Repository for Glassfish</name>
+   <url>http://download.java.net/maven/glassfish</url>
+   <layout>default</layout>
+   <snapshots>
+    <enabled>true</enabled>
+    <updatePolicy>never</updatePolicy>
+   </snapshots>
+  </pluginRepository>
+ </pluginRepositories>
 </project>

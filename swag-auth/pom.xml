@@ -7,10 +7,10 @@
  </parent>
  <modelVersion>4.0.0</modelVersion>
  <groupId>at.ac.tuwien</groupId>
- <artifactId>swag-executor</artifactId>
+ <artifactId>swag-auth</artifactId>
  <packaging>jar</packaging>
  <version>1.0-SNAPSHOT</version>
- <name>swag-executor</name>
+ <name>swag-auth</name>
  <url>http://maven.apache.org</url>
  <dependencies>
   <!-- JUNIT DEPENDENCY FOR TESTING -->
@@ -19,10 +19,9 @@
    <artifactId>junit</artifactId>
    <scope>test</scope>
   </dependency>
-  <!-- JMS DEPENDENCY -->
   <dependency>
-     <groupId>javax.jms</groupId>
-     <artifactId>jms</artifactId>
+    <groupId>javax.jms</groupId>
+    <artifactId>jms</artifactId>
   </dependency>
  </dependencies>
 </project>
