@@ -46,6 +46,15 @@ public class Messages extends InPage {
             }
         });
 
+        tabs.add(new AbstractTab(new Model("Notifications")) {
+            private static final long serialVersionUID = 1949786864242491270L;
+
+            @Override
+            public Panel getPanel(String panelId) {
+                return new Outbox(panelId);
+            }
+        });
+
         add(new AjaxTabbedPanel("messagesTabs", tabs));
 
     }
