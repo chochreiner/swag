@@ -11,7 +11,7 @@ eclipse-workspace
 *.classpath
 *.settings
 build/
-#src/gen/
+src/gen/
 
 #================
 #Mac OS X hidden files/folders
