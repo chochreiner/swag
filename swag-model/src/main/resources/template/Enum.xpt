@@ -1,0 +1,17 @@
+«IMPORT metamodel»
+
+«EXTENSION template::GeneratorExtensions»
+
+«DEFINE main FOR Model»
+	«EXPAND enum FOREACH enums()»
+«ENDDEFINE»
+
+«DEFINE enum FOR EnumType»
+	«FILE "java/" + packagePath() + "/domain/" + name + ".java"»
+		package «package()».domain;
+	
+		public enum «name» {
+			«values»;
+		}
+	«ENDFILE»
+«ENDDEFINE»

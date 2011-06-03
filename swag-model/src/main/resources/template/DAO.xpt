@@ -1,0 +1,54 @@
+«IMPORT metamodel»
+
+«EXTENSION template::GeneratorExtensions»
+
+«DEFINE main FOR Model»
+	«EXPAND dao FOREACH entities()»
+«ENDDEFINE»
+
+«DEFINE dao FOR Entity»
+	«FILE "java/" + packagePath() + "/dao/" + name + "DAO.java"»
+		package «package()».dao;
+		
+		import java.util.Date;
+		import java.util.List;
+		import javax.persistence.EntityManager;
+		
+		import «package()».domain.*;
+		
+		public class «name»DAO extends AbstractDAO<«name»> {
+			public «name»DAO( EntityManager em ) {
+				super( em );
+			}
+
+			@SuppressWarnings("unchecked")
+			public List<«name»> findAll() {
+				return getEntityManager().createQuery( "SELECT obj FROM «name» obj" ).getResultList();
+			}
+
+			«FOREACH attributes AS attr»
+				«IF attr.unique»
+					@SuppressWarnings("unchecked")
+					public «name» findBy«attr.name.toFirstUpper()»( «attr.type.name» «attr.name» ) {
+						return («name») getEntityManager().createQuery(
+							"SELECT obj FROM «name» obj WHERE obj.«attr.name» = :val" )
+							.setParameter( "val", «attr.name» )
+							.getSingleResult();
+					}
+				«ELSE»
+					@SuppressWarnings("unchecked")
+					public List<«name»> findBy«attr.name.toFirstUpper()»( «attr.type.name» «attr.name» ) {
+						return getEntityManager().createQuery(
+							"SELECT obj FROM «name» obj WHERE obj.«attr.name» = :val" )
+							.setParameter( "val", «attr.name» )
+							.getResultList();
+					}
+				«ENDIF»
+			«ENDFOREACH»
+
+			protected Class<«name»> getEntityClass() {
+				return «name».class;
+			}
+		}		
+	«ENDFILE»
+«ENDDEFINE»

@@ -170,7 +170,6 @@
       <configuration>
        <sources>
         <source>src/gen/java/</source>
-        <source>src/gen/resources/</source>
        </sources>
       </configuration>
      </execution>
