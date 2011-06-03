@@ -51,7 +51,7 @@ public class Messages extends InPage {
 
             @Override
             public Panel getPanel(String panelId) {
-                return new Outbox(panelId);
+                return new Notifications(panelId);
             }
         });
 
