@@ -8,6 +8,6 @@ public class OutNavigation extends Panel {
 
     public OutNavigation(String id) {
         super(id);
-        add(new BookmarkablePageLink<String>("home", OutPage.class));
+        add(new BookmarkablePageLink<String>("home", StartPage.class));
     }
 }

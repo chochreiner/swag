@@ -2,13 +2,15 @@ package at.ac.tuwien.out.form;
 
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
+import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.Model;
 
-import com.google.inject.Inject;
-
 import at.ac.tuwien.in.InPage;
+import at.ac.tuwien.in.MainPage;
 import at.ac.tuwien.service.LoginService;
+
+import com.google.inject.Inject;
 
 public class LoginForm extends Form<Void> {
     private static final long serialVersionUID = 6040480253914226510L;
@@ -24,7 +26,7 @@ public class LoginForm extends Form<Void> {
     public LoginForm(String id) {
         super(id);
 
-        username = new TextField<String>("username", new Model<String>());
+        username = new RequiredTextField<String>("username", new Model<String>());
         password = new PasswordTextField("password", new Model<String>());
 
         add(username);
@@ -37,7 +39,7 @@ public class LoginForm extends Form<Void> {
     	String pwd = password.getModel().getObject();
     	
     	if ( login.login( usr, pwd ) ) {
-    		getPage().setResponsePage( InPage.class );
+    		getPage().setResponsePage( MainPage.class );
     	} else {
     		this.error( ERR_MSG_BAD_CREDENTIALS );
     	}

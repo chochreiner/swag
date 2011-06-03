@@ -21,6 +21,11 @@
  </properties>
  <dependencyManagement>
   <dependencies>
+   <dependency>
+    <groupId>at.ac.tuwien</groupId>
+    <artifactId>swag-model</artifactId>
+    <version>1.0-SNAPSHOT</version>
+   </dependency>
    <!-- guice DI -->
    <dependency>
     <groupId>com.google.inject</groupId>
@@ -88,7 +93,12 @@
    <dependency>
     <groupId>org.apache.wicket</groupId>
     <artifactId>wicket-guice</artifactId>
-    <version>1.5-RC4.2</version>
+    <version>${wicket.version}</version>
+   </dependency>
+   <dependency>
+     <groupId>org.apache.wicket</groupId> 
+     <artifactId>wicket-extensions</artifactId>
+     <version>${wicket.version}</version>
    </dependency>
    <!-- LOGGING -->
    <dependency>
@@ -161,14 +171,26 @@
  </build>
  <repositories>
   <repository>
-   <id>Apache Nexus</id>
-   <url>https://repository.apache.org/content/repositories/snapshots/</url>
-   <releases>
-    <enabled>false</enabled>
-   </releases>
+   <id>glassfish-repository</id>
+   <name>Java.net Repository for Glassfish</name>
+   <url>http://download.java.net/maven/glassfish</url>
+   <layout>default</layout>
    <snapshots>
     <enabled>true</enabled>
+    <updatePolicy>never</updatePolicy>
    </snapshots>
   </repository>
  </repositories>
+ <pluginRepositories>
+  <pluginRepository>
+   <id>glassfish-repository</id>
+   <name>Java.net Repository for Glassfish</name>
+   <url>http://download.java.net/maven/glassfish</url>
+   <layout>default</layout>
+   <snapshots>
+    <enabled>true</enabled>
+    <updatePolicy>never</updatePolicy>
+   </snapshots>
+  </pluginRepository>
+ </pluginRepositories>
 </project>

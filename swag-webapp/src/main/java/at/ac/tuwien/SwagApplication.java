@@ -3,21 +3,16 @@ package at.ac.tuwien;
 import org.apache.wicket.guice.GuiceComponentInjector;
 import org.apache.wicket.protocol.http.WebApplication;
 
-import at.ac.tuwien.out.OutPage;
+import at.ac.tuwien.out.StartPage;
 
-/**
- * Application object for your web application. If you want to run this application without deploying, run the Start
- * class.
- * 
- * @see at.ac.tuwien.Start#main(String[])
- */
-public class WicketApplication extends WebApplication {
+public class SwagApplication extends WebApplication {
+
 	/**
 	 * @see org.apache.wicket.Application#getHomePage()
 	 */
 	@Override
-	public Class<OutPage> getHomePage() {
-		return OutPage.class;
+	public Class<StartPage> getHomePage() {
+		return StartPage.class;
 	}
 
     /**
