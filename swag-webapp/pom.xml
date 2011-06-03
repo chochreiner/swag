@@ -19,9 +19,9 @@
    <artifactId>wicket</artifactId>
    <type>pom</type>
   </dependency>
-  <!-- OPTIONAL DEPENDENCY <dependency> <groupId>org.apache.wicket</groupId> 
+  <dependency> <groupId>org.apache.wicket</groupId> 
    <artifactId>wicket-extensions</artifactId> <version>${wicket.version}</version> 
-   </dependency> -->
+   </dependency>
   <!-- LOGGING DEPENDENCIES - LOG4J -->
   <dependency>
    <groupId>org.slf4j</groupId>
