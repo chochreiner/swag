@@ -1,3 +1,27 @@
 <wicket:panel>
 <h2>New Message</h2>
+    <div id="newMessage">
+    <form wicket:id="newMessageForm" class="yform">
+    <div class="type-text">
+  		<label for="reciever">Reciever:</label>
+  		<input type="text" name="reciever" id="reciever" wicket:id="reciever" size="30" />
+	</div>
+    <div class="type-text">
+  		<label for="subject">Subject:</label>
+  		<input type="text" name="subject" id="subject" wicket:id="subject" size="30" />
+	</div>
+    <div class="type-text">
+  		<label for="text">Text:</label>
+  		<textarea wicket:id="text" name="text" id="text" rows="15" cols="25">Input comes here</textarea>
+	</div>	
+
+	<div class="type-button">
+  		<input type="reset"  value="reset" id="reset" name="reset" />
+  		<input type="submit" value="send" id="send" name="send" />
+	</div>
+	</form>
+	<span wicket:id="feedback"></span>
+    </div>
+
+
 </wicket:panel>
