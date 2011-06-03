@@ -1,4 +1,4 @@
-package swag;
+package at.ac.tuwien.swag;
 
 import java.sql.BatchUpdateException;
 import java.util.ArrayList;
@@ -15,19 +15,20 @@ import javax.persistence.PersistenceException;
 
 import org.apache.log4j.Logger;
 
-import swag.dao.MapDAO;
-import swag.dao.MessageDAO;
-import swag.dao.SquareDAO;
-import swag.dao.UserDAO;
-import swag.domain.BaseBuilding;
-import swag.domain.BaseBuildingType;
-import swag.domain.Map;
-import swag.domain.MapUser;
-import swag.domain.Message;
-import swag.domain.RessourceBuilding;
-import swag.domain.RessourceBuildingType;
-import swag.domain.Square;
-import swag.domain.User;
+import at.ac.tuwien.swag.dao.MapDAO;
+import at.ac.tuwien.swag.dao.MessageDAO;
+import at.ac.tuwien.swag.dao.SquareDAO;
+import at.ac.tuwien.swag.dao.UserDAO;
+import at.ac.tuwien.swag.domain.BaseBuilding;
+import at.ac.tuwien.swag.domain.BaseBuildingType;
+import at.ac.tuwien.swag.domain.Map;
+import at.ac.tuwien.swag.domain.MapUser;
+import at.ac.tuwien.swag.domain.Message;
+import at.ac.tuwien.swag.domain.RessourceBuilding;
+import at.ac.tuwien.swag.domain.RessourceBuildingType;
+import at.ac.tuwien.swag.domain.Square;
+import at.ac.tuwien.swag.domain.User;
+
 
 public class Main {
     private static Logger logger = Logger.getLogger(Main.class);
