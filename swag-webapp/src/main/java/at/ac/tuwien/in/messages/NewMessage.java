@@ -17,5 +17,4 @@ public class NewMessage extends Panel {
         Form<?> newMessageForm = new NewMessageForm("newMessageForm");
         add(newMessageForm);
     }
-
 }
