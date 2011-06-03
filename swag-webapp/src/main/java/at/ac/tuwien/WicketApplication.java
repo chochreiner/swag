@@ -2,6 +2,8 @@ package at.ac.tuwien;
 
 import org.apache.wicket.protocol.http.WebApplication;
 
+import at.ac.tuwien.out.StartPage;
+
 /**
  * Application object for your web application. If you want to run this application without deploying, run the Start
  * class.
@@ -13,8 +15,8 @@ public class WicketApplication extends WebApplication {
      * @see org.apache.wicket.Application#getHomePage()
      */
     @Override
-    public Class<HomePage> getHomePage() {
-        return HomePage.class;
+    public Class<StartPage> getHomePage() {
+        return StartPage.class;
     }
 
     /**
