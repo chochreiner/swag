@@ -10,8 +10,10 @@ public class InNavigation extends Panel {
 
 	public InNavigation(String id) {
         super(id);
-        add( new BookmarkablePageLink<String>( "home",     MainPage.class ) );
-        add( new BookmarkablePageLink<String>( "map",      Map.class      ) );
-        add( new BookmarkablePageLink<String>( "messages", Messages.class ) );
+
+        add( new BookmarkablePageLink<String>( "home",       MainPage.class   ) );
+        add( new BookmarkablePageLink<String>( "map",        Map.class        ) );
+        add( new BookmarkablePageLink<String>( "messages",   Messages.class   ) );
+        add( new BookmarkablePageLink<String>( "statistics", Statistics.class ) );
     }
 }

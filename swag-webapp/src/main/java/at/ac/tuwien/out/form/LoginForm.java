@@ -6,7 +6,6 @@ import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.Model;
 
-import at.ac.tuwien.in.InPage;
 import at.ac.tuwien.in.MainPage;
 import at.ac.tuwien.service.LoginService;
 
