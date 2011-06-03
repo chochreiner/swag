@@ -1,50 +1,117 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
- <parent>
-  <artifactId>swag</artifactId>
-  <groupId>at.ac.tuwien</groupId>
-  <version>1.0-SNAPSHOT</version>
- </parent>
- <modelVersion>4.0.0</modelVersion>
- <groupId>at.ac.tuwien</groupId>
- <artifactId>swag-webapp</artifactId>
- <packaging>war</packaging>
- <version>1.0-SNAPSHOT</version>
- <name>swag-webapp</name>
- <description></description>
- <dependencies>
-  <!-- WICKET DEPENDENCIES -->
-  <dependency>
-   <groupId>org.apache.wicket</groupId>
-   <artifactId>wicket</artifactId>
-   <type>pom</type>
-  </dependency>
-  <!-- OPTIONAL DEPENDENCY <dependency> <groupId>org.apache.wicket</groupId> 
-   <artifactId>wicket-extensions</artifactId> <version>${wicket.version}</version> 
-   </dependency> -->
-  <!-- LOGGING DEPENDENCIES - LOG4J -->
-  <dependency>
-   <groupId>org.slf4j</groupId>
-   <artifactId>slf4j-log4j12</artifactId>
-  </dependency>
-  <dependency>
-   <groupId>log4j</groupId>
-   <artifactId>log4j</artifactId>
-  </dependency>
-  <!-- JUNIT DEPENDENCY FOR TESTING -->
-  <dependency>
-   <groupId>junit</groupId>
-   <artifactId>junit</artifactId>
-   <scope>test</scope>
-  </dependency>
-  <!-- JETTY DEPENDENCIES FOR TESTING -->
-  <dependency>
-   <groupId>org.eclipse.jetty.aggregate</groupId>
-   <artifactId>jetty-all-server</artifactId>
-   <scope>provided</scope>
-  </dependency>
- </dependencies>
+	<parent>
+		<artifactId>swag</artifactId>
+		<groupId>at.ac.tuwien</groupId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>at.ac.tuwien</groupId>
+	<artifactId>swag-webapp</artifactId>
+	<packaging>war</packaging>
+	<version>1.0-SNAPSHOT</version>
+	<name>swag-webapp</name>
+	<description></description>
+	
+	<dependencies>
+		<!-- guice DI -->
+	   <dependency>
+		    <groupId>com.google.inject</groupId>
+		    <artifactId>guice</artifactId>
+	   </dependency>
+	   <dependency>
+		    <groupId>com.google.inject.extensions</groupId>
+		    <artifactId>guice-multibindings</artifactId>
+	   </dependency>
+	   <dependency>
+		    <groupId>com.google.inject.extensions</groupId>
+		    <artifactId>guice-servlet</artifactId>
+	   </dependency>
+	   <dependency>
+		    <groupId>com.google.inject.extensions</groupId>
+		    <artifactId>guice-persist</artifactId>
+	   </dependency>
+		<!-- WICKET DEPENDENCIES -->
+		<dependency>
+			<groupId>org.apache.wicket</groupId>
+			<artifactId>wicket</artifactId>
+			<type>pom</type>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.wicket</groupId>
+			<artifactId>wicket-guice</artifactId>
+		</dependency>		
+		
+		<!-- OPTIONAL DEPENDENCY 
+		<dependency> <groupId>org.apache.wicket</groupId> 
+			<artifactId>wicket-extensions</artifactId>
+			<version>${wicket.version}</version> 
+		</dependency> -->
+		<!-- LOGGING DEPENDENCIES - LOG4J -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+		</dependency>
+		<!-- JUNIT DEPENDENCY FOR TESTING -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!-- JETTY DEPENDENCIES FOR TESTING -->
+		<dependency>
+			<groupId>org.eclipse.jetty.aggregate</groupId>
+			<artifactId>jetty-all-server</artifactId>
+		<scope>provided</scope>
+		</dependency>
+		  <dependency>
+		    <groupId>javax.jms</groupId>
+		    <artifactId>jms</artifactId>
+		  </dependency>
+	</dependencies>
  <build>
+	<plugins>
+	      <plugin>
+	        <groupId>org.apache.activemq.tooling</groupId>
+	        <artifactId>maven-activemq-plugin</artifactId>
+	        <version>5.1</version>
+    	    <configuration>
+          <configUri>xbean:file:../conf/activemq.xml</configUri>
+          <fork>false</fork>
+          <systemProperties>
+            <property>
+              <name>javax.net.ssl.keyStorePassword</name>
+              <value>password</value>
+            </property>
+            <property>
+              <name>org.apache.activemq.default.directory.prefix</name>
+              <value>./target/</value>
+            </property>
+          </systemProperties>
+        </configuration>
+        <dependencies>
+	  <dependency>
+            <groupId>org.springframework</groupId>
+	    <artifactId>spring</artifactId>
+  	    <version>2.5.5</version>
+	  </dependency>
+	  <dependency>
+            <groupId>org.mortbay.jetty</groupId>
+            <artifactId>jetty-xbean</artifactId>
+            <version>6.1.11</version>
+         </dependency> 	
+         <dependency>
+           <groupId>org.apache.camel</groupId>
+           <artifactId>camel-activemq</artifactId>
+           <version>1.1.0</version>
+         </dependency>
+	</dependencies>			
+      </plugin>
+    </plugins>
   <resources>
    <resource>
     <filtering>false</filtering>

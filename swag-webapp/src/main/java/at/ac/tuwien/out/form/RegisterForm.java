@@ -4,7 +4,7 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.Model;
 
-public class RegisterForm extends Form {
+public class RegisterForm extends Form<Void> {
     private static final long serialVersionUID = 6040480253914226510L;
 
     private TextField<String> name;
