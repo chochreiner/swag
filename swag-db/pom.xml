@@ -6,7 +6,7 @@
 	<packaging>war</packaging>
 	<version>1.0-SNAPSHOT</version>
 	<!-- TODO project name  -->
-	<name>quickstart</name>
+	<name>swag-db</name>
 	<description></description>
 	<!--
 		TODO <organization> <name>company name</name> <url>company url</url>
