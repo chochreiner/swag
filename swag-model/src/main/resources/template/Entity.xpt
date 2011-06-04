@@ -7,7 +7,7 @@
 «ENDDEFINE»
 
 «DEFINE entity FOR Entity»
-	«FILE "java/" + packagePath() + "/domain/" + name + ".java"»
+	«FILE packagePath() + "/domain/" + name + ".java"»
 		package «package()».domain;
 
 		import java.util.*;

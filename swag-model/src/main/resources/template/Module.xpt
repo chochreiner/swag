@@ -3,5 +3,5 @@
 «EXTENSION template::GeneratorExtensions»
 
 «DEFINE main FOR Model»
-	«FILE "java/" + packagePath() + "/Helper.java"»
+	«FILE packagePath() + "/Helper.java"»
 «ENDDEFINE»

@@ -6,10 +6,9 @@ import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.Model;
 
+import at.ac.tuwien.swag.webapp.AuthorizationException;
+import at.ac.tuwien.swag.webapp.SwagWebSession;
 import at.ac.tuwien.swag.webapp.in.MainPage;
-import at.ac.tuwien.swag.webapp.service.LoginService;
-
-import com.google.inject.Inject;
 
 public class LoginForm extends Form<Void> {
     private static final long serialVersionUID = 6040480253914226510L;
@@ -18,9 +17,6 @@ public class LoginForm extends Form<Void> {
     
     private final TextField<String> username;
     private final PasswordTextField password;
-
-    @Inject
-    private LoginService login;
     
     public LoginForm(String id) {
         super(id);
@@ -37,10 +33,12 @@ public class LoginForm extends Form<Void> {
     	String usr = username.getModel().getObject();
     	String pwd = password.getModel().getObject();
     	
-    	if ( login.login( usr, pwd ) ) {
+    	try {
+    		((SwagWebSession) getSession()).login( usr, pwd );
+
     		getPage().setResponsePage( MainPage.class );
-    	} else {
-    		this.error( ERR_MSG_BAD_CREDENTIALS );
+    	} catch ( AuthorizationException e ) {
+    		this.error( ERR_MSG_BAD_CREDENTIALS );    		
     	}
     }
 }

@@ -5,7 +5,7 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.GridView;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 
-public class MapGridView extends GridView{
+public class MapGridView extends GridView {
 
 	private static final long serialVersionUID = 1530735186250385606L;
 	
