@@ -2,6 +2,12 @@ import metamodel;
 
 extension metamodel::Extensions reexport;
 
+String packagePath(Model this):	
+	package.replaceAll("\\.","/");
+	
+String packagePath(Type this):	
+	model(this).package.replaceAll("\\.","/");
+	
 tableName( Entity this ):
 	if isNotEmpty(tableName) then
 		tableName
@@ -13,6 +19,8 @@ getter( Field this):
 
 setter( Field this ):
 	"set" + name.toFirstUpper();
+
+// TYPE NAMES
 
 typeName( Field this ):
 	"'ERROR: YOU SHOULD NEVER EVER SEE THIS, AND IM TOO LAZY TO WRITE A HELPFUL MESSAGE NOW'";
@@ -29,19 +37,44 @@ typeName( Association this ):
 		default:                       "'ERROR: ILLEGAL enum constant : " + multiplicity + "'"
 	};
 
-String packagePath(Model this):	
-	package.replaceAll("\\.","/");
-	
-String packagePath(Type this):	
-	model(this).package.replaceAll("\\.","/");
-	
 concreteType( Association this ):
 	switch ( multiplicity ) {
 		case Multiplicity::OneToMany:  "ArrayList<"+type.name+">"
 		case Multiplicity::ManyToMany: "HashSet<"+type.name+">"
 		default:                       "'ERROR: ILLEGAL enum constant : " + multiplicity + "'"
 	};
+
+// DTO TYPE NAMES
+
+dtoTypeName( Type this ):
+	this.name;
+dtoTypeName( Entity this ):
+	this.name + "DTO";
+
+dtoTypeName( Field this ):
+	"'ERROR: YOU SHOULD NEVER EVER SEE THIS, AND IM TOO LAZY TO WRITE A HELPFUL MESSAGE NOW'";
+
+dtoTypeName( Attribute this ):
+	type.name;
+
+dtoTypeName( Association this ):
+	switch ( multiplicity ) {
+		case Multiplicity::OneToOne:   type.dtoTypeName()
+		case Multiplicity::OneToMany:  "List<"+ type.dtoTypeName() +">"
+		case Multiplicity::ManyToOne:  type.dtoTypeName()
+		case Multiplicity::ManyToMany: "Set<"+ type.dtoTypeName() +">"
+		default:                       "'ERROR: ILLEGAL enum constant : " + multiplicity + "'"
+	};
+
+dtoConcreteType( Association this ):
+	switch ( multiplicity ) {
+		case Multiplicity::OneToMany:  "ArrayList<"+ type.dtoTypeName() +">"
+		case Multiplicity::ManyToMany: "HashSet<"+ type.dtoTypeName() +">"
+		default:                       "'ERROR: ILLEGAL enum constant : " + multiplicity + "'"
+	};	
 	
+// MULTIPLICTY STUFF
+
 String mappedBy( Association this ):
 	if ( isNotEmpty( mappedBy )  ) then
 		mappedBy

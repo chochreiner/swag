@@ -32,6 +32,13 @@
 			<postprocessor class="org.eclipse.xpand2.output.JavaBeautifier" />
 		</outlet>
 	</component>
+		<component class="org.eclipse.xpand2.Generator">
+		<metaModel idRef="mm_emf"/>
+		<expand value="template::DTO::main FOR model" />
+		<outlet path="${src-gen}">
+			<postprocessor class="org.eclipse.xpand2.output.JavaBeautifier" />
+		</outlet>
+	</component>
 	<component class="org.eclipse.xpand2.Generator">
 		<metaModel idRef="mm_emf"/>
 		<expand value="template::DAO::main FOR model" />
