@@ -34,7 +34,7 @@ public class Inbox extends Panel {
                     param.add("id", message.getId());
                     item.add(new Label("subject", message.getSubject()));
                     item.add(new Label("sender", message.getSender()));
-                    item.add(new BookmarkablePageLink("view", MessageDetail.class, param));
+                    item.add(new BookmarkablePageLink<String>("view", MessageDetail.class, param));
                 }
             };
 

@@ -33,7 +33,7 @@ public class Outbox extends Panel {
                     param.add("id", message.getId());
                     item.add(new Label("subject", message.getSubject()));
                     item.add(new Label("reciever", message.getReciever()));
-                    item.add(new BookmarkablePageLink("view", MessageDetail.class, param));
+                    item.add(new BookmarkablePageLink<String>("view", MessageDetail.class, param));
                 }
             };
 

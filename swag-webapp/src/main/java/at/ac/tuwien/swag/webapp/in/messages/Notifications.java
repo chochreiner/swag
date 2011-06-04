@@ -32,7 +32,7 @@ public class Notifications extends Panel {
                     PageParameters param = new PageParameters();
                     param.add("id", message.getId());
                     item.add(new Label("subject", message.getSubject()));
-                    item.add(new BookmarkablePageLink("view", MessageDetail.class, param));
+                    item.add(new BookmarkablePageLink<String>("view", MessageDetail.class, param));
 
                 }
             };
