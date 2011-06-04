@@ -1,12 +1,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<artifactId>swag</artifactId>
 		<groupId>at.ac.tuwien</groupId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
-
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>at.ac.tuwien</groupId>
 	<artifactId>swag-webapp</artifactId>
@@ -14,25 +12,28 @@
 	<version>1.0-SNAPSHOT</version>
 	<name>swag-webapp</name>
 	<description></description>
-	
 	<dependencies>
+	<dependency>
+		<groupId>at.ac.tuwien</groupId>
+		<artifactId>swag-model</artifactId>
+	</dependency>
 		<!-- guice DI -->
-	   <dependency>
-		    <groupId>com.google.inject</groupId>
-		    <artifactId>guice</artifactId>
-	   </dependency>
-	   <dependency>
-		    <groupId>com.google.inject.extensions</groupId>
-		    <artifactId>guice-multibindings</artifactId>
-	   </dependency>
-	   <dependency>
-		    <groupId>com.google.inject.extensions</groupId>
-		    <artifactId>guice-servlet</artifactId>
-	   </dependency>
-	   <dependency>
-		    <groupId>com.google.inject.extensions</groupId>
-		    <artifactId>guice-persist</artifactId>
-	   </dependency>
+		<dependency>
+			<groupId>com.google.inject</groupId>
+			<artifactId>guice</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.google.inject.extensions</groupId>
+			<artifactId>guice-multibindings</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.google.inject.extensions</groupId>
+			<artifactId>guice-servlet</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.google.inject.extensions</groupId>
+			<artifactId>guice-persist</artifactId>
+		</dependency>
 		<!-- WICKET DEPENDENCIES -->
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
@@ -42,12 +43,11 @@
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket-guice</artifactId>
-		</dependency>		
+		</dependency>
 		<dependency>
-			<groupId>org.apache.wicket</groupId> 
+			<groupId>org.apache.wicket</groupId>
 			<artifactId>wicket-extensions</artifactId>
 		</dependency>
-		
 		<!-- LOGGING DEPENDENCIES - LOG4J -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -67,64 +67,86 @@
 		<dependency>
 			<groupId>org.eclipse.jetty.aggregate</groupId>
 			<artifactId>jetty-all-server</artifactId>
-		<scope>provided</scope>
+			<scope>provided</scope>
 		</dependency>
-		  <dependency>
-		    <groupId>javax.jms</groupId>
-		    <artifactId>jms</artifactId>
-		  </dependency>
+		<dependency>
+			<groupId>javax.jms</groupId>
+			<artifactId>jms</artifactId>
+		</dependency>
 	</dependencies>
-
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.apache.activemq.tooling</groupId>
-				<artifactId>maven-activemq-plugin</artifactId>
-				<version>5.1</version>
+				<groupId>org.glassfish</groupId>
+				<artifactId>maven-embedded-glassfish-plugin</artifactId>
+				<version>3.1</version>
 				<configuration>
-					<configUri>xbean:file:../conf/activemq.xml</configUri>
-					<fork>false</fork>
-					<systemProperties>
-					<property>
-						<name>javax.net.ssl.keyStorePassword</name>
-						<value>password</value>
-					</property>
-					<property>
-						<name>org.apache.activemq.default.directory.prefix</name>
-						<value>./target/</value>
-					</property>
-				</systemProperties>
-			</configuration>		
-    </plugin>
-  </plugins>
-    
-  <resources>
-   <resource>
-    <filtering>false</filtering>
-    <directory>src/main/resources</directory>
-   </resource>
-   <resource>
-    <filtering>false</filtering>
-    <directory>src/main/java</directory>
-    <includes>
-     <include>**</include>
-    </includes>
-    <excludes>
-     <exclude>**/*.java</exclude>
-    </excludes>
-   </resource>
-  </resources>
-  <testResources>
-   <testResource>
-    <filtering>false</filtering>
-    <directory>src/test/java</directory>
-    <includes>
-     <include>**</include>
-    </includes>
-    <excludes>
-     <exclude>**/*.java</exclude>
-    </excludes>
-   </testResource>
-  </testResources>
- </build>
+					<goalPrefix>embedded-glassfish</goalPrefix>
+					<app>${basedir}/target/${project.build.finalName}</app>
+					<autoDelete>true</autoDelete>
+					<port>8080</port>
+					<!--instanceRoot>${basedir}/gfe-${maven.build.timestamp}</instanceRoot-->
+					<!-- configFile>${basedir}/src/main/resources/domain.xml</configFile-->
+				</configuration>
+				<executions>
+					<execution>
+						<id>start-glassfish</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>start</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>glassfish-deploy</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>deploy</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>glassfish-undeploy</id>
+						<phase>post-integration-test</phase>
+						<goals>
+							<goal>undeploy</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>stop-glassfish</id>
+						<phase>post-integration-test</phase>
+						<goals>
+							<goal>stop</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+		<resources>
+			<resource>
+				<filtering>false</filtering>
+				<directory>src/main/resources</directory>
+			</resource>
+			<resource>
+				<filtering>false</filtering>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**</include>
+				</includes>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</resource>
+		</resources>
+		<testResources>
+			<testResource>
+				<filtering>false</filtering>
+				<directory>src/test/java</directory>
+				<includes>
+					<include>**</include>
+				</includes>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</testResource>
+		</testResources>
+	</build>
 </project>
