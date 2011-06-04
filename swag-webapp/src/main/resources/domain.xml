@@ -8,59 +8,6 @@
     </application>
   </system-applications>
   <applications>
-    <application location="${com.sun.aas.instanceRootURI}/applications/dst2_2/" name="dst2_2" object-type="user">
-      <property name="org.glassfish.persistence.drop_jdbc_file_name_property.dst" value="dst2_2_dst_dropDDL.jdbc"></property>
-      <property name="org.glassfish.persistence.resource_jndi_name_property.dst" value="dst_ds"></property>
-      <property name="org.glassfish.persistence.processor_type.dst" value="JPA"></property>
-      <property name="org.glassfish.persistence.drop_table_value_property.dst" value="true"></property>
-      <property name="org.glassfish.persistence.create_table_value_property.dst" value="true"></property>
-      <property name="appLocation" value="${com.sun.aas.instanceRootURI}/applications/__internal/dst2_2/dst2_2.jar"></property>
-      <property name="org.glassfish.ejb.container.application_unique_id" value="85486778031407104"></property>
-      <property name="org.glassfish.persistence.app_name_property" value="dst2_2"></property>
-      <property name="org.glassfish.persistence.create_jdbc_file_name_property.dst" value="dst2_2_dst_createDDL.jdbc"></property>
-      <property name="defaultAppName" value="dst2_2"></property>
-      <module name="dst2_2">
-        <engine sniffer="ejb"></engine>
-        <engine sniffer="security"></engine>
-        <engine sniffer="jpa"></engine>
-      </module>
-    </application>
-    <application location="${com.sun.aas.instanceRootURI}/applications/dst2_1/" name="dst2_1" object-type="user">
-      <property name="org.glassfish.persistence.drop_jdbc_file_name_property.dst" value="dst2_1_dst_dropDDL.jdbc"></property>
-      <property name="org.glassfish.persistence.resource_jndi_name_property.dst" value="dst_ds"></property>
-      <property name="org.glassfish.persistence.processor_type.dst" value="JPA"></property>
-      <property name="org.glassfish.persistence.drop_table_value_property.dst" value="true"></property>
-      <property name="org.glassfish.persistence.create_table_value_property.dst" value="true"></property>
-      <property name="appLocation" value="${com.sun.aas.instanceRootURI}/applications/__internal/dst2_1/dst2_1.jar"></property>
-      <property name="org.glassfish.ejb.container.application_unique_id" value="85486778031472640"></property>
-      <property name="org.glassfish.persistence.app_name_property" value="dst2_1"></property>
-      <property name="org.glassfish.persistence.create_jdbc_file_name_property.dst" value="dst2_1_dst_createDDL.jdbc"></property>
-      <property name="defaultAppName" value="dst2_1"></property>
-      <module name="dst2_1">
-        <engine sniffer="ejb"></engine>
-        <engine sniffer="security"></engine>
-        <engine sniffer="jpa"></engine>
-      </module>
-    </application>
-    <application context-root="/dst3" location="${com.sun.aas.instanceRootURI}/applications/dst3/" name="dst3" object-type="user">
-      <property name="org.glassfish.persistence.drop_jdbc_file_name_property.dst" value="dst3_dst_dropDDL.jdbc"></property>
-      <property name="org.glassfish.persistence.resource_jndi_name_property.dst" value="dst_ds"></property>
-      <property name="org.glassfish.persistence.processor_type.dst" value="JPA"></property>
-      <property name="org.glassfish.persistence.drop_table_value_property.dst" value="true"></property>
-      <property name="org.glassfish.persistence.create_table_value_property.dst" value="true"></property>
-      <property name="appLocation" value="${com.sun.aas.instanceRootURI}/applications/__internal/dst3/dst3.war"></property>
-      <property name="org.glassfish.ejb.container.application_unique_id" value="85641310681694208"></property>
-      <property name="org.glassfish.persistence.app_name_property" value="dst3"></property>
-      <property name="org.glassfish.persistence.create_jdbc_file_name_property.dst" value="dst3_dst_createDDL.jdbc"></property>
-      <property name="defaultAppName" value="dst3"></property>
-      <module name="dst3">
-        <engine sniffer="ejb"></engine>
-        <engine sniffer="security"></engine>
-        <engine sniffer="jpa"></engine>
-        <engine sniffer="web"></engine>
-        <engine sniffer="weld"></engine>
-      </module>
-    </application>
   </applications>
   <resources>
     <jdbc-resource pool-name="__TimerPool" jndi-name="jdbc/__TimerPool" object-type="system-admin"></jdbc-resource>
@@ -69,39 +16,39 @@
       <property name="databaseName" value="${com.sun.aas.instanceRoot}/lib/databases/ejbtimer"></property>
       <property name="connectionAttributes" value=";create=true"></property>
     </jdbc-connection-pool>
-    <jdbc-connection-pool is-isolation-level-guaranteed="false" datasource-classname="org.apache.derby.jdbc.ClientDataSource" res-type="javax.sql.DataSource" name="DerbyPool">
-      <property name="PortNumber" value="1527"></property>
-      <property name="Password" value="APP"></property>
-      <property name="User" value="APP"></property>
-      <property name="serverName" value="localhost"></property>
-      <property name="DatabaseName" value="sun-appserv-samples"></property>
-      <property name="connectionAttributes" value=";create=true"></property>
-    </jdbc-connection-pool>
-    <admin-object-resource res-adapter="jmsra" res-type="javax.jms.Queue" jndi-name="queue.dst.ServerQueue">
-      <property name="Name" value="queue.dst.ServerQueue"></property>
-    </admin-object-resource>
-    <admin-object-resource res-adapter="jmsra" res-type="javax.jms.Queue" jndi-name="queue.dst.SchedulerQueue">
-      <property name="Name" value="queue.dst.SchedulerQueue"></property>
-    </admin-object-resource>
-    <admin-object-resource res-adapter="jmsra" res-type="javax.jms.Queue" jndi-name="queue.dst.ClusterQueue">
-      <property name="Name" value="queue.dst.ClusterQueue"></property>
-    </admin-object-resource>
-    <admin-object-resource res-adapter="jmsra" res-type="javax.jms.Topic" jndi-name="queue.dst.ComputerTopic">
-      <property name="Name" value="queue.dst.ComputerTopic"></property>
-    </admin-object-resource>
+    
+    <admin-object-resource enabled="true" jndi-name="jms/Mail"
+   res-adapter="jmsra" res-type="javax.jms.Queue">
+   <property name="Name" value="MailQueue" />
+  </admin-object-resource>
+  <admin-object-resource enabled="true" jndi-name="jms/Action"
+   res-adapter="jmsra" res-type="javax.jms.Queue">
+   <property name="Name" value="ActionQueue" />
+  </admin-object-resource>
+
+  <!-- FACTORY & POOL -->
+  <connector-resource jndi-name="jms/ConnectionFactory"
+   pool-name="jms/ConnectionFactoryPool" />
+  <connector-connection-pool name="jms/ConnectionFactoryPool"
+   connection-definition-name="javax.jms.ConnectionFactory"
+   resource-adapter-name="jmsra" />
+  <jdbc-resource jndi-name="swag_ds" pool-name="swag_pool" />
+  <jdbc-connection-pool name="swag_pool"
+   datasource-classname="org.postgresql.jdbc2.optional.ConnectionPool">
+   <property name="databaseName" value="swa" />
+   <property name="serverName" value="localhost" />
+   <property name="portNumber" value="5432" />
+   <property name="User" value="swa" />
+   <property name="Password" value="swa11" />
+   <property name="URL" value="jdbc:postgresql://localhost:5432/swa" />
+   <property name="driverClass" value="org.postgresql.Driver" />
+  </jdbc-connection-pool>
   </resources>
   <servers>
     <server name="server" config-ref="server-config">
       <application-ref ref="__admingui" virtual-servers="__asadmin"></application-ref>
-      <application-ref ref="dst2_2" virtual-servers="server"></application-ref>
-      <application-ref ref="dst2_1" virtual-servers="server"></application-ref>
-      <application-ref ref="dst3" virtual-servers="server"></application-ref>
       <resource-ref ref="jdbc/__TimerPool"></resource-ref>
       <resource-ref ref="jdbc/__default"></resource-ref>
-      <resource-ref ref="queue.dst.ServerQueue"></resource-ref>
-      <resource-ref ref="queue.dst.SchedulerQueue"></resource-ref>
-      <resource-ref ref="queue.dst.ClusterQueue"></resource-ref>
-      <resource-ref ref="queue.dst.ComputerTopic"></resource-ref>
     </server>
   </servers>
   <nodes>

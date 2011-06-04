@@ -81,13 +81,11 @@
 				<artifactId>maven-embedded-glassfish-plugin</artifactId>
 				<version>3.1</version>
 				<configuration>
-					<!-- <serverID>${project.name}</serverID> -->
-                   <!-- <name>${project.name}</name> -->
+					<serverID>${project.name}</serverID>
+                  	<name>${project.name}</name>
 					<app>${project.build.directory}/${project.build.finalName}.war</app>
-					
-					<!--<contextRoot>/</contextRoot>-->
+					<contextRoot>/</contextRoot>
 					<configFile>${basedir}/src/main/resources/domain.xml</configFile>
-					<port>8090</port>
 					<autoDelete>true</autoDelete>
 				</configuration>
 				<executions>
