@@ -4,9 +4,13 @@ import org.apache.wicket.Session;
 import org.apache.wicket.request.ClientInfo;
 import org.apache.wicket.request.Request;
 
+import com.google.inject.Inject;
+
+import at.ac.tuwien.swag.webapp.service.LoginService;
+
 public final class SwagWebSession extends Session {
 	private static final long serialVersionUID = -5435752385275403581L;
-
+	
 	public enum Role {
 		USER, ADMIN;
 	}
@@ -22,6 +26,9 @@ public final class SwagWebSession extends Session {
 	}
 	
 	private Subject subject;
+	
+	@Inject
+	private LoginService login;
 	
 	public SwagWebSession( Request request ) {
 		super( request );
@@ -41,6 +48,18 @@ public final class SwagWebSession extends Session {
 
 	// authentication authorization stuff
 
+	public void login( String username, String password ) throws AuthorizationException {
+		if ( login.login( username, password ) ) {
+			subject = new Subject( username, Role.USER );			
+		}
+	}
+	
+	public void logout() {
+		login.logout();
+		
+		subject = null;
+	}
+	
 	public boolean isLoggedIn() {
 		return subject != null;
 	}

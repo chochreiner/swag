@@ -7,7 +7,7 @@
 «ENDDEFINE»
 
 «DEFINE enum FOR EnumType»
-	«FILE "java/" + packagePath() + "/domain/" + name + ".java"»
+	«FILE packagePath() + "/domain/" + name + ".java"»
 		package «package()».domain;
 	
 		public enum «name» {
