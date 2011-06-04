@@ -6,15 +6,12 @@ import org.apache.wicket.markup.html.panel.Panel;
 
 import com.google.inject.Inject;
 
+import at.ac.tuwien.swag.webapp.SwagWebSession;
 import at.ac.tuwien.swag.webapp.out.StartPage;
-import at.ac.tuwien.swag.webapp.service.LoginService;
 
 public class InTopNavigation extends Panel {
     private static final long serialVersionUID = -4312570776660359149L;
 
-    @Inject
-    private LoginService login;
-    
 	public InTopNavigation(String id) {
         super(id);
         add(new BookmarkablePageLink<String>( "settings",  Settings.class  ) );
@@ -30,9 +27,10 @@ public class InTopNavigation extends Panel {
     }
 	
 	private void logout() {
-		login.logout();
+		SwagWebSession session = (SwagWebSession) getSession();
 		
-		getSession().invalidate();
+		session.logout();
+		session.invalidate();
 		getPage().setResponsePage( StartPage.class );
 	}
 
