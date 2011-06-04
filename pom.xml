@@ -171,6 +171,11 @@
  </build>
  <repositories>
   <repository>
+    <id>repository.jboss.org</id>
+    <name>JBoss.org Maven repository</name>
+    <url>http://repository.jboss.org/nexus/content/groups/public-jboss/</url>
+  </repository>   
+  <repository>
    <id>glassfish-repository</id>
    <name>Java.net Repository for Glassfish</name>
    <url>http://download.java.net/maven/glassfish</url>

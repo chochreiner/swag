@@ -71,7 +71,7 @@
 		</dependency>
 		<dependency>
 			<groupId>javax.jms</groupId>
-			<artifactId>jms</artifactId>
+            <artifactId>jms</artifactId>
 		</dependency>
 	</dependencies>
 	<build>
@@ -81,12 +81,14 @@
 				<artifactId>maven-embedded-glassfish-plugin</artifactId>
 				<version>3.1</version>
 				<configuration>
-					<goalPrefix>embedded-glassfish</goalPrefix>
-					<app>${basedir}/target/${project.build.finalName}</app>
+					<!-- <serverID>${project.name}</serverID> -->
+                   <!-- <name>${project.name}</name> -->
+					<app>${project.build.directory}/${project.build.finalName}.war</app>
+					
+					<!--<contextRoot>/</contextRoot>-->
+					<configFile>${basedir}/src/main/resources/domain.xml</configFile>
+					<port>8090</port>
 					<autoDelete>true</autoDelete>
-					<port>8080</port>
-					<!--instanceRoot>${basedir}/gfe-${maven.build.timestamp}</instanceRoot-->
-					<!-- configFile>${basedir}/src/main/resources/domain.xml</configFile-->
 				</configuration>
 				<executions>
 					<execution>
