@@ -8,5 +8,9 @@ public class LoginServiceImpl implements LoginService {
 		//TODO: do real auth
 		return Objects.equal( username, password ) ;
 	}
+
+	public void logout() {
+		//TODO: do real auth		
+	}
 	
 }

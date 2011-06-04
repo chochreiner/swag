@@ -3,6 +3,7 @@ package at.ac.tuwien.swag.webapp;
 import org.apache.wicket.guice.GuiceComponentInjector;
 import org.apache.wicket.protocol.http.WebApplication;
 
+import at.ac.tuwien.swag.webapp.WebappModule;
 import at.ac.tuwien.swag.webapp.out.StartPage;
 
 public class SwagApplication extends WebApplication {
