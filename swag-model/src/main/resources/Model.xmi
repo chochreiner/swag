@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="ASCII"?>
 <metamodel:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:metamodel="http://www.example.org/metamodel" xsi:schemaLocation="http://www.example.org/metamodel metamodel/metamodel.ecore" package="at.ac.tuwien.swag.model" logSQL="true" autocreateDatabaseSchema="true">
   <types xsi:type="metamodel:BuiltinType" name="String"/>
-  <types xsi:type="metamodel:BuiltinType" name="int"/>
-  <types xsi:type="metamodel:BuiltinType" name="double"/>
+  <types xsi:type="metamodel:BuiltinType" name="Integer"/>
+  <types xsi:type="metamodel:BuiltinType" name="Double"/>
   <types xsi:type="metamodel:BuiltinType" name="Date"/>
-  <types xsi:type="metamodel:BuiltinType" name="boolean"/>
+  <types xsi:type="metamodel:BuiltinType" name="Boolean"/>
   <types xsi:type="metamodel:EnumType" name="SharedRessourceType" values="WOOD, IRON, GOLD, CLAY, WHEAT"/>
   <types xsi:type="metamodel:EnumType" name="RessourceBuildingType" values="LUMBERJACK, MINE, GOLDWASHER, CLAYPIT, FARMER"/>
   <types xsi:type="metamodel:EnumType" name="BaseBuildingType" values="TOWNHALL, BARRACKS, STABLE, BLACKSMITH, MILL"/>

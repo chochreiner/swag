@@ -25,15 +25,15 @@
 		public class «name» extends AbstractEntity {
 			//*** constructors
 			
-			// no arg constructor
-			«IF !fields().exists(f|!f.nullable)»
+			«IF fields().exists(f|f.nullable)»
+				// no arg constructor
 				public «name»() {/**/}
 			«ENDIF»
 				
 			// all fields constructor
 			public «name»(«FOREACH fields() AS f SEPARATOR ", "»«f.typeName()» «f.name»«ENDFOREACH») {
 				«FOREACH fields() AS f»
-					this.«f.name» = «f.name»;
+					this.«f.setter()»( «f.name» );
 				«ENDFOREACH»
 			}
 		
@@ -65,6 +65,10 @@
 			//*** setters
 			«FOREACH fields() AS f»
 				public void «f.setter()»(«f.typeName()» «f.name») {
+					«IF !f.nullable»
+						if ( «f.name» == null ) throw new NullPointerException( "«f.name»" );
+					«ENDIF»
+									
 					this.«f.name» = «f.name»;
 				}
 			«ENDFOREACH»
@@ -73,7 +77,7 @@
 			
 			«FOREACH fields() AS f»
 				public «name» «f.name»(«f.typeName()» «f.name») {
-					this.«f.name» = «f.name»;
+					this.«f.setter()»( «f.name» );
 					return this;
 				}
 			«ENDFOREACH»

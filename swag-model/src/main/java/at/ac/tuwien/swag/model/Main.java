@@ -23,6 +23,7 @@ import at.ac.tuwien.swag.model.domain.Message;
 import at.ac.tuwien.swag.model.domain.RessourceBuilding;
 import at.ac.tuwien.swag.model.domain.RessourceBuildingType;
 import at.ac.tuwien.swag.model.domain.Square;
+import at.ac.tuwien.swag.model.domain.StoredRessource;
 import at.ac.tuwien.swag.model.domain.User;
 
 
@@ -115,18 +116,19 @@ public class Main {
         Map playground = mapDao.findByName("Markomannwar");
         List<MapUser> users = new ArrayList<MapUser>();
 
+        List<StoredRessource> neroresources = new ArrayList<StoredRessource>();
+        
         List<Square> nerosquares = new ArrayList<Square>();
         Square neroStartsquare = squares.get(0);
-
+        
         neroStartsquare.setIsHomeBase(true);
         nerosquares.add(neroStartsquare);
 
-        MapUser neroMap = new MapUser();
-        neroMap.setMap(playground);
-        neroMap.setUser(nero);
-        neroMap.setSquares(nerosquares);
+        MapUser neroMap = new MapUser( playground, nero, neroresources, nerosquares );
 
         users.add(neroMap);
+
+        List<StoredRessource> ariovistresources = new ArrayList<StoredRessource>();
 
         List<Square> ariovistsquares = new ArrayList<Square>();
         Square ariovistStartsquare = squares.get(50);
@@ -134,10 +136,7 @@ public class Main {
         ariovistStartsquare.setIsHomeBase(true);
         ariovistsquares.add(ariovistStartsquare);
 
-        MapUser ariovistMap = new MapUser();
-        ariovistMap.setMap(playground);
-        ariovistMap.setUser(ariovist);
-        ariovistMap.setSquares(ariovistsquares);
+        MapUser ariovistMap = new MapUser( playground, ariovist, ariovistresources, ariovistsquares );
 
         users.add(ariovistMap);
 
@@ -155,15 +154,9 @@ public class Main {
         List<BaseBuilding>      basebuilding      = new ArrayList<BaseBuilding>();
         List<RessourceBuilding> ressourcebuilding = new ArrayList<RessourceBuilding>();
 
-        BaseBuilding neroBarrack = new BaseBuilding();
-        neroBarrack.setLevel(1);
-        neroBarrack.setType(BaseBuildingType.BARRACKS);
-        neroBarrack.setSquare(neroStartsquare);
+        BaseBuilding neroBarrack = new BaseBuilding( 1, BaseBuildingType.BARRACKS, neroStartsquare );
 
-        RessourceBuilding neroLumberjack = new RessourceBuilding();
-        neroLumberjack.setLevel(1);
-        neroLumberjack.setType(RessourceBuildingType.LUMBERJACK);
-        neroLumberjack.setSquare(neroStartsquare);
+        RessourceBuilding neroLumberjack = new RessourceBuilding( 1, RessourceBuildingType.LUMBERJACK, neroStartsquare );
 
         basebuilding.add(neroBarrack);
         ressourcebuilding.add(neroLumberjack);
@@ -194,12 +187,13 @@ public class Main {
         Set<User> recipients = new HashSet<User>();
         recipients.add(ariovist);
 
-        Message message = new Message();
-        message.setTimestamp(new Date());
-        message.setSubject("welcome");
-        message.setText("You are going to die");
-        message.setFrom(nero);
-        message.setTo(recipients);
+        Message message = new Message(
+        	new Date(),
+        	"welcome",
+        	"You are going to die",
+        	nero,
+        	recipients
+        );
 
         tx.begin();
         em.persist(message);

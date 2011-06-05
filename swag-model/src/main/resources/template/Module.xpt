@@ -3,5 +3,15 @@
 «EXTENSION template::GeneratorExtensions»
 
 «DEFINE main FOR Model»
-	«FILE packagePath() + "/Helper.java"»
+	«FILE packagePath() + "/PersistenceModule.java"»
+		package «package»;
+		
+		import google.com.inject.AbstractModule;
+		
+		public class PersistenceModule extends AbstractModule {
+			public void configure() {
+			
+			}
+		}
+	«ENDFILE»
 «ENDDEFINE»
