@@ -117,6 +117,12 @@
      <artifactId>jms</artifactId>
      <version>1.1</version>
    </dependency>
+	<!-- POSTGRESQL DEPENDENCY -->
+	<dependency>
+		<groupId>postgresql</groupId>
+		<artifactId>postgresql</artifactId>
+		<version>8.4-702.jdbc4</version>
+	</dependency>
    <!-- JETTY DEPENDENCIES FOR TESTING -->
    <dependency>
     <groupId>org.eclipse.jetty.aggregate</groupId>

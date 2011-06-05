@@ -34,7 +34,7 @@
    resource-adapter-name="jmsra" />
   <jdbc-resource jndi-name="swag_ds" pool-name="swag_pool" />
   <jdbc-connection-pool name="swag_pool"
-   datasource-classname="org.postgresql.jdbc2.optional.ConnectionPool">
+                        datasource-classname="org.postgresql.ds.PGPoolingDataSource">
    <property name="databaseName" value="swa" />
    <property name="serverName" value="localhost" />
    <property name="portNumber" value="5432" />
