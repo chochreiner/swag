@@ -1,31 +1,17 @@
 package at.ac.tuwien.swag.webapp;
 
-import org.apache.wicket.Session;
-import org.apache.wicket.request.ClientInfo;
-import org.apache.wicket.request.Request;
+import java.util.Set;
 
-import com.google.inject.Inject;
+import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession;
+import org.apache.wicket.authroles.authorization.strategies.role.Roles;
+import org.apache.wicket.request.Request;
 
 import at.ac.tuwien.swag.webapp.service.LoginService;
 
-public final class SwagWebSession extends Session {
-	private static final long serialVersionUID = -5435752385275403581L;
-	
-	public enum Role {
-		USER, ADMIN;
-	}
-	
-	public static class Subject {
-		public Subject( String username,  Role role ) {
-			this.username = username;
-			this.role     = role;
-		}
+import com.google.inject.Inject;
 
-		private final String username;
-		private final Role   role;
-	}
-	
-	private Subject subject;
+public final class SwagWebSession extends AbstractAuthenticatedWebSession {
+	private static final long serialVersionUID = -5435752385275403581L;
 	
 	@Inject
 	private LoginService login;
@@ -34,48 +20,37 @@ public final class SwagWebSession extends Session {
 		super( request );
 	}
 
-	@Override
-	public void cleanupFeedbackMessages() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public ClientInfo getClientInfo() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	// authentication authorization stuff
-
-	public void login( String username, String password ) throws AuthorizationException {
-		if ( login.login( username, password ) ) {
-			subject = new Subject( username, Role.USER );			
-		}
-	}
-	
 	public void logout() {
 		login.logout();
-		
-		subject = null;
+	}
+
+
+	@Override
+	public boolean isSignedIn() {
+		return login.isLoggedIn();
 	}
 	
-	public boolean isLoggedIn() {
-		return subject != null;
-	}
-	
-	public Role getRole() throws AuthorizationException {
-		if ( isLoggedIn() ) {
-			return getSubject().role;
-		} else  {
-			throw new AuthorizationException("Not logged in");
+	@Override
+	public boolean authenticate( String username, String password ) {
+		try {
+			login.login( username, password );
+			
+			return true;
+		} catch ( AuthorizationException e ) {
+			return false;
 		}
 	}
+
 	
-	private Subject getSubject() throws AuthorizationException {
-		if ( subject == null ) throw new AuthorizationException("Not logged in");
+	@Override
+	public Roles getRoles() {
+		Set<String> roles = login.getRoles();
+		Roles r = new Roles();
 		
-		return subject;
+		r.addAll( roles );
+		
+		return r;
 	}
-	
+
 }

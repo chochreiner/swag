@@ -5,24 +5,24 @@ import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.markup.repeater.data.GridView;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 
-public class MapGridView extends GridView {
+public class MapGridView extends GridView<Map> {
 
 	private static final long serialVersionUID = 1530735186250385606L;
 	
-	public MapGridView(String id, IDataProvider dataProvider) {
-		super(id, dataProvider);
+	public MapGridView(String id, IDataProvider<Map> dataProvider) {
+		super(id, dataProvider );
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
-	protected void populateEmptyItem(Item item) {
+	protected void populateEmptyItem(Item<Map> item) {
 		
 		item.add(new Label("cell", "empty"));
 		
 	}
 
 	@Override
-	protected void populateItem(Item item) {
+	protected void populateItem(Item<Map> item) {
 		item.add(new Label("cell", "empty"));
 		
 	}

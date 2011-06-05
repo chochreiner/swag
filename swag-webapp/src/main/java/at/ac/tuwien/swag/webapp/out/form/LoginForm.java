@@ -1,13 +1,12 @@
 package at.ac.tuwien.swag.webapp.out.form;
 
+import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.Model;
 
-import at.ac.tuwien.swag.webapp.AuthorizationException;
-import at.ac.tuwien.swag.webapp.SwagWebSession;
 import at.ac.tuwien.swag.webapp.in.MainPage;
 
 public class LoginForm extends Form<Void> {
@@ -33,12 +32,10 @@ public class LoginForm extends Form<Void> {
     	String usr = username.getModel().getObject();
     	String pwd = password.getModel().getObject();
     	
-    	try {
-    		((SwagWebSession) getSession()).login( usr, pwd );
-
-    		getPage().setResponsePage( MainPage.class );
-    	} catch ( AuthorizationException e ) {
-    		this.error( ERR_MSG_BAD_CREDENTIALS );    		
-    	}
+   		if ( ((AbstractAuthenticatedWebSession) getSession()).authenticate( usr, pwd ) ) {
+   			getPage().setResponsePage( MainPage.class );    			
+   		} else {
+   			this.error( ERR_MSG_BAD_CREDENTIALS );    		    			
+   		}
     }
 }
