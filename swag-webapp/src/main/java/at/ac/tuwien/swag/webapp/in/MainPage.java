@@ -7,19 +7,19 @@ import org.apache.wicket.authroles.authorization.strategies.role.annotations.Aut
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-@AuthorizeInstantiation({"ADMIN", "USER"})
+@AuthorizeInstantiation({ "ADMIN", "USER" })
 public class MainPage extends InPage {
     private static final long serialVersionUID = -6454931055063290217L;
 
     public MainPage(PageParameters parameters) {
         super(parameters);
-        
-        this.add( 
-        	new Label( "message", em.createQuery( "SELECT u FROM User u" ).getResultList().toString() )
-        );
+
+        this.add(
+            new Label("message", em.createQuery("SELECT u FROM User u").getResultList().toString())
+            );
     }
 
     @PersistenceContext
     private EntityManager em;
-    
+
 }

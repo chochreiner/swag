@@ -10,32 +10,34 @@ import at.ac.tuwien.swag.webapp.AuthorizationException;
 
 public class LoginServiceImpl implements LoginService {
 
-	public void login( String username, String password ) throws AuthorizationException {
-		//TODO: do real auth
-		
-		if ( !Objects.equal( username, password ) ) {
-			throw new AuthorizationException( "Username and password must be equal. TODO: change that" );
-		} else {
-			this.username = username;
-		}
-	}
+    @Override
+    public void login(String username, String password) throws AuthorizationException {
+        // TODO: do real auth
 
-	public void logout() {
-		//TODO: do real auth
-		username = null;
-	}
+        if (!Objects.equal(username, password)) {
+            throw new AuthorizationException("Username and password must be equal. TODO: change that");
+        } else {
+            this.username = username;
+        }
+    }
 
+    @Override
+    public void logout() {
+        // TODO: do real auth
+        username = null;
+    }
 
-	@Override
-	public boolean isLoggedIn() {
-		return username != null;
-	}
+    @Override
+    public boolean isLoggedIn() {
+        return username != null;
+    }
 
-	@Override
-	public Set<String> getRoles() {
-		return new HashSet<String>( Arrays.asList( "ADMIN", "USER" ) );
-	}
-	
-	private String username;
-	
+    @Override
+    public Set<String> getRoles() {
+        // TODO get real roles from db
+        return new HashSet<String>(Arrays.asList("ADMIN", "USER"));
+    }
+
+    private String username;
+
 }
