@@ -25,10 +25,8 @@
 		public class «name» extends AbstractEntity {
 			//*** constructors
 			
-			«IF fields().exists(f|f.nullable)»
-				// no arg constructor
-				public «name»() {/**/}
-			«ENDIF»
+			// no arg constructor
+			public «name»() {/**/}				
 				
 			// all fields constructor
 			public «name»(«FOREACH fields() AS f SEPARATOR ", "»«f.typeName()» «f.name»«ENDFOREACH») {
