@@ -1,5 +1,36 @@
 <wicket:extend>
 <h2>Create new map</h2>
+<span wicket:id="feedback"></span>
+    <form wicket:id="createMapForm" class="yform">
+		<fieldset>
+        <legend>Create a new Map</legend>
+        
+		<!--  -->
+		<div class="subcolumns">
+			<div class="type-text">
+		  		<label for="name">Name:</label>
+		  		<input type="text" name="name" id="name" wicket:id="name" size="20" />
+			</div>
+		    <div class="type-text">
+		  		<label for="width:">width:</label>
+		  		<input type="text" name="width" id="width" wicket:id="width" size="5" />
+			</div>
+			<div class="type-text">
+		  		<label for="height">height:</label>
+		  		<input type="text" name="height" id="height" wicket:id="height" size="5" />
+			</div>
+			<div class="type-text">
+		  		<label for="user">user:</label>
+		  		<input type="text" name="user" id="user" wicket:id="user" size="6" />
+			</div>
+
+		</div>
+        </fieldset>
+        <div class="type-button">
+        	<input type="reset"  value="reset" id="reset" name="reset" />
+          	<input type="submit" value="create map" id="create map" name="create map" />
+		</div>
+	</form>
 
 
 </wicket:extend>
