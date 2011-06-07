@@ -66,9 +66,11 @@ public class RegisterForm extends Form<Void> {
     	                      .email( email )
     	                      .password( hasher.hash( password ) );
 
-    	userDAO.insert( user );
-    	
-        info("the form was submitted!");
+    	userDAO.beginTransaction();
+    		userDAO.insert( user );
+    	userDAO.commitTransaction();
+    		
+        info( "Thank you for registering" );
     }
         
 }
