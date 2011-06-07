@@ -45,6 +45,7 @@ public class RegisterForm extends Form<Void> {
         add(surname);
         add(username);
         add(email);
+        add(address);
         add(password);
         add(password2);
     }
