@@ -13,6 +13,7 @@ public class InNavigation extends Panel {
         super(id);
 
         add(new BookmarkablePageLink<String>("home", MainPage.class));
+        add(new BookmarkablePageLink<String>("testData",TestData.class));
         add(new BookmarkablePageLink<String>("map", Map.class));
         add(new BookmarkablePageLink<String>("messages", Messages.class));
         add(new BookmarkablePageLink<String>("highscores", Highscores.class));
