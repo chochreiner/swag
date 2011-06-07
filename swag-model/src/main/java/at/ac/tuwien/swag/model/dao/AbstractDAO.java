@@ -59,9 +59,25 @@ public abstract class AbstractDAO<E extends AbstractEntity> {
 	@Transactional
 	public abstract void deleteAll();
 	
+	//***** TRANSACTIONS
+	
 	public EntityTransaction getTransaction() {
 		return getEntityManager().getTransaction();
 	}
+
+	public void beginTransaction() {
+		getTransaction().begin();
+	}
+
+	public void commitTransaction() {
+		getTransaction().commit();
+	}
+	
+	public void rollbackTransaction() {
+		getTransaction().rollback();
+	}
+	
+	//***** PRIVATE PARTS
 	
 	protected EntityManager getEntityManager() {
 		return em;
