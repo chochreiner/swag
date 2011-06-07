@@ -125,13 +125,6 @@ public class TestData extends InPage {
             square.setCoordY(yAxis);
             square.setMap(map);
             square.setIsHomeBase(false);
-            
-            MapUser mu = new MapUser();
-        
-            em.persist(mu);
-            
-            square.setUser(mu);
-            
             squares.add(square);
             xAxis++;
         }
