@@ -54,7 +54,7 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public List<MessageDTO> getOutMessages(String user) {
         String query =
-            "SELECT m FROM Message m LEFT JOIN FETCH m.from WHERE m.from = :username";
+            "SELECT m FROM Message m LEFT JOIN FETCH m.from WHERE m.from.name = :username";
 
         Map<String, String> values = new HashMap<String, String>();
         values.put("username", user);
@@ -74,7 +74,7 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public List<MessageDTO> getNotifications(String user) {
         String query =
-            "SELECT m FROM Message m LEFT JOIN FETCH m.from LEFT JOIN FETCH m.to AS y WHERE y.name = :username AND m.form = :system";
+            "SELECT m FROM Message m LEFT JOIN FETCH m.from LEFT JOIN FETCH m.to AS y WHERE y.name = :username AND m.from.name = :system";
 
         Map<String, String> values = new HashMap<String, String>();
         values.put("username", user);
@@ -133,7 +133,6 @@ public class MessageServiceImpl implements MessageService {
         message.setTo(recieverAsUser);
 
         messages.insert(message);
-
         // TODO check online status and send mails
 
     }
