@@ -43,7 +43,8 @@ public class MessageServiceImpl implements MessageService {
         List<MessageDTO> result = new ArrayList<MessageDTO>();
 
         for (Message m : inMessages) {
-            result.add(new MessageDTO(m.getTimestamp(), m.getSubject(), "", new UserDTO(m.getFrom().getName(), "", "",
+            result.add(new MessageDTO(m.getTimestamp(), m.getSubject(), "", m.getRead(), new UserDTO(m.getFrom()
+                .getName(), "", "",
                 "", "", null, null, null), null));
         }
 
@@ -62,7 +63,8 @@ public class MessageServiceImpl implements MessageService {
         List<MessageDTO> result = new ArrayList<MessageDTO>();
 
         for (Message m : inMessages) {
-            result.add(new MessageDTO(m.getTimestamp(), m.getSubject(), "", new UserDTO(m.getFrom().getName(), "", "",
+            result.add(new MessageDTO(m.getTimestamp(), m.getSubject(), "", m.getRead(), new UserDTO(m.getFrom()
+                .getName(), "", "",
                 "", "", null, null, null), null));
         }
 
@@ -82,7 +84,8 @@ public class MessageServiceImpl implements MessageService {
         List<MessageDTO> result = new ArrayList<MessageDTO>();
 
         for (Message m : inMessages) {
-            result.add(new MessageDTO(m.getTimestamp(), m.getSubject(), "", new UserDTO(m.getFrom().getName(), "", "",
+            result.add(new MessageDTO(m.getTimestamp(), m.getSubject(), "", m.getRead(), new UserDTO(m.getFrom()
+                .getName(), "", "",
                 "", "", null, null, null), null));
         }
 
@@ -106,7 +109,8 @@ public class MessageServiceImpl implements MessageService {
 
         Message m = message.get(0);
 
-        return new MessageDTO(m.getTimestamp(), m.getSubject(), m.getText(), new UserDTO(m.getFrom().getName(), "", "",
+        return new MessageDTO(m.getTimestamp(), m.getSubject(), m.getText(), m.getRead(), new UserDTO(m.getFrom()
+            .getName(), "", "",
             "", "", null, null, null), null);
 
     }
@@ -118,6 +122,7 @@ public class MessageServiceImpl implements MessageService {
         message.setTimestamp(new Date());
         message.setSubject(subject);
         message.setText(text);
+        message.setRead(false);
         message.setFrom(users.findByName(sender).get(0));
 
         Set<User> recieverAsUser = new HashSet<User>();
@@ -142,6 +147,7 @@ public class MessageServiceImpl implements MessageService {
         message.setTimestamp(new Date());
         message.setSubject(subject);
         message.setText(text);
+        message.setRead(false);
         message.setFrom(users.findByName("postmaster").get(0));
 
         Set<User> recieverAsUser = new HashSet<User>();
@@ -163,6 +169,15 @@ public class MessageServiceImpl implements MessageService {
             user.setName("postmaster");
             users.insert(user);
         }
+    }
+
+    @Override
+    public void updateReadStatus(Long id) {
+
+        Message message = messages.findById(id);
+        message.setRead(true);
+        messages.update(message);
+
     }
 
 }
