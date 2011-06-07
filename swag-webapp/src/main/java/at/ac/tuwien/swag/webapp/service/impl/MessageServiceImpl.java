@@ -43,25 +43,9 @@ public class MessageServiceImpl implements MessageService {
         List<MessageDTO> result = new ArrayList<MessageDTO>();
 
         for (Message m : inMessages) {
-            result.add(
-            	new MessageDTO(
-            		m.getTimestamp(),
-            		m.getSubject(),
-            		"",
-            		false,
-            		new UserDTO(
-            			m.getFrom().getName(),
-            			"",
-            			"",
-            			"",
-            			"",
-            			null,
-            			null,
-            			null
-            		),
-            		null
-            	)
-            );
+            result.add(new MessageDTO(m.getTimestamp(), m.getSubject(), "", m.getRead(), new UserDTO(m.getFrom()
+                .getName(), "", "",
+                "", "", null, null, null), null));
         }
 
         return result;
@@ -70,7 +54,7 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public List<MessageDTO> getOutMessages(String user) {
         String query =
-            "SELECT m FROM Message m LEFT JOIN FETCH m.from WHERE m.from = :username";
+            "SELECT m FROM Message m LEFT JOIN FETCH m.from WHERE m.from.name = :username";
 
         Map<String, String> values = new HashMap<String, String>();
         values.put("username", user);
@@ -79,25 +63,9 @@ public class MessageServiceImpl implements MessageService {
         List<MessageDTO> result = new ArrayList<MessageDTO>();
 
         for (Message m : inMessages) {
-            result.add(
-            	new MessageDTO(
-            		m.getTimestamp(), 
-            		m.getSubject(), 
-            		"",
-            		false,
-            		new UserDTO(
-            			m.getFrom().getName(),
-            			"",
-            			"",
-            			"",
-            			"",
-            			null,
-            			null,
-            			null
-            		),
-            		null
-            	)
-            );
+            result.add(new MessageDTO(m.getTimestamp(), m.getSubject(), "", m.getRead(), new UserDTO(m.getFrom()
+                .getName(), "", "",
+                "", "", null, null, null), null));
         }
 
         return result;
@@ -106,7 +74,7 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public List<MessageDTO> getNotifications(String user) {
         String query =
-            "SELECT m FROM Message m LEFT JOIN FETCH m.from LEFT JOIN FETCH m.to AS y WHERE y.name = :username AND m.form = :system";
+            "SELECT m FROM Message m LEFT JOIN FETCH m.from LEFT JOIN FETCH m.to AS y WHERE y.name = :username AND m.from.name = :system";
 
         Map<String, String> values = new HashMap<String, String>();
         values.put("username", user);
@@ -116,25 +84,9 @@ public class MessageServiceImpl implements MessageService {
         List<MessageDTO> result = new ArrayList<MessageDTO>();
 
         for (Message m : inMessages) {
-            result.add(
-            	new MessageDTO(
-            		m.getTimestamp(),
-            		m.getSubject(),
-            		"",
-            		false,
-            		new UserDTO(
-            			m.getFrom().getName(),
-            			"",
-            			"",
-            			"",
-            			"",
-            			null,
-            			null,
-            			null
-            		),
-            		null
-            	)
-            );
+            result.add(new MessageDTO(m.getTimestamp(), m.getSubject(), "", m.getRead(), new UserDTO(m.getFrom()
+                .getName(), "", "",
+                "", "", null, null, null), null));
         }
 
         return result;
@@ -157,23 +109,9 @@ public class MessageServiceImpl implements MessageService {
 
         Message m = message.get(0);
 
-        return new MessageDTO(
-        		m.getTimestamp(),
-        		m.getSubject(),
-        		m.getText(),
-        		false,
-        		new UserDTO(
-            		m.getFrom().getName(),
-            		"",
-            		"",
-            		"",
-            		"",
-            		null,
-            		null,
-            		null
-            	),
-        		null
-        );
+        return new MessageDTO(m.getTimestamp(), m.getSubject(), m.getText(), m.getRead(), new UserDTO(m.getFrom()
+            .getName(), "", "",
+            "", "", null, null, null), null);
 
     }
 
@@ -184,6 +122,7 @@ public class MessageServiceImpl implements MessageService {
         message.setTimestamp(new Date());
         message.setSubject(subject);
         message.setText(text);
+        message.setRead(false);
         message.setFrom(users.findByName(sender).get(0));
 
         Set<User> recieverAsUser = new HashSet<User>();
@@ -194,7 +133,6 @@ public class MessageServiceImpl implements MessageService {
         message.setTo(recieverAsUser);
 
         messages.insert(message);
-
         // TODO check online status and send mails
 
     }
@@ -208,6 +146,7 @@ public class MessageServiceImpl implements MessageService {
         message.setTimestamp(new Date());
         message.setSubject(subject);
         message.setText(text);
+        message.setRead(false);
         message.setFrom(users.findByName("postmaster").get(0));
 
         Set<User> recieverAsUser = new HashSet<User>();
@@ -229,6 +168,15 @@ public class MessageServiceImpl implements MessageService {
             user.setName("postmaster");
             users.insert(user);
         }
+    }
+
+    @Override
+    public void updateReadStatus(Long id) {
+
+        Message message = messages.findById(id);
+        message.setRead(true);
+        messages.update(message);
+
     }
 
 }

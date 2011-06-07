@@ -26,6 +26,10 @@ public class MessageDetail extends InPage {
             add(new Label("subject", "wrong id"));
             add(new Label("text", "wrong id"));
         } else {
+            if (!message.getRead()) {
+                messages.updateReadStatus(message.getId());
+            }
+
             add(new Label("subject", message.getSubject()));
             add(new Label("text", message.getText()));
         }
