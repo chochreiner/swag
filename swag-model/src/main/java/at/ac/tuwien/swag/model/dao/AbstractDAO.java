@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
 import at.ac.tuwien.swag.model.domain.AbstractEntity;
@@ -57,6 +58,10 @@ public abstract class AbstractDAO<E extends AbstractEntity> {
 	
 	@Transactional
 	public abstract void deleteAll();
+	
+	public EntityTransaction getTransaction() {
+		return getEntityManager().getTransaction();
+	}
 	
 	protected EntityManager getEntityManager() {
 		return em;
