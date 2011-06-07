@@ -27,9 +27,17 @@
 			}
 
 			@Transactional
+			@Override
 			@SuppressWarnings("unchecked")
-			public List<«name»> findAll() {
+			public Iterable<«name»> getAll() {
 				return getEntityManager().createQuery( "SELECT obj FROM «name» obj" ).getResultList();
+			}
+			
+			@Transactional
+			@Override
+			@SuppressWarnings("unchecked")
+			public void deleteAll() {
+				getEntityManager().createQuery( "DELETE FROM «name»" ).executeUpdate();
 			}
 
 			«FOREACH attributes AS attr»

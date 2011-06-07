@@ -86,7 +86,7 @@ public class TestData extends InPage {
     	
     	 System.out.println("####### List registered users #######");
 
-         for (User user : userDao.findAll()) {
+         for (User user : userDao.getAll()) {
           System.out.println(user);
           }
 

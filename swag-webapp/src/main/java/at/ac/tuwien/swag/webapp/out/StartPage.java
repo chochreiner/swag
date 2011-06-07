@@ -1,8 +1,9 @@
 package at.ac.tuwien.swag.webapp.out;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -15,14 +16,17 @@ public class StartPage extends OutPage {
 	public StartPage(PageParameters parameters) {
         super(parameters);
 
-        Query q = em.createQuery( "SELECT m FROM Map m" );
+        String str = "If you see this the database (probably) works <br/>";
         
-        this.add( 
-        	new Label( "message", 
-        		"If you see this the database (probably) works <br/>" + 
-        		"Maps: " + q.getResultList().toString()     + "<br/>"
-        	).setEscapeModelStrings( false )
-        );
+        List<?> list = em.createQuery( "SELECT m FROM Map m" ).getResultList();
+        
+        str += "Maps: " + list.size() + "<br/>";
+        
+        for ( Object o : em.createQuery( "SELECT m FROM Map m" ).getResultList() ) {
+        	str += o + "<br/>";
+        }
+
+        this.add( new Label( "message", str ).setEscapeModelStrings( false ) );
     }
 
     @PersistenceContext
