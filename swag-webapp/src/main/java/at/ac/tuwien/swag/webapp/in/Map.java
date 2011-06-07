@@ -1,42 +1,60 @@
 package at.ac.tuwien.swag.webapp.in;
 
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.repeater.Item;
-import org.apache.wicket.markup.repeater.data.GridView;
-import org.apache.wicket.markup.repeater.data.IDataProvider;
-import org.apache.wicket.request.mapper.parameter.PageParameters;
+import java.util.ArrayList;
+import java.util.List;
 
-import at.ac.tuwien.swag.model.domain.Square;
-import at.ac.tuwien.swag.model.dto.SquareDTO;
-import at.ac.tuwien.swag.webapp.in.provider.MapDataProvider;
+import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 public class Map extends InPage {
     private static final long serialVersionUID = -5939284250869774500L;
+	private ListView listView;
 
     public Map(PageParameters parameters) {
         super(parameters);
         
-        IDataProvider<SquareDTO> dataProvider = new MapDataProvider();
-        GridView<SquareDTO> gridView = new GridView<SquareDTO>("rows", dataProvider) {
-        	
-			private static final long serialVersionUID = -5912364629079858110L;
+       List<List<String>> gameMap = new ArrayList<List<String>>();
+       
+       List<String> row = new ArrayList<String>();
+       
+       row.add("1");
+       row.add("2");
+       row.add("3");
+       row.add("4");
+       row.add("5");
+       
+       gameMap.add(row);
+       gameMap.add(row);
+       gameMap.add(row);
+       gameMap.add(row);
+       gameMap.add(row);
+        
+     listView = new ListView("gameMap", gameMap) {
 
-			@Override
-        	protected void populateEmptyItem(Item<SquareDTO> item) {
-				item.add(new Label("cell", "*empty*"));
-        	}
+		private static final long serialVersionUID = 7083713778515545799L;
 
-			@Override
-			protected void populateItem(Item<SquareDTO> item) {
-				
-				final SquareDTO square = item.getModelObject();
-        		item.add(new Label("cell", square.getCoordX()+" "+square.getCoordY()));
-			}
-        
-        };
-        
-        
-        add(gridView);
+		@Override
+		protected void populateItem( ListItem row) {
+			
+			List rowList = (List) row.getModelObject();
+			
+			ListView rowListView = new ListView("row", rowList) {
+
+				private static final long serialVersionUID = 3054181382288233598L;
+
+				@Override
+				protected void populateItem(ListItem squareList) {
+					
+					String square = (String) squareList.getModelObject();
+					squareList.add(new Label("square", square));
+				}
+			};
+			row.add(rowListView);
+		}
+     };
+        add(listView);
     }
 
 }

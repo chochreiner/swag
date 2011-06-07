@@ -21,7 +21,8 @@
 		
 		public class «name»DAO extends AbstractDAO<«name»> {
 			
-			@Inject
+			public «name»DAO() {/***/}
+
 			public «name»DAO( EntityManager em ) {
 				super( em );
 			}

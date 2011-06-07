@@ -1,12 +1,20 @@
 package at.ac.tuwien.swag.model.dao;
 
-import javax.persistence.EntityManager;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
-import com.google.inject.persist.Transactional;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 import at.ac.tuwien.swag.model.domain.AbstractEntity;
 
+import com.google.inject.Inject;
+import com.google.inject.persist.Transactional;
+
 public abstract class AbstractDAO<E extends AbstractEntity> {
+
+	public AbstractDAO() {/***/}
 	
 	public AbstractDAO( EntityManager em ) {
 		this.em = em;
@@ -24,6 +32,18 @@ public abstract class AbstractDAO<E extends AbstractEntity> {
 	public E findById( long id ) {
 		return em.find( getEntityClass(), id );
 	}
+	
+	@Transactional
+	@SuppressWarnings("unchecked")
+    public List<E> findByQuery(String query, Map<String, String> values) {
+        Query emQuery = em.createQuery(query);
+
+        for (Entry<String, String> entry : values.entrySet()) {
+            emQuery.setParameter(entry.getKey(), entry.getValue());
+        }
+
+        return emQuery.getResultList();
+    }
 	
 	@Transactional
 	public E update( E e ) {
@@ -44,5 +64,6 @@ public abstract class AbstractDAO<E extends AbstractEntity> {
 	
 	protected abstract Class<E> getEntityClass();
 	
+	@Inject
 	private EntityManager em;
 }

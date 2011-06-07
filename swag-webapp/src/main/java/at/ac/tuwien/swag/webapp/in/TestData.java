@@ -4,16 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
 
+import org.apache.wicket.Component;
+import org.apache.wicket.extensions.ajax.markup.html.AjaxLazyLoadPanel;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
+import at.ac.tuwien.swag.model.SQLHelper;
 import at.ac.tuwien.swag.model.dao.MapDAO;
-import at.ac.tuwien.swag.model.dao.MessageDAO;
 import at.ac.tuwien.swag.model.dao.SquareDAO;
 import at.ac.tuwien.swag.model.dao.UserDAO;
 import at.ac.tuwien.swag.model.domain.Map;
@@ -21,43 +21,43 @@ import at.ac.tuwien.swag.model.domain.MapUser;
 import at.ac.tuwien.swag.model.domain.Square;
 import at.ac.tuwien.swag.model.domain.User;
 
+import com.google.inject.Inject;
+
 public class TestData extends InPage {
     private static final long serialVersionUID = -5939284250869774500L;
-	private Label testDataLabel;
-	private UserDAO userDao;
-	private MapDAO mapDao;
-	private MessageDAO messageDao;
+	
+    @Inject
+    private MapDAO mapDao;
+    @Inject
+    private UserDAO userDao;
+    @Inject
 	private SquareDAO squareDao;
-	private EntityManagerFactory factory;
+
+    @Inject
 	private EntityManager em;
-	private EntityTransaction tx;
-
+    
     public TestData(PageParameters parameters) {
-        super(parameters);
-        
-       testDataLabel = new Label("testDataLabel", new Model<String>(""));  
-       add(testDataLabel);
-       
-      factory = Persistence.createEntityManagerFactory("swag");
-      em = factory.createEntityManager();
+    	super(parameters);
+    	
+    	add( new AjaxLazyLoadPanel( "testDataLabel", new Model<String>() ) {
+			private static final long serialVersionUID = -5330241761878870869L;
 
-      tx = em.getTransaction();
-      
-       userDao 		= new UserDAO(em);
-       mapDao		= new MapDAO(em);
-       messageDao 	= new MessageDAO(em);
-       squareDao 	= new SquareDAO(em);
-      
-       this.setupUser();
-       this.setupMap();
-       
-      
-       this.testDataLabel.setDefaultModelObject("BLAAAA");
-       
+			@Override
+			public Component getLazyLoadComponent( String markupId ) {
+				squareDao.deleteAll();
+				mapDao.deleteAll();
+				userDao.deleteAll();
+				
+				setupUser();
+				setupMap();
+				
+				return new Label( markupId, "TEST DATA CREATED" );  
+			}
+		});
+    	
     }
     
     private void setupUser() {
-    	
     	 System.out.println("####### Register users #######");
 
          User nero = new User();
@@ -74,6 +74,7 @@ public class TestData extends InPage {
          ariovist.setEmail("chef@markomannenweb.de");
          ariovist.setPassword("bier1234");
 
+         EntityTransaction tx = em.getTransaction();
          tx.begin();
 
          em.persist(nero);
@@ -83,7 +84,6 @@ public class TestData extends InPage {
     }
     
     private void testGetUser() {
-    	
     	 System.out.println("####### List registered users #######");
 
          for (User user : userDao.getAll()) {
@@ -100,7 +100,6 @@ public class TestData extends InPage {
     }
     
     private void setupMap() {
-    	
     	System.out.println("####### Create Map and Squares #######");
 
         Map map = new Map();
@@ -113,7 +112,7 @@ public class TestData extends InPage {
         Integer yAxis = 1;
 
         List<Square> squares = new ArrayList<Square>();
-        tx.begin();
+       
         for (int i = 0; i < 100; i++) {
             if (xAxis > 10) {
                 xAxis = 1;
@@ -131,8 +130,9 @@ public class TestData extends InPage {
 
         map.setSquares(squares);
 
-       
-        em.persist(map);
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        this.mapDao.insert(map);
         for (Square sq : squares) {
             em.persist(sq);
         }
@@ -181,11 +181,14 @@ public class TestData extends InPage {
 
         playground.setUsers(users);
 
+        EntityTransaction tx = em.getTransaction();
         tx.begin();
+
         em.persist(neroMap);
         em.persist(ariovistMap);
         em.merge(playground);
         em.merge(neroStartsquare);
+        
         tx.commit();
         
     }

@@ -29,8 +29,8 @@ public class StartPage extends OutPage {
         this.add( new Label( "message", str ).setEscapeModelStrings( false ) );
     }
 
-    @PersistenceContext
     @Inject
+    @PersistenceContext
     private EntityManager em;
 	
 }

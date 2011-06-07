@@ -60,7 +60,9 @@
 			«ENDFOREACH»
 			
 			«FOREACH associations AS assoc»
-				@«assoc.multiplicity»«IF assoc.isMapped()»( mappedBy="«assoc.mappedBy()»" )«ENDIF»
+				@«assoc.multiplicity»( cascade={CascadeType.ALL} 
+				                       «IF assoc.isMapped()», mappedBy="«assoc.mappedBy()»"«ENDIF»
+				                     )
 				public «assoc.typeName()» «assoc.getter()»() {
 					«IF assoc.multiplicity == Multiplicity::ManyToMany || assoc.multiplicity == Multiplicity::OneToMany»
 						if ( «assoc.name» == null ) «assoc.name» = new «assoc.concreteType()»();

@@ -11,14 +11,14 @@ import at.ac.tuwien.swag.webapp.service.LoginService;
 
 public class LoginServiceImpl implements LoginService {
 
-	@Override
-	public boolean authenticate( String username, String password ) {
-		return Objects.equal( username, password );
-	}
+    @Override
+    public boolean authenticate(String username, String password) {
+        return Objects.equal(username, password);
+    }
 
-	@Override
-	public Set<String> getRoles( String username ) {
-		return new HashSet<String>( Arrays.asList( Roles.ADMIN, Roles.USER ) );
-	}
+    @Override
+    public Set<String> getRoles(String username) {
+        return new HashSet<String>(Arrays.asList(Roles.ADMIN, Roles.USER));
+    }
 
 }
