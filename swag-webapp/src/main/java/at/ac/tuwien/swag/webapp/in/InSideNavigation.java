@@ -5,6 +5,7 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.panel.Panel;
 
 import at.ac.tuwien.swag.webapp.in.admin.CreateMap;
+import at.ac.tuwien.swag.webapp.in.admin.ViewDBPage;
 import at.ac.tuwien.swag.webapp.in.admin.monitoring.Monitoring;
 
 @AuthorizeInstantiation("ADMIN")
@@ -13,8 +14,9 @@ public class InSideNavigation extends Panel {
 
     public InSideNavigation(String id) {
         super(id);
-        add(new BookmarkablePageLink<String>("createMap", CreateMap.class));
+        add(new BookmarkablePageLink<String>("createMap",  CreateMap.class));
         add(new BookmarkablePageLink<String>("monitoring", Monitoring.class));
+        add(new BookmarkablePageLink<String>("viewDB",     ViewDBPage.class));
     }
 
 }

@@ -3,12 +3,23 @@
 «EXTENSION template::GeneratorExtensions»
 
 «DEFINE main FOR Model»
-	«FILE packagePath() + "/Helper.java"»
+	«FILE packagePath() + "/SQLHelper.java"»
 		package «package»;
 		
 		import javax.persistence.*;
 		
-		public abstract class Helper {
+		public abstract class SQLHelper {
+			public static void removaAllRows( EntityManager em ) {
+				EntityTransaction tx = em.getTransaction();
+				tx.begin();
+			
+				«FOREACH entities() AS e»
+					em.createNativeQuery("DELETE FROM «e.tableName()»").executeUpdate();					
+				«ENDFOREACH»
+				
+				tx.commit();
+			}
+		
 			public static void dropDatabase( EntityManager em ) {
 				EntityTransaction tx = em.getTransaction();
 				tx.begin();

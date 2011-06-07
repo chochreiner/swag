@@ -1,0 +1,25 @@
+<wicket:extend>
+	<h2>Create new map</h2>
+	<span wicket:id="feedback"></span>
+    
+    <form wicket:id="sqlForm" class="yform">
+		<fieldset>
+	        <legend>Query the database</legend>
+        
+			<div class="type-text">
+				<label for="sql">SQL Query:</label>
+				<input type="text" name="sql" id="sql" wicket:id="sql" size="50" />
+			</div>
+        </fieldset>
+        
+        <div class="type-button">
+          	<input type="submit" value="Query"          id="query"  name="query"  wicket:id="query" />
+          	<input type="submit" value="Execute update" id="update" name="update" wicket:id="update" />
+		</div>
+	</form>
+	
+	<br/>
+	
+	<span wicket:id="results"/>
+	
+</wicket:extend>

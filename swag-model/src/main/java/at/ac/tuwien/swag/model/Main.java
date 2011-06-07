@@ -63,7 +63,7 @@ public class Main {
 
         System.out.println("####### List registered users #######");
 
-         for (User user : userDao.findAll()) {
+         for (User user : userDao.getAll()) {
          System.out.println(user);
          }
 
@@ -209,6 +209,6 @@ public class Main {
         }
 
         // UNDO EVERYTHING
-        Helper.dropDatabase( em );
+        SQLHelper.dropDatabase( em );
     }
 }
