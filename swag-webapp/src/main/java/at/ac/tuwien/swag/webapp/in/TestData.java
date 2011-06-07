@@ -14,6 +14,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import at.ac.tuwien.swag.model.SQLHelper;
 import at.ac.tuwien.swag.model.dao.MapDAO;
+import at.ac.tuwien.swag.model.dao.MapUserDAO;
 import at.ac.tuwien.swag.model.dao.SquareDAO;
 import at.ac.tuwien.swag.model.dao.UserDAO;
 import at.ac.tuwien.swag.model.domain.Map;
@@ -31,10 +32,12 @@ public class TestData extends InPage {
     @Inject
     private UserDAO userDao;
     @Inject
+    private MapUserDAO mapUserDao;
+    @Inject
 	private SquareDAO squareDao;
 
     @Inject
-	private EntityManager em;
+//	private EntityManager em;
     
     public TestData(PageParameters parameters) {
     	super(parameters);
@@ -74,13 +77,10 @@ public class TestData extends InPage {
          ariovist.setEmail("chef@markomannenweb.de");
          ariovist.setPassword("bier1234");
 
-         EntityTransaction tx = em.getTransaction();
-         tx.begin();
-
-         em.persist(nero);
-         em.persist(ariovist);
-
-         tx.commit();
+         userDao.beginTransaction();
+         	userDao.insert(nero);
+         	userDao.insert(ariovist);
+         userDao.commitTransaction();
     }
     
     private void testGetUser() {
@@ -130,14 +130,12 @@ public class TestData extends InPage {
 
         map.setSquares(squares);
 
-        EntityTransaction tx = em.getTransaction();
-        tx.begin();
-        this.mapDao.insert(map);
-        for (Square sq : squares) {
-            em.persist(sq);
-        }
-
-        tx.commit();
+        mapDao.beginTransaction();
+        	this.mapDao.insert(map);
+        	for (Square sq : squares) {
+        		squareDao.insert(sq);
+        	}
+        mapDao.commitTransaction();
     }
     
     private void testMap() {
@@ -181,16 +179,12 @@ public class TestData extends InPage {
 
         playground.setUsers(users);
 
-        EntityTransaction tx = em.getTransaction();
-        tx.begin();
-
-        em.persist(neroMap);
-        em.persist(ariovistMap);
-        em.merge(playground);
-        em.merge(neroStartsquare);
-        
-        tx.commit();
-        
+        mapUserDao.beginTransaction();
+        	mapUserDao.insert(neroMap);
+        	mapUserDao.insert(ariovistMap);
+        	mapDao.insert(playground);
+        	squareDao.insert(neroStartsquare);
+        mapUserDao.commitTransaction();
     }
     /*
     private void setupBuildingForUserNero() {
