@@ -8,8 +8,8 @@ public class OutTopNavigation extends Panel {
 
     public OutTopNavigation(String id) {
         super(id);
-        add(new BookmarkablePageLink<String>("login", Login.class));
-        add(new BookmarkablePageLink<String>("register", Register.class));
+        add(new BookmarkablePageLink<String>("login", LoginPage.class));
+        add(new BookmarkablePageLink<String>("register", RegisterPage.class));
         add(new BookmarkablePageLink<String>("about", About.class));
     }
 

@@ -27,7 +27,7 @@ public class InTopNavigation extends Panel {
     private void logout() {
         SwagWebSession session = (SwagWebSession) getSession();
 
-        session.logout();
+        session.signOut();
         session.invalidate();
         getPage().setResponsePage(StartPage.class);
     }

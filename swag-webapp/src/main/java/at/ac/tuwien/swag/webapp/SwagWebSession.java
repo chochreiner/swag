@@ -2,7 +2,7 @@ package at.ac.tuwien.swag.webapp;
 
 import java.util.Set;
 
-import org.apache.wicket.authroles.authentication.AbstractAuthenticatedWebSession;
+import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.authroles.authorization.strategies.role.Roles;
 import org.apache.wicket.request.Request;
 
@@ -10,7 +10,7 @@ import at.ac.tuwien.swag.webapp.service.LoginService;
 
 import com.google.inject.Inject;
 
-public final class SwagWebSession extends AbstractAuthenticatedWebSession {
+public final class SwagWebSession extends AuthenticatedWebSession {
 	private static final long serialVersionUID = -5435752385275403581L;
 	
 	@Inject
@@ -21,31 +21,28 @@ public final class SwagWebSession extends AbstractAuthenticatedWebSession {
 	}
 
 	// authentication authorization stuff
-	public void logout() {
-		login.logout();
-	}
-
-
-	@Override
-	public boolean isSignedIn() {
-		return login.isLoggedIn();
-	}
-	
 	@Override
 	public boolean authenticate( String username, String password ) {
-		try {
-			login.login( username, password );
-			
+		if ( login.authenticate( username, password ) ) {
+			this.username = username;
+			signIn( true );
 			return true;
-		} catch ( AuthorizationException e ) {
+		} else {
 			return false;
 		}
 	}
 
+	@Override
+	public void signOut() {
+		super.signOut();
+		username = null;
+	}
 	
 	@Override
 	public Roles getRoles() {
-		Set<String> roles = login.getRoles();
+		if ( !isSignedIn() ) return new Roles();
+		
+		Set<String> roles = login.getRoles( username );
 		Roles r = new Roles();
 		
 		r.addAll( roles );
@@ -53,4 +50,6 @@ public final class SwagWebSession extends AbstractAuthenticatedWebSession {
 		return r;
 	}
 
+	private String username;
+	
 }
