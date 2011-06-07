@@ -39,6 +39,7 @@
         </fail>
     </target>
 
+	<!-- STARTING AND STOPPING GLASSFISH ********************************************-->
     <target name="start-domain" depends="check">		
  	   <java jar="${admin.cli.jar}" fork="true" spawn="false">
  		  <arg line="start-domain"/>
@@ -51,20 +52,52 @@
     </target>
     <target name="restart-domain" depends="stop-domain, start-domain"/>		
 	
+	<!-- APPLICATION DEPLOYMENT ********************************************-->
     <target name="deploy" depends="check">
 	   <java jar="${admin.cli.jar}" fork="true" spawn="false">
 		  <arg line="deploy --contextroot=${app-name} ${war-file}"/>
     	   </java>
-    </target>
-    
+    </target>    
     <target name="undeploy" depends="check">
 		<java jar="${admin.cli.jar}" fork="true" spawn="false">
 			<arg line="undeploy ${war-name}"/>
 		</java>
     </target>
-    
     <target name="redeploy" depends="undeploy,deploy" />
+
+	<!-- SETTING UP JMS & STUFF ON GLASSFISH ********************************************-->
+	<!-- CREATE JMS RESOURCES -->
+	<target name="setup" depends="check">
+		<java jar="${admin.cli.jar}" fork="true" spawn="false">
+			<arg line="create-connector-connection-pool --raname jmsra 
+			                                            --connectiondefinition javax.jms.ConnectionFactory
+			                                            swag.JMSPool" />
+		</java>
+		<java jar="${admin.cli.jar}" fork="true" spawn="false">
+			<arg line="create-jms-resource --restype javax.jms.Queue 
+			                               --enabled true
+			                               swag.queue.Example" />
+		</java>
+		<java jar="${admin.cli.jar}" fork="true" spawn="false">
+			<arg line="create-jms-resource --restype javax.jms.Topic 
+			                               --enabled true
+			                               swag.topic.Example" />
+		</java>
+	</target>
+	<!-- DESTROY JMS RESOURCES -->
+    <target name="clean" depends="check">
+		<java jar="${admin.cli.jar}" fork="true" spawn="false">
+			<arg line="delete-connector-connection-pool --cascade=true swag.JMSPool"/>
+		</java>
+		<java jar="${admin.cli.jar}" fork="true" spawn="false">
+			<arg line="delete-jms-resource swag.queue.Example"/>
+		</java>
+		<java jar="${admin.cli.jar}" fork="true" spawn="false">
+			<arg line="delete-jms-resource swag.topic.Example"/>
+		</java>
+    </target>
 	
+	<!-- BUILD AND DEPLOY TO SERVER ********************************************-->
 	<target name="build" depends="undeploy">
 		<exec executable="mvn">
 			<arg value="package"/>
