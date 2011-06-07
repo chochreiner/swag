@@ -33,10 +33,10 @@ public class Main {
         EntityManager em = factory.createEntityManager();
 
         EntityTransaction tx = em.getTransaction();
-        UserDAO    userDao = new UserDAO(em);
-        MapDAO     mapDao = new MapDAO(em);
+        UserDAO    userDao    = new UserDAO(em);
+        MapDAO     mapDao     = new MapDAO(em);
         MessageDAO messageDao = new MessageDAO(em);
-        SquareDAO  squareDao = new SquareDAO(em);
+        SquareDAO  squareDao  = new SquareDAO(em);
 
         System.out.println("####### Register users #######");
 
@@ -191,6 +191,7 @@ public class Main {
         	new Date(),
         	"welcome",
         	"You are going to die",
+        	true,
         	nero,
         	recipients
         );

@@ -14,6 +14,7 @@
     <attributes name="timestamp" type="//@types.3"/>
     <attributes name="subject" type="//@types.0"/>
     <attributes name="text" type="//@types.0"/>
+    <attributes name="read" type="//@types.4"/>
     <associations name="from" type="//@types.11" multiplicity="ManyToOne"/>
     <associations name="to" type="//@types.11" multiplicity="ManyToMany"/>
   </types>
@@ -54,7 +55,7 @@
     <attributes name="isHomeBase" type="//@types.4"/>
     <associations name="map" type="//@types.12" multiplicity="ManyToOne"/>
     <associations name="boosts" nullable="true" type="//@types.18" multiplicity="OneToMany" isMapped="true"/>
-    <associations name="user" type="//@types.13" multiplicity="ManyToOne"/>
+    <associations name="user" nullable="true" type="//@types.13" multiplicity="ManyToOne"/>
     <associations name="resourceBuildings" nullable="true" type="//@types.16" multiplicity="OneToMany" isMapped="true"/>
     <associations name="troops" nullable="true" type="//@types.19" multiplicity="OneToMany" isMapped="true"/>
     <associations name="baseBuildings" nullable="true" type="//@types.17" multiplicity="OneToMany" isMapped="true"/>
