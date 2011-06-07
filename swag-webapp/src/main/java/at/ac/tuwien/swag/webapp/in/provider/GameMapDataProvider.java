@@ -22,25 +22,77 @@ public class GameMapDataProvider{
 	
 	private MapDAO mapDao;
 	private SquareDAO squareDao;
-	private EntityManager em;
+	private HashMap<Integer, HashMap<Integer,Square>> fullMap;
 
-	public GameMapDataProvider() {
-		
-		
-	}
-	
 	public GameMapDataProvider(MapDAO mapDao, SquareDAO squareDao) {
 		this.mapDao = mapDao;
 		this.squareDao = squareDao;
+		this.fullMap = new HashMap<Integer, HashMap<Integer,Square>>();
 		
+		this.loadFullMap("Markomannwar");
 	}
 
+	private void loadFullMap(String mapName) {
+	
+		for(Square square :mapDao.findByName(mapName).getSquares()) {
+			
+			addSquareToFullMap(square, fullMap);
+		}
+	}
+	
+	/**
+	 * 
+	 * 
+	 * @param square
+	 * @param map
+	 */
+	private void addSquareToFullMap(Square square, HashMap<Integer, HashMap<Integer,Square>> map ) {
+		
+		HashMap<Integer, Square> row = map.get(square.getCoordY());
+		if(row == null) {
+			// create new row list
+			row = new HashMap<Integer, Square>();
+			map.put(square.getCoordY(), row);
+		}
+		
+		// Hopefully the is no square already
+		if(row.get(square.getCoordX()) == null) {
+			row.put(square.getCoordX(), square);
+		}
+	}
+	
+	
+	public List<List<Square>> getPartialMap(Integer startX, Integer startY, Integer endX, Integer endY) {
+		
+		ArrayList<List<Square>> mapList = new ArrayList<List<Square>>();
+		for(int y = startY; y <= endY; y++) {
+			System.out.println("BLAAAAAAAAAAAAAAAAAA"+y);
+			HashMap<Integer, Square> row = this.fullMap.get(y);
+			if(row != null) {
+				
+				ArrayList<Square> mapRowList = new ArrayList<Square>();
+				for(int x = startX; x <= endX; x++) {
+					System.out.println("BLAAAAAAAAAAAAAAAAAA"+x);
+					Square square = row.get(x);
+					if(square != null) {
+						System.out.println("BLAAAAAAAAAAAAAAAAAA"+square);
+						mapRowList.add(square);
+					}else { return null;}
+				}
+				mapList.add(mapRowList);
+			}else { return null;}
+			
+		}
+		
+		return mapList;
+	}
+	
 	public List<List<Square>> getMap() {
 		
 		ArrayList<List<Square>> mapRowList = new ArrayList<List<Square>>();
 	
 		Map map = mapDao.findByName("Markomannwar");
-		System.out.println(map);
+		
 		String query = "SELECT s FROM Map m JOIN m.squares s WHERE m.id = :mapID AND s.coordY = :coordY";
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		params.put("mapID", map.getId());

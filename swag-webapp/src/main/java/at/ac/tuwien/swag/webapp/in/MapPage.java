@@ -37,7 +37,9 @@ public class MapPage extends InPage {
         GameMapDataProvider gameMapProvider = new GameMapDataProvider(mapDao, squareDao);
     
         
-        List<List<Square>> gameMap = gameMapProvider.getMap();
+        List<List<Square>> gameMap; // = gameMapProvider.getMap();
+        
+        gameMap = gameMapProvider.getPartialMap(10, 10, 25, 25);
         
      listView = new ListView("gameMap", gameMap) {
 
