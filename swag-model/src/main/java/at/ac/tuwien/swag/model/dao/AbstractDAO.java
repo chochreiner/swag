@@ -35,10 +35,10 @@ public abstract class AbstractDAO<E extends AbstractEntity> {
 	
 	@Transactional
 	@SuppressWarnings("unchecked")
-    public List<E> findByQuery(String query, Map<String, String> values) {
+    public List<E> findByQuery(String query, Map<String, ?> values) {
         Query emQuery = em.createQuery(query);
 
-        for (Entry<String, String> entry : values.entrySet()) {
+        for (Entry<String, ?> entry : values.entrySet()) {
             emQuery.setParameter(entry.getKey(), entry.getValue());
         }
 

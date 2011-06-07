@@ -12,7 +12,6 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import at.ac.tuwien.swag.model.SQLHelper;
 import at.ac.tuwien.swag.model.dao.MapDAO;
 import at.ac.tuwien.swag.model.dao.SquareDAO;
 import at.ac.tuwien.swag.model.dao.UserDAO;

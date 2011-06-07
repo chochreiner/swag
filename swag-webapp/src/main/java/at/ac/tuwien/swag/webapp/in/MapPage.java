@@ -3,33 +3,44 @@ package at.ac.tuwien.swag.webapp.in;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-public class Map extends InPage {
+import com.google.inject.Inject;
+
+import at.ac.tuwien.swag.model.dao.MapDAO;
+import at.ac.tuwien.swag.model.dao.SquareDAO;
+import at.ac.tuwien.swag.model.domain.Map;
+import at.ac.tuwien.swag.model.domain.Square;
+import at.ac.tuwien.swag.webapp.in.provider.GameMapDataProvider;
+
+public class MapPage extends InPage {
     private static final long serialVersionUID = -5939284250869774500L;
 	private ListView listView;
 
-    public Map(PageParameters parameters) {
+	@Inject
+    private MapDAO mapDao;
+	
+	 @Inject
+	 private SquareDAO squareDao;
+	 
+	 @Inject
+	private EntityManager em;
+	
+    public MapPage(PageParameters parameters) {
         super(parameters);
+
+        System.out.println("select");
+		
         
-       List<List<String>> gameMap = new ArrayList<List<String>>();
-       
-       List<String> row = new ArrayList<String>();
-       
-       row.add("1");
-       row.add("2");
-       row.add("3");
-       row.add("4");
-       row.add("5");
-       
-       gameMap.add(row);
-       gameMap.add(row);
-       gameMap.add(row);
-       gameMap.add(row);
-       gameMap.add(row);
+        GameMapDataProvider gameMapProvider = new GameMapDataProvider(mapDao, squareDao, em);
+    
+        
+        List<List<Square>> gameMap = gameMapProvider.getMap();
         
      listView = new ListView("gameMap", gameMap) {
 
@@ -47,8 +58,8 @@ public class Map extends InPage {
 				@Override
 				protected void populateItem(ListItem squareList) {
 					
-					String square = (String) squareList.getModelObject();
-					squareList.add(new Label("square", square));
+					Square square = (Square) squareList.getModelObject();
+					squareList.add(new Label("square", square.getCoordX() +""+ square.getCoordY()));
 				}
 			};
 			row.add(rowListView);
