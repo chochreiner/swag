@@ -27,17 +27,14 @@ public class MapPage extends InPage {
 	
 	 @Inject
 	 private SquareDAO squareDao;
-	 
-	 @Inject
-	private EntityManager em;
-	
+
     public MapPage(PageParameters parameters) {
         super(parameters);
 
         System.out.println("select");
 		
         
-        GameMapDataProvider gameMapProvider = new GameMapDataProvider(mapDao, squareDao, em);
+        GameMapDataProvider gameMapProvider = new GameMapDataProvider(mapDao, squareDao);
     
         
         List<List<Square>> gameMap = gameMapProvider.getMap();

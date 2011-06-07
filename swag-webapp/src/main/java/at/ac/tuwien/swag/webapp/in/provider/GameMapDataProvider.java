@@ -29,12 +29,10 @@ public class GameMapDataProvider{
 		
 	}
 	
-	public GameMapDataProvider(MapDAO mapDao, SquareDAO squareDao, EntityManager em) {
+	public GameMapDataProvider(MapDAO mapDao, SquareDAO squareDao) {
 		this.mapDao = mapDao;
 		this.squareDao = squareDao;
 		
-		// TODO fieser fieser hack
-		this.em = em;
 	}
 
 	public List<List<Square>> getMap() {
@@ -44,22 +42,15 @@ public class GameMapDataProvider{
 		Map map = mapDao.findByName("Markomannwar");
 		System.out.println(map);
 		String query = "SELECT s FROM Map m JOIN m.squares s WHERE m.id = :mapID AND s.coordY = :coordY";
-		HashMap<String, String> params = new HashMap<String, String>();
-		params.put("mapID", ""+map.getId());
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("mapID", map.getId());
 		
 		
 		for(int i=0; i < map.getYSize(); i++) {
 			
-			params.put("coordY", ""+i);
+			params.put("coordY", i);
 			
-			//List<Square> squaresX = squareDao.findByQuery(query, params);
-			
-			// TODO fieser fieser hack
-			Query emQuery = em.createQuery(query);
-			emQuery.setParameter("mapID", map.getId());
-			emQuery.setParameter("coordY", i);
-			
-			List<Square> squaresX = emQuery.getResultList();
+			List<Square> squaresX = squareDao.findByQuery(query, params);
 			
 			mapRowList.add(squaresX);
 		}
