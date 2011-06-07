@@ -3,7 +3,12 @@ package at.ac.tuwien.swag.webapp.out.form;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.RequiredTextField;
+import org.apache.wicket.markup.html.form.validation.EqualPasswordInputValidator;
+import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.util.lang.Objects;
+import org.apache.wicket.validation.IValidatable;
+import org.apache.wicket.validation.validator.AbstractValidator;
 
 import at.ac.tuwien.swag.model.dao.UserDAO;
 import at.ac.tuwien.swag.model.domain.User;
@@ -40,7 +45,22 @@ public class RegisterForm extends Form<Void> {
 
         password  = new PasswordTextField("password", new Model<String>());
         password2 = new PasswordTextField("password2", new Model<String>());
+        
+        this.add( new EqualPasswordInputValidator( password, password2 ) );
+        
+        email.add( new AbstractValidator<String>() {
+			private static final long serialVersionUID = -823294603268753833L;
 
+			@Override
+			protected void onValidate( IValidatable<String> validatable ) {
+				String email = validatable.getValue();
+				
+				if ( !email.matches( "[^@]+@[^.]+\\.[a-zA-Z0-9]+" ) ) {
+					error( validatable, "notAValidEmail" );
+				}
+			}
+        });
+        
         add(firstname);
         add(surname);
         add(username);
@@ -52,13 +72,19 @@ public class RegisterForm extends Form<Void> {
 
     @Override
     protected void onSubmit() {
-    	String username = this.username.getModel().getObject();
-    	String password = this.password.getModel().getObject();
+    	String username  = this.username.getModel().getObject();
+    	String password  = this.password.getModel().getObject();
+    	String password2 = this.password2.getModel().getObject();
     	
     	String fullname = this.firstname.getModel().getObject() + " " + this.surname.getModel().getObject();
     	String address  = this.address.getModel().getObject();
     	
     	String email    = this.email.getModel().getObject();
+
+        if ( !Objects.equal( password, password2 ) ) {
+        	error("Repeated password is not the same as password");
+        	return;
+        }
     	
     	User user = new User().name( username )
     	                      .fullname( fullname )
@@ -70,7 +96,8 @@ public class RegisterForm extends Form<Void> {
     		userDAO.insert( user );
     	userDAO.commitTransaction();
     		
-        info( "Thank you for registering" );
+    	getPage().setResponsePage( getApplication().getHomePage() );
+    	info( "Thank you for registering" );
     }
         
 }
