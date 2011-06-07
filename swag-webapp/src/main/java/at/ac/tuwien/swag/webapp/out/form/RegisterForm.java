@@ -90,7 +90,7 @@ public class RegisterForm extends Form<Void> {
     	                      .fullname( fullname )
     	                      .address( address )
     	                      .email( email )
-    	                      .password( hasher.hash( password ) );
+    	                      .password( password );
 
     	userDAO.beginTransaction();
     		userDAO.insert( user );
