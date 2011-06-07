@@ -6,11 +6,12 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import at.ac.tuwien.swag.webapp.out.form.RegisterForm;
 
-public class Register extends OutPage {
+public class RegisterPage extends OutPage {
     private static final long serialVersionUID = -6712153643198619949L;
 
-    public Register(PageParameters parameters) {
+    public RegisterPage(PageParameters parameters) {
         super(parameters);
+        
         FeedbackPanel feedbackPanel = new FeedbackPanel("feedback");
         add(feedbackPanel);
 

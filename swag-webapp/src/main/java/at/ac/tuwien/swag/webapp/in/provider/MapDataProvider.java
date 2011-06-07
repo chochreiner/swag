@@ -5,9 +5,9 @@ import java.util.Iterator;
 import org.apache.wicket.markup.repeater.data.IDataProvider;
 import org.apache.wicket.model.IModel;
 
-import at.ac.tuwien.swag.model.domain.Square;
+import at.ac.tuwien.swag.model.dto.SquareDTO;
 
-public class MapDataProvider implements IDataProvider<Square>{
+public class MapDataProvider implements IDataProvider<SquareDTO>{
 	
 	private static final long serialVersionUID = -3668383425408535701L;
 
@@ -18,7 +18,7 @@ public class MapDataProvider implements IDataProvider<Square>{
 	}
 
 	@Override
-	public Iterator<Square> iterator(int first, int count) {
+	public Iterator<? extends SquareDTO> iterator(int first, int count) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -26,12 +26,12 @@ public class MapDataProvider implements IDataProvider<Square>{
 	@Override
 	public int size() {
 		// TODO Auto-generated method stub
-		return 10;
+		return 0;
 	}
 
 	@Override
-	public IModel<Square> model(Square object) {
-		
-		return new DetachableSquareModel(object);
+	public IModel<SquareDTO> model(SquareDTO object) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

@@ -8,7 +8,7 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.request.Response;
 
-import at.ac.tuwien.swag.webapp.out.Login;
+import at.ac.tuwien.swag.webapp.out.LoginPage;
 import at.ac.tuwien.swag.webapp.out.StartPage;
 
 public class SwagApplication extends AuthenticatedWebApplication {
@@ -57,6 +57,6 @@ public class SwagApplication extends AuthenticatedWebApplication {
 
 	@Override
 	protected Class<? extends WebPage> getSignInPageClass() {
-		return Login.class;
+		return LoginPage.class;
 	}
 }

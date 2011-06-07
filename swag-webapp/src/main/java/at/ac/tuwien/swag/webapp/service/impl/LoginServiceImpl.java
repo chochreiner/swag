@@ -4,41 +4,21 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.wicket.authroles.authorization.strategies.role.Roles;
 import org.apache.wicket.util.lang.Objects;
 
-import at.ac.tuwien.swag.webapp.AuthorizationException;
 import at.ac.tuwien.swag.webapp.service.LoginService;
 
 public class LoginServiceImpl implements LoginService {
 
     @Override
-    public void login(String username, String password) throws AuthorizationException {
-        // TODO: do real auth
-
-        if (!Objects.equal(username, password)) {
-            throw new AuthorizationException("Username and password must be equal. TODO: change that");
-        } else {
-            this.username = username;
-        }
+    public boolean authenticate(String username, String password) {
+        return Objects.equal(username, password);
     }
 
     @Override
-    public void logout() {
-        // TODO: do real auth
-        username = null;
+    public Set<String> getRoles(String username) {
+        return new HashSet<String>(Arrays.asList(Roles.ADMIN, Roles.USER));
     }
-
-    @Override
-    public boolean isLoggedIn() {
-        return username != null;
-    }
-
-    @Override
-    public Set<String> getRoles() {
-        // TODO get real roles from db
-        return new HashSet<String>(Arrays.asList("ADMIN", "USER"));
-    }
-
-    private String username;
 
 }

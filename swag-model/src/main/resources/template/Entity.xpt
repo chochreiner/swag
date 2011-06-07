@@ -27,6 +27,16 @@
 			
 			// no arg constructor
 			public «name»() {/**/}				
+
+			«IF !fields().forAll( f | !f.nullable ) && fields().exists( f | !f.nullable ) »
+				// constructor for all fields that mustn't be null
+				public «name»( «FOREACH fields().select( f | !f.nullable ) AS f SEPARATOR ", "»«f.typeName()» «f.name»«ENDFOREACH») {
+					«FOREACH fields() AS f»
+						this.«f.setter()»( «f.name» );
+					«ENDFOREACH»
+				}
+			«ENDIF»
+		
 				
 			// all fields constructor
 			public «name»(«FOREACH fields() AS f SEPARATOR ", "»«f.typeName()» «f.name»«ENDFOREACH») {

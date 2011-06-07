@@ -14,13 +14,19 @@
 		import java.util.List;
 		import javax.persistence.EntityManager;
 		
+		import com.google.inject.Inject;
+		import com.google.inject.persist.Transactional;
+		
 		import «package()».domain.*;
 		
 		public class «name»DAO extends AbstractDAO<«name»> {
+			
+			@Inject
 			public «name»DAO( EntityManager em ) {
 				super( em );
 			}
 
+			@Transactional
 			@SuppressWarnings("unchecked")
 			public List<«name»> findAll() {
 				return getEntityManager().createQuery( "SELECT obj FROM «name» obj" ).getResultList();
@@ -28,6 +34,7 @@
 
 			«FOREACH attributes AS attr»
 				«IF attr.unique»
+					@Transactional
 					@SuppressWarnings("unchecked")
 					public «name» findBy«attr.name.toFirstUpper()»( «attr.type.name» «attr.name» ) {
 						return («name») getEntityManager().createQuery(
@@ -36,6 +43,7 @@
 							.getSingleResult();
 					}
 				«ELSE»
+					@Transactional
 					@SuppressWarnings("unchecked")
 					public List<«name»> findBy«attr.name.toFirstUpper()»( «attr.type.name» «attr.name» ) {
 						return getEntityManager().createQuery(
