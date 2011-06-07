@@ -1,4 +1,4 @@
-package at.ac.tuwien.swag.webapp.service;
+package at.ac.tuwien.swag.webapp.service.impl;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -7,6 +7,7 @@ import java.util.Set;
 import org.apache.wicket.util.lang.Objects;
 
 import at.ac.tuwien.swag.webapp.AuthorizationException;
+import at.ac.tuwien.swag.webapp.service.LoginService;
 
 public class LoginServiceImpl implements LoginService {
 
