@@ -12,6 +12,8 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
+import com.google.inject.Inject;
+
 import at.ac.tuwien.swag.model.dao.MapDAO;
 import at.ac.tuwien.swag.model.dao.MessageDAO;
 import at.ac.tuwien.swag.model.dao.SquareDAO;
@@ -23,9 +25,14 @@ import at.ac.tuwien.swag.model.domain.User;
 
 public class TestData extends InPage {
     private static final long serialVersionUID = -5939284250869774500L;
-	private Label testDataLabel;
-	private UserDAO userDao;
-	private MapDAO mapDao;
+	
+    @Inject
+    private MapDAO mapDao;
+    
+    @Inject
+    private UserDAO userDao;
+    
+    private Label testDataLabel;
 	private MessageDAO messageDao;
 	private SquareDAO squareDao;
 	private EntityManagerFactory factory;
@@ -42,9 +49,7 @@ public class TestData extends InPage {
       em = factory.createEntityManager();
 
       tx = em.getTransaction();
-      
-       userDao 		= new UserDAO(em);
-       mapDao		= new MapDAO(em);
+     
        messageDao 	= new MessageDAO(em);
        squareDao 	= new SquareDAO(em);
       
@@ -113,7 +118,7 @@ public class TestData extends InPage {
         Integer yAxis = 1;
 
         List<Square> squares = new ArrayList<Square>();
-        tx.begin();
+       
         for (int i = 0; i < 100; i++) {
             if (xAxis > 10) {
                 xAxis = 1;
@@ -131,8 +136,8 @@ public class TestData extends InPage {
 
         map.setSquares(squares);
 
-       
-        em.persist(map);
+        tx.begin();
+        this.mapDao.insert(map);
         for (Square sq : squares) {
             em.persist(sq);
         }
