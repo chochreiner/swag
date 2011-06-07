@@ -49,6 +49,7 @@
  		  <arg line="stop-domain"/>
      	   </java>
     </target>
+    <target name="restart-domain" depends="stop-domain, start-domain"/>		
 	
     <target name="deploy" depends="check">
 	   <java jar="${admin.cli.jar}" fork="true" spawn="false">
