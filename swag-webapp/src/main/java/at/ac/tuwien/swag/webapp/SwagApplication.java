@@ -39,6 +39,7 @@ public class SwagApplication extends AuthenticatedWebApplication {
 
 		// enable Guice injection
 		injector = new GuiceComponentInjector( this, new WebappModule() );
+		
 		getComponentInstantiationListeners().add( injector );
 		
 		// enable annotation based authorization

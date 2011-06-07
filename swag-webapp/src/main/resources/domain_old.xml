@@ -1,93 +1,102 @@
 <domain log-root="${com.sun.aas.instanceRoot}/logs" application-root="${com.sun.aas.instanceRoot}/applications" version="43">
-  <system-applications>
-    <application context-root="" location="${com.sun.aas.installRootURI}/lib/install/applications/__admingui" name="__admingui" directory-deployed="true" object-type="system-admin">
-      <module name="__admingui">
-        <engine sniffer="web"></engine>
-        <engine sniffer="security"></engine>
-      </module>
-    </application>
-  </system-applications>
-  <applications>
-    <application context-root="/swag" location="${com.sun.aas.instanceRootURI}/applications/swag-webapp-1.0-SNAPSHOT/" name="swag-webapp-1.0-SNAPSHOT" object-type="user">
-      <property name="appLocation" value="${com.sun.aas.instanceRootURI}/applications/__internal/swag-webapp-1.0-SNAPSHOT/swag-webapp-1858680602753322525.0-SNAPSHOT.war"></property>
-      <property name="defaultAppName" value="swag-webapp-1858680602753322525.0-SNAPSHOT"></property>
-      <property name="org.glassfish.persistence.app_name_property" value="swag-webapp-1.0-SNAPSHOT"></property>
-      <module name="swag-webapp-1.0-SNAPSHOT">
-        <engine sniffer="jpa"></engine>
-        <engine sniffer="security"></engine>
-        <engine sniffer="web"></engine>
-      </module>
-    </application>
-  </applications>
-  <resources>
-    <jdbc-resource pool-name="__TimerPool" jndi-name="jdbc/__TimerPool" object-type="system-admin"></jdbc-resource>
-    <jdbc-resource pool-name="DerbyPool" jndi-name="jdbc/__default"></jdbc-resource>
-    <jdbc-connection-pool datasource-classname="org.apache.derby.jdbc.EmbeddedXADataSource" res-type="javax.sql.XADataSource" name="__TimerPool">
-      <property name="databaseName" value="${com.sun.aas.instanceRoot}/lib/databases/ejbtimer"></property>
-      <property name="connectionAttributes" value=";create=true"></property>
-    </jdbc-connection-pool>
-    <jdbc-connection-pool is-isolation-level-guaranteed="false" datasource-classname="org.apache.derby.jdbc.ClientDataSource" res-type="javax.sql.DataSource" name="DerbyPool">
-      <property name="PortNumber" value="1527"></property>
-      <property name="Password" value="APP"></property>
-      <property name="User" value="APP"></property>
-      <property name="serverName" value="localhost"></property>
-      <property name="DatabaseName" value="sun-appserv-samples"></property>
-      <property name="connectionAttributes" value=";create=true"></property>
-    </jdbc-connection-pool>
-    <jdbc-connection-pool driver-classname="" datasource-classname="org.postgresql.ds.PGConnectionPoolDataSource" res-type="javax.sql.ConnectionPoolDataSource" description="" name="PostgresqlPool" ping="true">
-      <property name="databaseName" value="swa"></property>
-      <property name="datasourceName" value="swag_ds"></property>
-      <property name="serverName" value="localhost"></property>
-      <property name="user" value="swa"></property>
-      <property name="password" value="swa11"></property>
-    </jdbc-connection-pool>
-    <jdbc-resource pool-name="PostgresqlPool" description="" jndi-name="jdbc/__PostgresqlPool"></jdbc-resource>
-  </resources>
-  <servers>
-    <server name="server" config-ref="server-config">
-      <application-ref ref="__admingui" virtual-servers="__asadmin"></application-ref>
-      <application-ref ref="swag-webapp-1.0-SNAPSHOT" virtual-servers="server"></application-ref>
-      <resource-ref ref="jdbc/__TimerPool"></resource-ref>
-      <resource-ref ref="jdbc/__default"></resource-ref>
-      <resource-ref ref="jdbc/__PostgresqlPool"></resource-ref>
-    </server>
-  </servers>
-  <nodes>
-    <node node-host="localhost" name="localhost-swa" type="CONFIG" install-dir="${com.sun.aas.productRoot}"></node>
-  </nodes>
-  <configs>
-    <config name="server-config">
-      <http-service>
-        <access-log></access-log>
-        <virtual-server id="server" network-listeners="http-listener-1,http-listener-2"></virtual-server>
-        <virtual-server id="__asadmin" network-listeners="admin-listener"></virtual-server>
-      </http-service>
-      <iiop-service>
-        <orb use-thread-pool-ids="thread-pool-1"></orb>
-        <iiop-listener port="3700" id="orb-listener-1" address="0.0.0.0" lazy-init="true"></iiop-listener>
-        <iiop-listener port="3820" id="SSL" address="0.0.0.0" security-enabled="true">
-          <ssl classname="com.sun.enterprise.security.ssl.GlassfishSSLImpl" cert-nickname="s1as"></ssl>
-        </iiop-listener>
-        <iiop-listener port="3920" id="SSL_MUTUALAUTH" address="0.0.0.0" security-enabled="true">
-          <ssl classname="com.sun.enterprise.security.ssl.GlassfishSSLImpl" cert-nickname="s1as" client-auth-enabled="true"></ssl>
-        </iiop-listener>
-      </iiop-service>
-      <admin-service system-jmx-connector-name="system" type="das-and-server">
-        <jmx-connector port="8686" address="0.0.0.0" security-enabled="false" auth-realm-name="admin-realm" name="system"></jmx-connector>
-        <property name="adminConsoleContextRoot" value="/admin"></property>
-        <property name="adminConsoleDownloadLocation" value="${com.sun.aas.installRoot}/lib/install/applications/admingui.war"></property>
-        <property name="ipsRoot" value="${com.sun.aas.installRoot}/.."></property>
-        <das-config></das-config>
-      </admin-service>
-      <connector-service></connector-service>
-      <web-container>
-        <session-config>
-          <session-manager>
-            <manager-properties></manager-properties>
-            <store-properties></store-properties>
-          </session-manager>
-          <session-properties></session-properties>
-        </session-config>
+	<system-applications>
+		<application context-root="" 
+		             location="${com.sun.aas.installRootURI}/lib/install/applications/__admingui" 
+		             name="__admingui" directory-deployed="true" 
+		             object-type="system-admin">
+			<module name="__admingui">
+		        <engine sniffer="web"></engine>
+		        <engine sniffer="security"></engine>
+			</module>
+		</application>
+	</system-applications>
+
+	<applications>
+	</applications>
+
+	<resources>
+		<jdbc-resource pool-name="__TimerPool" jndi-name="jdbc/__TimerPool" object-type="system-admin"></jdbc-resource>
+		<jdbc-resource pool-name="DerbyPool" jndi-name="jdbc/__default"></jdbc-resource>
+		<jdbc-connection-pool datasource-classname="org.apache.derby.jdbc.EmbeddedXADataSource" res-type="javax.sql.XADataSource" name="__TimerPool">
+			<property name="databaseName" value="${com.sun.aas.instanceRoot}/lib/databases/ejbtimer"></property>
+			<property name="connectionAttributes" value=";create=true"></property>
+		</jdbc-connection-pool>
+
+		<admin-object-resource enabled="true" 
+		                       jndi-name="jms/Mail"
+                               res-adapter="jmsra" res-type="javax.jms.Queue">
+			<property name="Name" value="MailQueue" />
+		</admin-object-resource>
+		
+		<admin-object-resource enabled="true" 
+		                       jndi-name="jms/Action"
+                               res-adapter="jmsra" res-type="javax.jms.Queue">
+			<property name="Name" value="ActionQueue" />
+		</admin-object-resource>
+
+		<!-- FACTORY & POOL -->
+		<connector-resource jndi-name="jms/ConnectionFactory"
+    	                    pool-name="jms/ConnectionFactoryPool" />
+		<connector-connection-pool name="jms/ConnectionFactoryPool"
+		                           connection-definition-name="javax.jms.ConnectionFactory"
+    	                           resource-adapter-name="jmsra" />
+		<jdbc-resource jndi-name="swag_ds" pool-name="swag_pool" />
+		<jdbc-connection-pool name="swag_pool"
+		                      datasource-classname="org.postgresql.ds.PGConnectionPoolDataSource"
+		                      res-type="javax.sql.ConnectionPoolDataSource">
+			<property name="databaseName" value="swa" />
+			<property name="serverName"   value="localhost" />
+			<property name="portNumber"   value="5432" />
+			<property name="User"         value="swa" />
+			<property name="Password"     value="swa11" />
+			<property name="URL"          value="jdbc:postgresql://localhost:5432/swa" />
+			<property name="driverClass"  value="org.postgresql.Driver" />
+		</jdbc-connection-pool>
+	</resources>
+
+	<servers>
+		<server name="server" config-ref="server-config">
+			<application-ref ref="__admingui" virtual-servers="__asadmin"></application-ref>
+			<resource-ref ref="jdbc/__TimerPool"></resource-ref>
+			<resource-ref ref="jdbc/__default"></resource-ref>
+		</server>
+		</servers>
+			<nodes>
+				<node node-host="localhost" name="localhost-domain1" type="CONFIG" install-dir="${com.sun.aas.productRoot}"></node>
+			</nodes>
+		<configs>
+			<config name="server-config">
+			<http-service>
+				<access-log></access-log>
+				<virtual-server id="server" network-listeners="http-listener-1,http-listener-2"></virtual-server>
+				<virtual-server id="__asadmin" network-listeners="admin-listener"></virtual-server>
+			</http-service>
+			<iiop-service>
+				<orb use-thread-pool-ids="thread-pool-1"></orb>
+				<iiop-listener port="3700" id="orb-listener-1" address="0.0.0.0" lazy-init="true"></iiop-listener>
+			<iiop-listener port="3820" id="SSL" address="0.0.0.0" security-enabled="true">
+				<ssl classname="com.sun.enterprise.security.ssl.GlassfishSSLImpl" cert-nickname="s1as"></ssl>
+			</iiop-listener>
+			<iiop-listener port="3920" id="SSL_MUTUALAUTH" address="0.0.0.0" security-enabled="true">
+				<ssl classname="com.sun.enterprise.security.ssl.GlassfishSSLImpl" cert-nickname="s1as" client-auth-enabled="true"></ssl>
+			</iiop-listener>
+			</iiop-service>
+			<admin-service system-jmx-connector-name="system" type="das-and-server">
+				<jmx-connector port="8686" address="0.0.0.0" security-enabled="false" auth-realm-name="admin-realm" name="system"></jmx-connector>
+				<property name="adminConsoleContextRoot" value="/admin"></property>
+				<property name="adminConsoleDownloadLocation" value="${com.sun.aas.installRoot}/lib/install/applications/admingui.war"></property>
+				<property name="ipsRoot" value="${com.sun.aas.installRoot}/.."></property>
+				<das-config></das-config>
+			</admin-service>
+			<connector-service></connector-service>
+			<web-container>
+			<session-config>
+				<session-manager>
+					<manager-properties></manager-properties>
+					<store-properties></store-properties>
+				</session-manager>
+				<session-properties></session-properties>
+				</session-config>
       </web-container>
       <ejb-container session-store="${com.sun.aas.instanceRoot}/session-store">
         <ejb-timer-service></ejb-timer-service>
@@ -410,7 +419,7 @@
       <connector-service></connector-service>
     </config>
   </configs>
-  <property name="administrative.domain.name" value="swa"></property>
+  <property name="administrative.domain.name" value="domain1"></property>
   <load-balancers></load-balancers>
   <lb-configs></lb-configs>
   <clusters></clusters>

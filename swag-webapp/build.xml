@@ -6,6 +6,19 @@
 
 <project name="swag-webapp" default="package" basedir=".">
 
+    <property environment="env"/>
+    <property name="glassfish.home" value="${env.GLASSFISH_HOME}"/>
+	
+	<property name="app-name"       value="swag"/>
+    <property name="domain.dir"     value="${glassfish.home}/domains/${app-name}"/>
+    <property name="admin.cli.jar"  value="${glassfish.home}/modules/admin-cli.jar"/>
+    <property name="jmsconfig.name" value="jms_config.xml"/>
+
+	<property name="war-name" value="swag-webapp-1.0-SNAPSHOT"/>
+	<property name="war-file" value="target/${war-name}.war"/>
+	
+    <property name="setup.dir" value="setup"/>
+	
   <!-- ====================================================================== -->
   <!-- Import maven-build.xml into the current project                        -->
   <!-- ====================================================================== -->
@@ -20,4 +33,41 @@
     <echo message="Please run: $ant -projecthelp"/>
   </target>
 
+    <target name="check">
+        <fail unless="env.GLASSFISH_HOME">
+            #### You must install GlassFish V3 and set the GLASSFISH_HOME variable
+        </fail>
+    </target>
+
+    <target name="start-domain" depends="check">		
+ 	   <java jar="${admin.cli.jar}" fork="true" spawn="false">
+ 		  <arg line="start-domain"/>
+     	   </java>
+    </target>
+    <target name="stop-domain" depends="check">		
+ 	   <java jar="${admin.cli.jar}" fork="true" spawn="false">
+ 		  <arg line="stop-domain"/>
+     	   </java>
+    </target>
+	
+    <target name="deploy" depends="check">
+	   <java jar="${admin.cli.jar}" fork="true" spawn="false">
+		  <arg line="deploy --contextroot=${app-name} ${war-file}"/>
+    	   </java>
+    </target>
+    
+    <target name="undeploy" depends="check">
+		<java jar="${admin.cli.jar}" fork="true" spawn="false">
+			<arg line="undeploy ${war-name}"/>
+		</java>
+    </target>
+    
+    <target name="redeploy" depends="undeploy,deploy" />
+	
+	<target name="build" depends="undeploy">
+		<exec executable="mvn">
+			<arg value="package"/>
+		</exec>
+		<antcall target="deploy"/>
+	</target>
 </project>

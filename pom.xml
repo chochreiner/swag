@@ -123,6 +123,12 @@
 		<artifactId>postgresql</artifactId>
 		<version>8.4-702.jdbc4</version>
 	</dependency>
+	<!-- JAVA EE DEPENDENCY (JPA, EJB, ...) -->
+	<dependency>
+		<groupId>javax</groupId>
+		<artifactId>javaee-api</artifactId>
+		<version>6.0</version>
+	</dependency>
    <!-- JETTY DEPENDENCIES FOR TESTING -->
    <dependency>
     <groupId>org.eclipse.jetty.aggregate</groupId>
