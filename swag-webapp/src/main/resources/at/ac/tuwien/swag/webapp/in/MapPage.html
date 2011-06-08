@@ -4,11 +4,12 @@
 <table id="gameMapNav">
 	<tr>
 		<td></td>
-		<td><a class ="mapNav" wicket:id="mapUp">[mapUp]</a></td>
+		<td><a class ="mapNav" wicket:id="mapUp"><span>[mapUp]</span></a></td>
 		<td></td>
 	</tr><tr>
-		<td><a class ="mapNav" wicket:id="mapLeft">[mapLeft]</a></td>
-		<td><table id = "gameMap" wicket:id="gameMapContainer" border="1">
+		<td><a class ="mapNav" wicket:id="mapLeft"><span>[mapLeft]</span></a></td>
+		<td>
+			<table id = "gameMap" wicket:id="gameMapContainer">
 			    <tr wicket:id="gameMap">
 					<td wicket:id="row">
 			        	<span class ="square" wicket:id="square">[cell] </span>
@@ -16,10 +17,10 @@
 			    </tr>
 			</table>
 		</td>
-		<td><a class ="mapNav" wicket:id="mapRight">[mapRight]</a></td>
+		<td><a class ="mapNav" wicket:id="mapRight"><span>[mapRight]</span></a></td>
 	</tr><tr>
 		<td></td>
-		<td><a class ="mapNav" wicket:id="mapDown">[mapDown]</a></td>
+		<td><a class ="mapNav" wicket:id="mapDown"><span>[mapDown]</span></a></td>
 		<td></td>
 	</tr>
 </table>
