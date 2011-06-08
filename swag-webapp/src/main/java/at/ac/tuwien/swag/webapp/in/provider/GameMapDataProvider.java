@@ -17,7 +17,7 @@ public class GameMapDataProvider{
 	private MapDAO mapDao;
 	private SquareDAO squareDao;
 	private HashMap<Integer, HashMap<Integer,Square>> fullMap;
-
+	
 	public GameMapDataProvider(MapDAO mapDao, SquareDAO squareDao) {
 		this.mapDao = mapDao;
 		this.squareDao = squareDao;
@@ -60,16 +60,16 @@ public class GameMapDataProvider{
 		
 		ArrayList<List<Square>> mapList = new ArrayList<List<Square>>();
 		for(int y = startY; y <= endY; y++) {
-			System.out.println("BLAAAAAAAAAAAAAAAAAA"+y);
+			
 			HashMap<Integer, Square> row = this.fullMap.get(y);
 			if(row != null) {
 				
 				ArrayList<Square> mapRowList = new ArrayList<Square>();
 				for(int x = startX; x <= endX; x++) {
-					System.out.println("BLAAAAAAAAAAAAAAAAAA"+x);
+					
 					Square square = row.get(x);
 					if(square != null) {
-						System.out.println("BLAAAAAAAAAAAAAAAAAA"+square);
+						
 						mapRowList.add(square);
 					}else { return null;}
 				}
