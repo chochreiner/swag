@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.AjaxSelfUpdatingTimerBehavior;
+import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
 import org.apache.wicket.extensions.ajax.markup.html.IndicatingAjaxFallbackLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -36,6 +37,7 @@ public class MapPage extends InPage {
 	private int endX;
 	private int startY;
 	private int endY;
+	private WebMarkupContainer gameMapContainer;
 
     public MapPage(PageParameters parameters) {
         super(parameters);
@@ -86,10 +88,10 @@ public class MapPage extends InPage {
      };
        
         //encapsulate the ListView in a WebMarkupContainer in order for it to update
-        WebMarkupContainer gameMapContainer = new WebMarkupContainer("gameMapContainer");
+        gameMapContainer = new WebMarkupContainer("gameMapContainer");
         //generate a markup-id so the contents can be updated through an AJAX call
         gameMapContainer.setOutputMarkupId(true);
-        gameMapContainer.add(new AjaxSelfUpdatingTimerBehavior(Duration.seconds(1)));
+       gameMapContainer.add(new AjaxSelfUpdatingTimerBehavior(Duration.minutes(1)));
         // add the list view to the container
         gameMapContainer.add(gameMaplistView);
         // finally add the container to the page
@@ -106,7 +108,7 @@ public class MapPage extends InPage {
     
     private void setupNavigationLinks() {
     	
-    	add(new IndicatingAjaxFallbackLink<String>("mapUp") {
+    	add(new AjaxFallbackLink<String>("mapUp") {
 
     		private static final long serialVersionUID = 2323006706369304418L;
 
@@ -114,12 +116,12 @@ public class MapPage extends InPage {
 			public void onClick(AjaxRequestTarget target) {
 				startY --;
 				endY --;
-				
+				target.addComponent(gameMapContainer);
 			}
 
         });
     	
-    	add(new IndicatingAjaxFallbackLink<String>("mapDown") {
+    	add(new AjaxFallbackLink<String>("mapDown") {
 
     		private static final long serialVersionUID = 2323006706369304418L;
 
@@ -127,11 +129,12 @@ public class MapPage extends InPage {
 			public void onClick(AjaxRequestTarget target) {
 				startY ++;
 				endY ++;
+				target.addComponent(gameMapContainer);
 			}
 
         });
     	
-    	add(new IndicatingAjaxFallbackLink<String>("mapRight") {
+    	add(new AjaxFallbackLink<String>("mapRight") {
 
     		private static final long serialVersionUID = 2323006706369304418L;
 
@@ -139,12 +142,13 @@ public class MapPage extends InPage {
 			public void onClick(AjaxRequestTarget target) {
 				startX ++;
 				endX ++;
+				target.addComponent(gameMapContainer);
 				
 			}
 
         });
     	
-    	add(new IndicatingAjaxFallbackLink<String>("mapLeft") {
+    	add(new AjaxFallbackLink<String>("mapLeft") {
 
     		private static final long serialVersionUID = 2323006706369304418L;
 
@@ -152,7 +156,7 @@ public class MapPage extends InPage {
 			public void onClick(AjaxRequestTarget target) {
 				startX --;
 				endX --;
-				
+				target.addComponent(gameMapContainer);
 			}
 
         });
