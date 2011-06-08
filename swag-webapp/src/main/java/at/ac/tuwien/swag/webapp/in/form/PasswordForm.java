@@ -46,9 +46,9 @@ public class PasswordForm extends Form<Void> {
             return;
         }
 
-        user = users.findByName(username).get(0);
+        user = users.findByUsername(username);
 
-        user = users.findByName(username).get(0);
+        user = users.findByUsername(username);
         user.setPassword(password1.getModel().getObject());
 
         users.update(user);

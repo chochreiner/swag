@@ -32,7 +32,7 @@ public class SettingsForm extends Form<Void> {
 
         String username = ((SwagWebSession) getSession()).getUsername();
 
-        user = users.findByName(username).get(0);
+        user = users.findByUsername(username);
 
         // TODO inject current values
 
@@ -50,7 +50,7 @@ public class SettingsForm extends Form<Void> {
     protected void onSubmit() {
         String username = ((SwagWebSession) getSession()).getUsername();
 
-        user = users.findByName(username).get(0);
+        user = users.findByUsername(username);
         user.setFullname(fullname.getModel().getObject());
         user.setEmail(email.getModel().getObject());
         user.setAddress(address.getModel().getObject());
