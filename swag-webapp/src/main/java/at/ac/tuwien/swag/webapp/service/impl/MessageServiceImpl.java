@@ -33,18 +33,14 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public List<MessageDTO> getInMessages(String user) {
-        String query =
-            "SELECT m FROM Message m LEFT JOIN FETCH m.from LEFT JOIN FETCH m.to AS y WHERE y.name = :username";
-
-        Map<String, String> values = new HashMap<String, String>();
-        values.put("username", user);
-
-        List<Message> inMessages = messages.findByQuery(query, values);
-        List<MessageDTO> result = new ArrayList<MessageDTO>();
-
+    public List<MessageDTO> getInMessages(String username) {
+    	User user = users.findByUsername( username );
+    	
+    	Set<Message>     inMessages = user.getReceivedMessages();
+    	List<MessageDTO> dtos       = new ArrayList<MessageDTO>( inMessages.size() );
+    	
         for (Message m : inMessages) {
-            result.add(
+            dtos.add(
             	new MessageDTO(
             		m.getTimestamp(),
             		m.getSubject(),
@@ -65,22 +61,18 @@ public class MessageServiceImpl implements MessageService {
             );
         }
 
-        return result;
+        return dtos;
     }
 
     @Override
-    public List<MessageDTO> getOutMessages(String user) {
-        String query =
-            "SELECT m FROM Message m LEFT JOIN FETCH m.from WHERE m.from.name = :username";
+    public List<MessageDTO> getOutMessages(String username) {
+    	User user = users.findByUsername( username );
+    	
+    	List<Message>    outMessages = user.getSentMessages();
+    	List<MessageDTO> dtos        = new ArrayList<MessageDTO>( outMessages.size() );
 
-        Map<String, String> values = new HashMap<String, String>();
-        values.put("username", user);
-
-        List<Message> inMessages = messages.findByQuery(query, values);
-        List<MessageDTO> result = new ArrayList<MessageDTO>();
-
-        for (Message m : inMessages) {
-            result.add(
+        for ( Message m : outMessages ) {
+            dtos.add(
             	new MessageDTO(
             		m.getTimestamp(), 
             		m.getSubject(), 
@@ -101,20 +93,19 @@ public class MessageServiceImpl implements MessageService {
             );
         }
 
-        return result;
+        return dtos;
     }
 
     @Override
     public List<MessageDTO> getNotifications(String user) {
         String query =
-            "SELECT m FROM Message m LEFT JOIN FETCH m.from LEFT JOIN FETCH m.to AS y WHERE y.name = :username AND m.from.name = :system";
+            "SELECT m FROM Message m LEFT JOIN FETCH m.from LEFT JOIN FETCH m.to AS y WHERE y.username = :username AND m.from.username = 'system'";
 
         Map<String, String> values = new HashMap<String, String>();
         values.put("username", user);
-        values.put("system", "system");
 
-        List<Message> inMessages = messages.findByQuery(query, values);
-        List<MessageDTO> result = new ArrayList<MessageDTO>();
+        List<Message>    inMessages = messages.findByQuery(query, values);
+        List<MessageDTO> result     = new ArrayList<MessageDTO>();
 
         for (Message m : inMessages) {
             result.add(
