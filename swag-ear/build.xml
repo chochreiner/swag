@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ====================================================================== -->
+<!-- Ant build file (http://ant.apache.org/) for Ant 1.6.2 or above.        -->
+<!-- ====================================================================== -->
+
+<project name="swag-webapp" default="package" basedir=".">
+
+    <property environment="env"/>
+    <property name="glassfish.home" value="${env.GLASSFISH_HOME}"/>
+	
+	<property name="app-name"       value="swag"/>
+    <property name="domain.dir"     value="${glassfish.home}/domains/${app-name}"/>
+    <property name="admin.cli.jar"  value="${glassfish.home}/modules/admin-cli.jar"/>
+    <property name="jmsconfig.name" value="jms_config.xml"/>
+
+	<property name="war-name" value="swag-ear-1.0-SNAPSHOT"/>
+	<property name="war-file" value="target/${war-name}.ear"/>
+	
+    <property name="setup.dir" value="setup"/>
+	
+  <!-- ====================================================================== -->
+  <!-- Import maven-build.xml into the current project                        -->
+  <!-- ====================================================================== -->
+
+<!--  <import file="maven-build.xml"/>-->
+  
+  <!-- ====================================================================== -->
+  <!-- Help target                                                            -->
+  <!-- ====================================================================== -->
+
+  <target name="help">
+    <echo message="Please run: $ant -projecthelp"/>
+  </target>
+
+    <target name="check">
+        <fail unless="env.GLASSFISH_HOME">
+            #### You must install GlassFish V3 and set the GLASSFISH_HOME variable
+        </fail>
+    </target>
+
+	<!-- STARTING AND STOPPING GLASSFISH ********************************************-->
+    <target name="start-domain" depends="check">		
+ 	   <java jar="${admin.cli.jar}" fork="true" spawn="false">
+ 		  <arg line="start-domain"/>
+     	   </java>
+    </target>
+    <target name="stop-domain" depends="check">		
+ 	   <java jar="${admin.cli.jar}" fork="true" spawn="false">
+ 		  <arg line="stop-domain"/>
+     	   </java>
+    </target>
+    <target name="restart-domain" depends="stop-domain, start-domain"/>		
+	
+	<!-- APPLICATION DEPLOYMENT ********************************************-->
+    <target name="deploy" depends="check">
+	   <java jar="${admin.cli.jar}" fork="true" spawn="false">
+		  <arg line="deploy --contextroot=${app-name} ${war-file}"/>
+    	   </java>
+    </target>    
+    <target name="undeploy" depends="check">
+		<java jar="${admin.cli.jar}" fork="true" spawn="false">
+			<arg line="undeploy ${war-name}"/>
+		</java>
+    </target>
+    <target name="redeploy" depends="undeploy,deploy" />
+
+	<!-- SETTING UP JMS & STUFF ON GLASSFISH ********************************************-->
+	<!-- CREATE JMS RESOURCES -->
+	<target name="setup" depends="check">
+		<java jar="${admin.cli.jar}" fork="true" spawn="false">
+			<arg line="add-resources src/main/setup/glassfish-resources.xml"/>
+		</java>
+<!--		<java jar="${admin.cli.jar}" fork="true" spawn="false">
+			<arg line="create-connector-connection-pool - -raname jmsra 
+			                                            - -connectiondefinition javax.jms.ConnectionFactory
+			                                            swag.JMSPool" />
+		</java>
+		<java jar="${admin.cli.jar}" fork="true" spawn="false">
+			<arg line="create-jms-resource - -restype javax.jms.Queue 
+			                               - -enabled true
+			                               swag.queue.Example" />
+		</java>
+		<java jar="${admin.cli.jar}" fork="true" spawn="false">
+			<arg line="create-jms-resource - -restype javax.jms.Topic 
+			                               - -enabled true
+			                               swag.topic.Example" />
+		</java>-->
+	</target>
+	<!-- DESTROY JMS RESOURCES -->
+    <target name="clean" depends="check">
+		<java jar="${admin.cli.jar}" fork="true" spawn="false">
+			<arg line="delete-connector-connection-pool --cascade=true swag.JMSPool"/>
+		</java>
+		<java jar="${admin.cli.jar}" fork="true" spawn="false">
+			<arg line="delete-jms-resource swag.queue.Example"/>
+		</java>
+		<java jar="${admin.cli.jar}" fork="true" spawn="false">
+			<arg line="delete-jms-resource swag.topic.Example"/>
+		</java>
+    </target>
+	
+	<!-- BUILD AND DEPLOY TO SERVER ********************************************-->
+	<target name="build" depends="undeploy">
+		<exec executable="mvn">
+			<arg value="package"/>
+		</exec>
+		<antcall target="deploy"/>
+	</target>
+</project>
