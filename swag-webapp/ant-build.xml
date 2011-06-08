@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="swag-webapp-helpers" default="build" basedir=".">
+	<!-- ***** PROPERTIES ***************************************************************** -->
+	<!-- glassfish -->
+    <property environment="env"/>
+    <property name="glassfish.home" value="${env.GLASSFISH_HOME}"/>
+	<property name="admin.cli.jar"  value="${glassfish.home}/modules/admin-cli.jar"/>
+	<property name="domain.dir"     value="${glassfish.home}/domains/${app-name}"/>
+	
+	<!-- application data -->
+	<property name="application.name" value="swag-webapp"/>
+
+	<property name="war.name" value="${application.name}-1.0-SNAPSHOT"/>
+	<property name="war.file" value="target/${war.name}.war"/>
+	
+	<!-- INITIALIZE PROPERTIES & CHECK THE ENVIRONMENT ************************************ -->
+    <target name="init">
+        <fail unless="env.GLASSFISH_HOME">
+            #### You must install GlassFish V3 and set the GLASSFISH_HOME variable
+        </fail>
+    	
+    	<!-- default values for properties -->
+    	<property name="context.root" value="${application.name}"/>
+    </target>
+	
+	<!-- START AND STOP GLASSFISH ********************************************************* -->
+    <target name="start-domain" depends="init">		
+ 	   <java jar="${admin.cli.jar}" fork="true" spawn="false">
+ 		  <arg line="start-domain"/>
+     	   </java>
+    </target>
+    <target name="stop-domain" depends="init">		
+ 	   <java jar="${admin.cli.jar}" fork="true" spawn="false">
+ 		  <arg line="stop-domain"/>
+     	   </java>
+    </target>
+    <target name="restart-domain" depends="stop-domain, start-domain"/>	
+ 	   	
+	<!-- APPLICATION DEPLOYMENT *********************************************************** -->
+    <target name="deploy" depends="init">
+    	<asadmin command="deploy" parameters="--contextroot=${application.name} ${war.file}"/>
+    </target>    
+    <target name="undeploy" depends="init">
+    	<asadmin command="undeploy" parameters="${war.name}"/>
+    </target>
+    <target name="redeploy" depends="undeploy,deploy" />
+	
+	<target name="build" depends="undeploy, setup-jms">
+		<exec executable="mvn">
+			<arg value="package"/>
+		</exec>
+		<antcall target="deploy"/>
+	</target>
+	
+	<!-- MANAGE GLASSFISH RESOURCES ******************************************************* -->
+	<target name="setup-jms" depends="clean-jms">
+		<asadmin command="create-connector-connection-pool"
+		         parameters="--raname jmsra 
+		                     --connectiondefinition javax.jms.ConnectionFactory
+		                     swag.JMSPool"/>
+	</target>
+	<target name="clean-jms">
+		<asadmin command="delete-connector-connection-pool"
+		         parameters="--cascade=true swag.JMSPool"/>
+	</target>
+
+	<macrodef name="create-jms-queue">
+		<attribute name="name"/>
+		<sequential>
+			<create-jms-resource name="@{name}" type="javax.jms.Queue"/>
+		</sequential>
+	</macrodef>
+	<macrodef name="create-jms-topic">
+		<attribute name="name"/>
+		<sequential>
+			<create-jms-resource name="@{name}" type="javax.jms.Topic"/>
+		</sequential>
+	</macrodef>
+	
+	<macrodef name="create-jms-resource">
+		<attribute name="name"/>
+		<attribute name="type"/>	
+		<attribute name="enabled" default="true"/>	
+		<sequential>
+			<asadmin command="create-jms-resource"
+			         parameters="--restype=@{type}
+			                     --enabled=@{enabled}
+			                     @{name}"/>
+		</sequential>
+	</macrodef>
+	<macrodef name="delete-jms-resource">
+		<attribute name="name"/>
+		<sequential>
+			<asadmin command="delete-jms-resource" parameters="@name"/>
+		</sequential>
+	</macrodef>
+	
+	<macrodef name="asadmin">
+		<attribute name="command"/>
+		<attribute name="parameters"/>
+		<sequential>
+			<java jar="${admin.cli.jar}" fork="true" spawn="false">
+				<arg line="@{command} @{parameters}"/>
+			</java>
+		</sequential>
+	</macrodef>
+</project>

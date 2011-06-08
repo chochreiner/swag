@@ -4,22 +4,14 @@
 <!-- Ant build file (http://ant.apache.org/) for Ant 1.6.2 or above.        -->
 <!-- ====================================================================== -->
 
-<project name="swag-webapp" default="package" basedir=".">
+<project name="swag-auth" default="package" basedir=".">
 
-
-	
   <!-- ====================================================================== -->
   <!-- Import maven-build.xml into the current project                        -->
   <!-- ====================================================================== -->
 
   <import file="maven-build.xml"/>
-
-  <!-- ====================================================================== -->
-  <!-- Import ant-build.xml into the current project                        -->
-  <!-- ====================================================================== -->
-
-  <import file="ant-build.xml"/>
-	  	
+  
   <!-- ====================================================================== -->
   <!-- Help target                                                            -->
   <!-- ====================================================================== -->
@@ -28,4 +20,7 @@
     <echo message="Please run: $ant -projecthelp"/>
   </target>
 
+	<!-- import our own ant tasks -->
+	<import file="ant-build.xml"/>
+	
 </project>

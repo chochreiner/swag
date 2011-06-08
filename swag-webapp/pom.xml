@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
@@ -5,14 +6,14 @@
 		<groupId>at.ac.tuwien</groupId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
-	
+
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>at.ac.tuwien</groupId>
 	<artifactId>swag-webapp</artifactId>
 	<packaging>war</packaging>
 	<version>1.0-SNAPSHOT</version>
 	<name>swag-webapp</name>
-	<description></description>
+	<description />
 
 	<dependencies>
 		<dependency>
@@ -68,8 +69,8 @@
 			<groupId>postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 		</dependency>
-			<!-- JAVA EE DEPENDENCY (JPA, EJB, ...) -->
-			<dependency>
+		<!-- JAVA EE DEPENDENCY (JPA, EJB, ...) -->
+		<dependency>
 			<groupId>javax</groupId>
 			<artifactId>javaee-api</artifactId>
 		</dependency>
@@ -87,7 +88,7 @@
 		</dependency>
 		<dependency>
 			<groupId>javax.jms</groupId>
-            <artifactId>jms</artifactId>
+			<artifactId>jms</artifactId>
 		</dependency>
 		<!-- APACHE COMMONS UTILITIES -->
 		<dependency>
@@ -97,70 +98,24 @@
 	</dependencies>
 	<build>
 		<plugins>
-			<!-- REDEPLOY THE APP WITH ANT -->
+			<!-- RUN ANT TASKS -->
 			<plugin>
 				<artifactId>maven-antrun-plugin</artifactId>
-					<executions>
-						<execution>
-							<id>ant-magic</id>
-							<phase>package</phase>
-							<goals>
-								<goal>run</goal>
-							</goals>
-							<configuration>
-								<tasks>
-									<ant antfile="${basedir}/build.xml" target="redeploy"/>
-								</tasks>
-							</configuration>
-						</execution>
-					</executions>
-			</plugin>
-			<!-- EMBEDDED GLASSFISH -->
-<!--
-			<plugin>
-				<groupId>org.glassfish</groupId>
-				<artifactId>maven-embedded-glassfish-plugin</artifactId>
-				<version>3.1</version>
-				<configuration>
-					<serverID>${project.name}</serverID>
-                  	<name>${project.name}</name>
-					<app>${project.build.directory}/${project.build.finalName}.war</app>
-					<contextRoot>/</contextRoot>
-					<configFile>${basedir}/src/main/resources/domain.xml</configFile>
-					<autoDelete>true</autoDelete>
-				</configuration>
 				<executions>
 					<execution>
-						<id>start-glassfish</id>
-						<phase>pre-integration-test</phase>
+						<id>redeploy to glassfish</id>
+						<phase>package</phase>
 						<goals>
-							<goal>start</goal>
+							<goal>run</goal>
 						</goals>
-					</execution>
-					<execution>
-						<id>glassfish-deploy</id>
-						<phase>pre-integration-test</phase>
-						<goals>
-							<goal>deploy</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>glassfish-undeploy</id>
-						<phase>post-integration-test</phase>
-						<goals>
-							<goal>undeploy</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>stop-glassfish</id>
-						<phase>post-integration-test</phase>
-						<goals>
-							<goal>stop</goal>
-						</goals>
+						<configuration>
+							<tasks>
+								<ant antfile="${basedir}/build.xml" target="redeploy" />
+							</tasks>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
--->
 		</plugins>
 		<resources>
 			<resource>
