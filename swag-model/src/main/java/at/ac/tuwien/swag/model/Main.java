@@ -26,13 +26,13 @@ import at.ac.tuwien.swag.model.domain.Square;
 import at.ac.tuwien.swag.model.domain.StoredRessource;
 import at.ac.tuwien.swag.model.domain.User;
 
-
 public class Main {
     public static void main(String[] args) throws Exception {
     	EntityManagerFactory factory = Persistence.createEntityManagerFactory("swag");
         EntityManager em = factory.createEntityManager();
 
         EntityTransaction tx = em.getTransaction();
+        
         UserDAO    userDao    = new UserDAO(em);
         MapDAO     mapDao     = new MapDAO(em);
         MessageDAO messageDao = new MessageDAO(em);
@@ -209,6 +209,6 @@ public class Main {
         }
 
         // UNDO EVERYTHING
-        SQLHelper.dropDatabase( em );
+        new SQLHelper( em ).dropDatabase();
     }
 }

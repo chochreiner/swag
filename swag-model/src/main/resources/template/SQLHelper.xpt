@@ -8,8 +8,19 @@
 		
 		import javax.persistence.*;
 		
-		public abstract class SQLHelper {
-			public static void removaAllRows( EntityManager em ) {
+		import com.google.inject.Inject;
+		
+		public class SQLHelper {
+			@Inject
+			private EntityManager em;
+		
+			public SQLHelper() {/**/}
+			
+			public SQLHelper( EntityManager em ) {
+				this.em = em;
+			}
+		
+			public void removaAllRows() {
 				EntityTransaction tx = em.getTransaction();
 				tx.begin();
 			
@@ -20,7 +31,7 @@
 				tx.commit();
 			}
 		
-			public static void dropDatabase( EntityManager em ) {
+			public void dropDatabase() {
 				EntityTransaction tx = em.getTransaction();
 				tx.begin();
 			
