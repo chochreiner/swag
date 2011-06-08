@@ -23,7 +23,7 @@ import com.google.inject.Inject;
 
 public class MapPage extends InPage {
     private static final long serialVersionUID = -5939284250869774500L;
-	private ListView gameMaplistView;
+	private ListView<List<Square>> gameMaplistView;
 
 	@Inject
     private MapDAO mapDao;
@@ -53,27 +53,29 @@ public class MapPage extends InPage {
         
         
         
-        IModel gameMapList =  new LoadableDetachableModel() {
-            protected Object load() {
+        IModel<List<List<Square>>> gameMapList =  new LoadableDetachableModel<List<List<Square>>>() {
+			private static final long serialVersionUID = 2042471436531963110L;
+
+			protected List<List<Square>> load() {
                 return getGameMapList();
             }
         };   
         
-     gameMaplistView = new ListView("gameMap", gameMapList) {
+     gameMaplistView = new ListView<List<Square>>("gameMap", gameMapList) {
 
 		private static final long serialVersionUID = 7083713778515545799L;
 
 		@Override
-		protected void populateItem( ListItem row) {
+		protected void populateItem( ListItem<List<Square>> row) {
 			
-			List rowList = (List) row.getModelObject();
+			List<Square> rowList = row.getModelObject();
 			
-			ListView rowListView = new ListView("row", rowList) {
+			ListView<Square> rowListView = new ListView<Square>("row", rowList) {
 
 				private static final long serialVersionUID = 3054181382288233598L;
 
 				@Override
-				protected void populateItem(ListItem squareList) {
+				protected void populateItem(ListItem<Square> squareList) {
 					
 					Square square = (Square) squareList.getModelObject();
 					squareList.add(new Label("square", square.getCoordX() +" / "+ square.getCoordY()));
@@ -104,7 +106,7 @@ public class MapPage extends InPage {
     
     private void setupNavigationLinks() {
     	
-    	add(new IndicatingAjaxFallbackLink("mapUp") {
+    	add(new IndicatingAjaxFallbackLink<String>("mapUp") {
 
     		private static final long serialVersionUID = 2323006706369304418L;
 
@@ -117,7 +119,7 @@ public class MapPage extends InPage {
 
         });
     	
-    	add(new IndicatingAjaxFallbackLink("mapDown") {
+    	add(new IndicatingAjaxFallbackLink<String>("mapDown") {
 
     		private static final long serialVersionUID = 2323006706369304418L;
 
@@ -129,7 +131,7 @@ public class MapPage extends InPage {
 
         });
     	
-    	add(new IndicatingAjaxFallbackLink("mapRight") {
+    	add(new IndicatingAjaxFallbackLink<String>("mapRight") {
 
     		private static final long serialVersionUID = 2323006706369304418L;
 
@@ -142,7 +144,7 @@ public class MapPage extends InPage {
 
         });
     	
-    	add(new IndicatingAjaxFallbackLink("mapLeft") {
+    	add(new IndicatingAjaxFallbackLink<String>("mapLeft") {
 
     		private static final long serialVersionUID = 2323006706369304418L;
 

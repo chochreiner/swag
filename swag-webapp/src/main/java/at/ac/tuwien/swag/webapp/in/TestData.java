@@ -10,11 +10,9 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import at.ac.tuwien.swag.model.dao.MapDAO;
-import at.ac.tuwien.swag.model.dao.MapUserDAO;
 import at.ac.tuwien.swag.model.dao.SquareDAO;
 import at.ac.tuwien.swag.model.dao.UserDAO;
 import at.ac.tuwien.swag.model.domain.Map;
-import at.ac.tuwien.swag.model.domain.MapUser;
 import at.ac.tuwien.swag.model.domain.Square;
 import at.ac.tuwien.swag.model.domain.User;
 import at.ac.tuwien.swag.webapp.service.PasswordHasher;
@@ -28,8 +26,8 @@ public class TestData extends InPage {
     private MapDAO mapDao;
     @Inject
     private UserDAO userDao;
-    @Inject
-    private MapUserDAO mapUserDao;
+//    @Inject
+//    private MapUserDAO mapUserDao;
     @Inject
 	private SquareDAO squareDao;
 
@@ -83,21 +81,21 @@ public class TestData extends InPage {
          userDao.commitTransaction();
     }
     
-    private void testGetUser() {
-    	 System.out.println("####### List registered users #######");
-
-         for (User user : userDao.getAll()) {
-          System.out.println(user);
-          }
-
-         System.out.println("####### Find user by EmailAdress #######");
-
-         
-         
-         for (User user : userDao.findByEmail("chef@imperiumRomanum.it")) {
-             System.out.println(user.getFullname() + " - " + user.getEmail());
-         }
-    }
+//    private void testGetUser() {
+//    	 System.out.println("####### List registered users #######");
+//
+//         for (User user : userDao.getAll()) {
+//          System.out.println(user);
+//          }
+//
+//         System.out.println("####### Find user by EmailAdress #######");
+//
+//         
+//         
+//         for (User user : userDao.findByEmail("chef@imperiumRomanum.it")) {
+//             System.out.println(user.getFullname() + " - " + user.getEmail());
+//         }
+//    }
     
     private void setupMap() {
     	System.out.println("####### Create Map and Squares #######");
@@ -115,7 +113,6 @@ public class TestData extends InPage {
         map.setYSize(endY);
 
         Integer xAxis = 1;
-        Integer yAxis = 1;
 
         List<Square> squares = new ArrayList<Square>();
        
@@ -143,51 +140,51 @@ public class TestData extends InPage {
         mapDao.commitTransaction();
     }
     
-    private void testMap() {
-    	
-    	System.out.println("####### Get Map and AssignPlayer #######");
-
-    	User nero     = userDao.findByUsername("nero");	    	
-    	User ariovist = userDao.findByUsername("ariovist");	
-    	
-        Map playground = mapDao.findByName("Markomannwar");
-        List<MapUser> users = new ArrayList<MapUser>();
-
-        List<Square> nerosquares = new ArrayList<Square>();
-        Square neroStartsquare = nerosquares.get(0);
-
-        neroStartsquare.setIsHomeBase(true);
-        nerosquares.add(neroStartsquare);
-
-        MapUser neroMap = new MapUser();
-        neroMap.setMap(playground);
-        neroMap.setUser(nero);
-        neroMap.setSquares(nerosquares);
-
-        users.add(neroMap);
-
-        List<Square> ariovistsquares = new ArrayList<Square>();
-        Square ariovistStartsquare = ariovistsquares.get(50);
-
-        ariovistStartsquare.setIsHomeBase(true);
-        ariovistsquares.add(ariovistStartsquare);
-
-        MapUser ariovistMap = new MapUser();
-        ariovistMap.setMap(playground);
-        ariovistMap.setUser(ariovist);
-        ariovistMap.setSquares(ariovistsquares);
-
-        users.add(ariovistMap);
-
-        playground.setUsers(users);
-
-        mapUserDao.beginTransaction();
-        	mapUserDao.insert(neroMap);
-        	mapUserDao.insert(ariovistMap);
-        	mapDao.insert(playground);
-        	squareDao.insert(neroStartsquare);
-        mapUserDao.commitTransaction();
-    }
+//    private void testMap() {
+//    	
+//    	System.out.println("####### Get Map and AssignPlayer #######");
+//
+//    	User nero     = userDao.findByUsername("nero");	    	
+//    	User ariovist = userDao.findByUsername("ariovist");	
+//    	
+//        Map playground = mapDao.findByName("Markomannwar");
+//        List<MapUser> users = new ArrayList<MapUser>();
+//
+//        List<Square> nerosquares = new ArrayList<Square>();
+//        Square neroStartsquare = nerosquares.get(0);
+//
+//        neroStartsquare.setIsHomeBase(true);
+//        nerosquares.add(neroStartsquare);
+//
+//        MapUser neroMap = new MapUser();
+//        neroMap.setMap(playground);
+//        neroMap.setUser(nero);
+//        neroMap.setSquares(nerosquares);
+//
+//        users.add(neroMap);
+//
+//        List<Square> ariovistsquares = new ArrayList<Square>();
+//        Square ariovistStartsquare = ariovistsquares.get(50);
+//
+//        ariovistStartsquare.setIsHomeBase(true);
+//        ariovistsquares.add(ariovistStartsquare);
+//
+//        MapUser ariovistMap = new MapUser();
+//        ariovistMap.setMap(playground);
+//        ariovistMap.setUser(ariovist);
+//        ariovistMap.setSquares(ariovistsquares);
+//
+//        users.add(ariovistMap);
+//
+//        playground.setUsers(users);
+//
+//        mapUserDao.beginTransaction();
+//        	mapUserDao.insert(neroMap);
+//        	mapUserDao.insert(ariovistMap);
+//        	mapDao.insert(playground);
+//        	squareDao.insert(neroStartsquare);
+//        mapUserDao.commitTransaction();
+//    }
     /*
     private void setupBuildingForUserNero() {
     	
@@ -220,20 +217,20 @@ public class TestData extends InPage {
         
     }
     */
-    private void printHomeSquare() {
-    	
-    	 System.out.println("####### Print Homesquares #######");
-
-         for (Square sq : squareDao.findByIsHomeBase(true)) {
-             System.out.println("Coords: " + sq.getCoordX() + sq.getCoordY());
-             if (sq.getBaseBuildings() != null) {
-                  System.out.println(sq.getBaseBuildings().toString());
-             }
-             if (sq.getResourceBuildings() != null) {
-                 // System.out.println(sq.getResourceBuildings().toString());
-             }
-         }
-    }
+//    private void printHomeSquare() {
+//    	
+//    	 System.out.println("####### Print Homesquares #######");
+//
+//         for (Square sq : squareDao.findByIsHomeBase(true)) {
+//             System.out.println("Coords: " + sq.getCoordX() + sq.getCoordY());
+//             if (sq.getBaseBuildings() != null) {
+//                  System.out.println(sq.getBaseBuildings().toString());
+//             }
+//             if (sq.getResourceBuildings() != null) {
+//                 // System.out.println(sq.getResourceBuildings().toString());
+//             }
+//         }
+//    }
     
     static void foo() {	
     

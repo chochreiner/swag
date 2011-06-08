@@ -5,13 +5,13 @@ import javax.persistence.NoResultException;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import com.google.inject.Inject;
-
 import at.ac.tuwien.swag.model.dao.UserDAO;
 import at.ac.tuwien.swag.model.domain.User;
 import at.ac.tuwien.swag.webapp.in.MainPage;
 import at.ac.tuwien.swag.webapp.out.form.LoginForm;
 import at.ac.tuwien.swag.webapp.service.PasswordHasher;
+
+import com.google.inject.Inject;
 
 public class LoginPage extends OutPage {
     private static final long serialVersionUID = -6712153643198619949L;
