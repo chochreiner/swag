@@ -7,11 +7,13 @@
  <version>1.0-SNAPSHOT</version>
  <name>swag-root</name>
  <modules>
-  <module>swag-model</module>
-  <module>swag-executor</module>
-  <module>swag-mail</module>
-  <module>swag-webapp</module>
-  <module>swag-util</module>
+    <module>swag-model</module>
+    <module>swag-executor</module>
+    <module>swag-webapp</module>
+    <module>swag-util</module>
+    <module>swag-notification</module>
+    <module>mailserver</module>
+    <module>swag-ear</module>
   </modules>
  <properties>
   <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -82,6 +84,11 @@
     <artifactId>junit</artifactId>
     <version>4.8.2</version>
     <scope>test</scope>
+   </dependency>
+   <dependency>
+     <groupId>dumbster</groupId>
+     <artifactId>dumbster</artifactId>
+     <version>1.6</version>
    </dependency>
    <!-- WICKET DEPENDENCIES -->
    <dependency>
