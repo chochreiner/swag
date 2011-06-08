@@ -2,8 +2,8 @@ package at.ac.tuwien.swag.webapp.service;
 
 public interface PasswordHasher {
 
-	byte[] generateSalt();
+	String hash( String password );
 	
-	byte[] hash( String password, byte[] salt );
+	boolean checkPassword( String plaintextPwd, String storedHash );
 	
 }
