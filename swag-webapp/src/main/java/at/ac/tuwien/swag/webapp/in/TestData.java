@@ -3,16 +3,12 @@ package at.ac.tuwien.swag.webapp.in;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
-
 import org.apache.wicket.Component;
 import org.apache.wicket.extensions.ajax.markup.html.AjaxLazyLoadPanel;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import at.ac.tuwien.swag.model.SQLHelper;
 import at.ac.tuwien.swag.model.dao.MapDAO;
 import at.ac.tuwien.swag.model.dao.MapUserDAO;
 import at.ac.tuwien.swag.model.dao.SquareDAO;
@@ -64,14 +60,14 @@ public class TestData extends InPage {
     	 System.out.println("####### Register users #######");
 
          User nero = new User();
-         nero.setName("nero");
+         nero.setUsername("nero");
          nero.setFullname("Nero Claudius Caesar Augustus Germanicus");
          nero.setAddress("Forum Romanum 1, Rom");
          nero.setEmail("chef@imperiumRomanum.it");
          nero.setPassword("servus");
 
          User ariovist = new User();
-         ariovist.setName("ariovist");
+         ariovist.setUsername("ariovist");
          ariovist.setFullname("Ariovist der Germanne");
          ariovist.setAddress("Erberg 1");
          ariovist.setEmail("chef@markomannenweb.de");
@@ -142,11 +138,8 @@ public class TestData extends InPage {
     	
     	System.out.println("####### Get Map and AssignPlayer #######");
 
-    	List<User> nerousers = userDao.findByName("nero");	
-    	User nero = nerousers.get(0);
-    	
-    	List<User> ariovistusers = userDao.findByName("nero");	
-    	User ariovist = ariovistusers.get(0);
+    	User nero     = userDao.findByUsername("nero");	    	
+    	User ariovist = userDao.findByUsername("ariovist");	
     	
         Map playground = mapDao.findByName("Markomannwar");
         List<MapUser> users = new ArrayList<MapUser>();

@@ -44,7 +44,7 @@ public class Outbox extends Panel {
                     String recieverString = "";
 
                     for (UserDTO reciever : message.getTo()) {
-                        recieverString += " " + reciever.getName() + " ";
+                        recieverString += " " + reciever.getUsername() + " ";
                     }
 
                     item.add(new Label("subject", message.getSubject()));

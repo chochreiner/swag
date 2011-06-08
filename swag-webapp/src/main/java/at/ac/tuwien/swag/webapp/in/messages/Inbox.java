@@ -41,7 +41,7 @@ public class Inbox extends Panel {
                     param.add("id", message.getId());
                     // TODO add bold text for unread message
                     item.add(new Label("subject", message.getSubject()));
-                    item.add(new Label("sender", message.getFrom().getName()));
+                    item.add(new Label("sender", message.getFrom().getUsername()));
                     item.add(new Label("date", formatter.format(message.getTimestamp())));
                     item.add(new BookmarkablePageLink<String>("view", MessageDetail.class, param));
                 }

@@ -1,5 +1,7 @@
 package at.ac.tuwien.swag.webapp.out.form;
 
+import javax.persistence.NoResultException;
+
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.RequiredTextField;
@@ -9,6 +11,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.util.lang.Objects;
 import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.validator.AbstractValidator;
+import org.apache.wicket.validation.validator.EmailAddressValidator;
 
 import at.ac.tuwien.swag.model.dao.UserDAO;
 import at.ac.tuwien.swag.model.domain.User;
@@ -46,20 +49,24 @@ public class RegisterForm extends Form<Void> {
         password  = new PasswordTextField("password", new Model<String>());
         password2 = new PasswordTextField("password2", new Model<String>());
         
-        this.add( new EqualPasswordInputValidator( password, password2 ) );
-        
-        email.add( new AbstractValidator<String>() {
+        // validators
+        username.add( new AbstractValidator<String>() {
 			private static final long serialVersionUID = -823294603268753833L;
 
 			@Override
 			protected void onValidate( IValidatable<String> validatable ) {
-				String email = validatable.getValue();
+				String username = validatable.getValue();
 				
-				if ( !email.matches( "[^@]+@[^.]+\\.[a-zA-Z0-9]+" ) ) {
-					error( validatable, "notAValidEmail" );
+				try {
+					userDAO.findByUsername( username );
+				} catch ( NoResultException e ) {
+					error( validatable, "userNameExists" );
 				}
 			}
         });
+        
+        this.add( new EqualPasswordInputValidator( password, password2 ) );
+        email.add( EmailAddressValidator.getInstance() );
         
         add(firstname);
         add(surname);
@@ -80,13 +87,8 @@ public class RegisterForm extends Form<Void> {
     	String address  = this.address.getModel().getObject();
     	
     	String email    = this.email.getModel().getObject();
-
-        if ( !Objects.equal( password, password2 ) ) {
-        	error("Repeated password is not the same as password");
-        	return;
-        }
     	
-    	User user = new User().name( username )
+    	User user = new User().username( username )
     	                      .fullname( fullname )
     	                      .address( address )
     	                      .email( email )

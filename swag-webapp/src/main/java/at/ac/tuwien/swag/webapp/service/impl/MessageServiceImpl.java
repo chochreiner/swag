@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 
 import at.ac.tuwien.swag.model.dao.MessageDAO;
 import at.ac.tuwien.swag.model.dao.UserDAO;
@@ -50,7 +51,7 @@ public class MessageServiceImpl implements MessageService {
             		"",
             		false,
             		new UserDTO(
-            			m.getFrom().getName(),
+            			m.getFrom().getUsername(),
             			"",
             			"",
             			"",
@@ -86,7 +87,7 @@ public class MessageServiceImpl implements MessageService {
             		"",
             		false,
             		new UserDTO(
-            			m.getFrom().getName(),
+            			m.getFrom().getUsername(),
             			"",
             			"",
             			"",
@@ -123,7 +124,7 @@ public class MessageServiceImpl implements MessageService {
             		"",
             		false,
             		new UserDTO(
-            			m.getFrom().getName(),
+            			m.getFrom().getUsername(),
             			"",
             			"",
             			"",
@@ -163,7 +164,7 @@ public class MessageServiceImpl implements MessageService {
         		m.getText(),
         		false,
         		new UserDTO(
-            		m.getFrom().getName(),
+            		m.getFrom().getUsername(),
             		"",
             		"",
             		"",
@@ -184,11 +185,11 @@ public class MessageServiceImpl implements MessageService {
         message.setTimestamp(new Date());
         message.setSubject(subject);
         message.setText(text);
-        message.setFrom(users.findByName(sender).get(0));
+        message.setFrom(users.findByUsername(sender));
 
         Set<User> recieverAsUser = new HashSet<User>();
         for (String rec : reciever) {
-            recieverAsUser.add(users.findByName(rec).get(0));
+            recieverAsUser.add(users.findByUsername(rec));
         }
 
         message.setTo(recieverAsUser);
@@ -208,10 +209,10 @@ public class MessageServiceImpl implements MessageService {
         message.setTimestamp(new Date());
         message.setSubject(subject);
         message.setText(text);
-        message.setFrom(users.findByName("postmaster").get(0));
+        message.setFrom( users.findByUsername("postmaster") );
 
         Set<User> recieverAsUser = new HashSet<User>();
-        recieverAsUser.add(users.findByName(reciever).get(0));
+        recieverAsUser.add( users.findByUsername(reciever) );
 
         message.setTo(recieverAsUser);
 
@@ -224,11 +225,14 @@ public class MessageServiceImpl implements MessageService {
     private void checkPostmaster() {
         // create postmaster aka root oder so
 
-        if (users.findByName("postmaster").isEmpty()) {
-            User user = new User();
-            user.setName("postmaster");
-            users.insert(user);
-        }
+    	try {
+    		users.findByUsername( "postmaster" );
+    	} catch ( NoResultException e ) {
+    		users.beginTransaction();
+    			User user = new User();
+    			user.setUsername("postmaster");
+    			users.insert(user);
+    		users.commitTransaction();
+    	}
     }
-
 }

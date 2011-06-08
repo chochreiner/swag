@@ -41,14 +41,14 @@ public class Main {
         System.out.println("####### Register users #######");
 
         User nero = new User();
-        nero.setName("nero");
+        nero.setUsername("nero");
         nero.setFullname("Nero Claudius Caesar Augustus Germanicus");
         nero.setAddress("Forum Romanum 1, Rom");
         nero.setEmail("chef@imperiumRomanum.it");
         nero.setPassword("servus");
 
         User ariovist = new User();
-        ariovist.setName("ariovist");
+        ariovist.setUsername("ariovist");
         ariovist.setFullname("Ariovist der Germanne");
         ariovist.setAddress("Erberg 1");
         ariovist.setEmail("chef@markomannenweb.de");

@@ -19,7 +19,7 @@
     <associations name="to" type="//@types.11" multiplicity="ManyToMany"/>
   </types>
   <types xsi:type="metamodel:Entity" name="User" tableName="users">
-    <attributes name="name" type="//@types.0"/>
+    <attributes name="username" type="//@types.0" unique="true"/>
     <attributes name="password" type="//@types.0"/>
     <attributes name="address" type="//@types.0"/>
     <attributes name="email" type="//@types.0"/>
