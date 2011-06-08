@@ -148,7 +148,7 @@ public class MessageServiceImpl implements MessageService {
             "SELECT m FROM Message m LEFT JOIN FETCH m.from LEFT JOIN FETCH m.to WHERE m.id = :number";
 
         Map<String, String> values = new HashMap<String, String>();
-        values.put("numbver", id.toString());
+        values.put("number", id.toString());
 
         List<Message> message = messages.findByQuery(query, values);
 
