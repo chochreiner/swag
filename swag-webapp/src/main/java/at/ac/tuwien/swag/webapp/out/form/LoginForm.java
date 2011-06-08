@@ -22,7 +22,7 @@ public class LoginForm extends Form<Void> {
 
         username = new RequiredTextField<String>("username", new Model<String>());
         password = new PasswordTextField("password", new Model<String>());
-
+        
         add(username);
         add(password);
     }

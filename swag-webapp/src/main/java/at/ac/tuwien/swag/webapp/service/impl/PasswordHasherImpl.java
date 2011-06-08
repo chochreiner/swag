@@ -7,7 +7,6 @@ import java.security.SecureRandom;
 import java.util.Arrays;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.wicket.util.lang.Objects;
 
 import at.ac.tuwien.swag.webapp.service.PasswordHasher;
 
@@ -34,7 +33,7 @@ public class PasswordHasherImpl implements PasswordHasher {
 		
 		byte[] salt = extractSalt( storedBytes );
 		
-		return Objects.equal( hash( plaintextPwd, salt ), storedHash );
+		return hash( plaintextPwd, salt ).equals( storedHash );
 	}
 	
 	//***** PRIVATE PARTS 
@@ -72,7 +71,7 @@ public class PasswordHasherImpl implements PasswordHasher {
 	private byte[] prependSalt( byte[] salt, byte[] pwd ) {
 		byte[] out = Arrays.copyOf( salt, salt.length + pwd.length );
 		
-		System.arraycopy( pwd, 0, salt, salt.length, pwd.length );
+		System.arraycopy( pwd, 0, out, salt.length, pwd.length );
 		
 		return out;
 	}

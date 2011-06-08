@@ -6,9 +6,7 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.validation.EqualPasswordInputValidator;
-import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.Model;
-import org.apache.wicket.util.lang.Objects;
 import org.apache.wicket.validation.IValidatable;
 import org.apache.wicket.validation.validator.AbstractValidator;
 import org.apache.wicket.validation.validator.EmailAddressValidator;
@@ -81,7 +79,6 @@ public class RegisterForm extends Form<Void> {
     protected void onSubmit() {
     	String username  = this.username.getModel().getObject();
     	String password  = this.password.getModel().getObject();
-    	String password2 = this.password2.getModel().getObject();
     	
     	String fullname = this.firstname.getModel().getObject() + " " + this.surname.getModel().getObject();
     	String address  = this.address.getModel().getObject();
@@ -92,7 +89,7 @@ public class RegisterForm extends Form<Void> {
     	                      .fullname( fullname )
     	                      .address( address )
     	                      .email( email )
-    	                      .password( password );
+    	                      .password( hasher.hash( password ) );
 
     	userDAO.beginTransaction();
     		userDAO.insert( user );

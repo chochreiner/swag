@@ -17,6 +17,7 @@ import at.ac.tuwien.swag.model.domain.Map;
 import at.ac.tuwien.swag.model.domain.MapUser;
 import at.ac.tuwien.swag.model.domain.Square;
 import at.ac.tuwien.swag.model.domain.User;
+import at.ac.tuwien.swag.webapp.service.PasswordHasher;
 
 import com.google.inject.Inject;
 
@@ -32,6 +33,9 @@ public class TestData extends InPage {
     @Inject
 	private SquareDAO squareDao;
 
+    @Inject
+    private PasswordHasher hasher;
+    
     @Inject
 //	private EntityManager em;
     
@@ -64,14 +68,14 @@ public class TestData extends InPage {
          nero.setFullname("Nero Claudius Caesar Augustus Germanicus");
          nero.setAddress("Forum Romanum 1, Rom");
          nero.setEmail("chef@imperiumRomanum.it");
-         nero.setPassword("servus");
+         nero.setPassword( hasher.hash( "servus" ) );
 
          User ariovist = new User();
          ariovist.setUsername("ariovist");
          ariovist.setFullname("Ariovist der Germanne");
          ariovist.setAddress("Erberg 1");
          ariovist.setEmail("chef@markomannenweb.de");
-         ariovist.setPassword("bier1234");
+         ariovist.setPassword( hasher.hash( "bier1234" ) );
 
          userDao.beginTransaction();
          	userDao.insert(nero);
