@@ -13,6 +13,7 @@ import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import at.ac.tuwien.swag.model.dto.MessageDTO;
+import at.ac.tuwien.swag.webapp.SwagWebSession;
 import at.ac.tuwien.swag.webapp.service.MessageService;
 
 import com.google.inject.Inject;
@@ -26,7 +27,9 @@ public class Notifications extends Panel {
     public Notifications(String id) {
         super(id);
 
-        List<MessageDTO> notificationList = messages.getNotifications("TODO");
+        String username = ((SwagWebSession) getSession()).getUsername();
+
+        List<MessageDTO> notificationList = messages.getNotifications(username);
 
         final Format formatter = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
 

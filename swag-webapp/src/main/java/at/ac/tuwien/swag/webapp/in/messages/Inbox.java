@@ -13,6 +13,7 @@ import org.apache.wicket.markup.repeater.data.DataView;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import at.ac.tuwien.swag.model.dto.MessageDTO;
+import at.ac.tuwien.swag.webapp.SwagWebSession;
 import at.ac.tuwien.swag.webapp.service.MessageService;
 
 import com.google.inject.Inject;
@@ -26,7 +27,9 @@ public class Inbox extends Panel {
     public Inbox(String id) {
         super(id);
 
-        List<MessageDTO> inboxList = messages.getInMessages("TODO");
+        String username = ((SwagWebSession) getSession()).getUsername();
+
+        List<MessageDTO> inboxList = messages.getInMessages(username);
 
         final Format formatter = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
 
@@ -39,7 +42,15 @@ public class Inbox extends Panel {
                     MessageDTO message = item.getModelObject();
                     PageParameters param = new PageParameters();
                     param.add("id", message.getId());
-                    // TODO add bold text for unread message
+
+                    if (message.getRead()) {
+                        item.add(new Label("subject", message.getSubject()));
+
+                    } else {
+                        item.add(new Label("subject", "<b>" + message.getSubject() + "</b>")
+                            .setEscapeModelStrings(false));
+                    }
+
                     item.add(new Label("subject", message.getSubject()));
                     item.add(new Label("sender", message.getFrom().getUsername()));
                     item.add(new Label("date", formatter.format(message.getTimestamp())));

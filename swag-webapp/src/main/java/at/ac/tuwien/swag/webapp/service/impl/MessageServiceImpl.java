@@ -49,7 +49,7 @@ public class MessageServiceImpl implements MessageService {
             		m.getTimestamp(),
             		m.getSubject(),
             		"",
-            		false,
+            		m.getRead(),
             		new UserDTO(
             			m.getFrom().getUsername(),
             			"",
@@ -71,7 +71,7 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public List<MessageDTO> getOutMessages(String user) {
         String query =
-            "SELECT m FROM Message m LEFT JOIN FETCH m.from WHERE m.from = :username";
+            "SELECT m FROM Message m LEFT JOIN FETCH m.from WHERE m.from.name = :username";
 
         Map<String, String> values = new HashMap<String, String>();
         values.put("username", user);
@@ -85,7 +85,7 @@ public class MessageServiceImpl implements MessageService {
             		m.getTimestamp(), 
             		m.getSubject(), 
             		"",
-            		false,
+            		m.getRead(),
             		new UserDTO(
             			m.getFrom().getUsername(),
             			"",
@@ -107,7 +107,7 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public List<MessageDTO> getNotifications(String user) {
         String query =
-            "SELECT m FROM Message m LEFT JOIN FETCH m.from LEFT JOIN FETCH m.to AS y WHERE y.name = :username AND m.form = :system";
+            "SELECT m FROM Message m LEFT JOIN FETCH m.from LEFT JOIN FETCH m.to AS y WHERE y.name = :username AND m.from.name = :system";
 
         Map<String, String> values = new HashMap<String, String>();
         values.put("username", user);
@@ -122,7 +122,7 @@ public class MessageServiceImpl implements MessageService {
             		m.getTimestamp(),
             		m.getSubject(),
             		"",
-            		false,
+            		m.getRead(),
             		new UserDTO(
             			m.getFrom().getUsername(),
             			"",
@@ -162,7 +162,7 @@ public class MessageServiceImpl implements MessageService {
         		m.getTimestamp(),
         		m.getSubject(),
         		m.getText(),
-        		false,
+        		m.getRead(),
         		new UserDTO(
             		m.getFrom().getUsername(),
             		"",
@@ -175,7 +175,6 @@ public class MessageServiceImpl implements MessageService {
             	),
         		null
         );
-
     }
 
     @Override
@@ -185,6 +184,7 @@ public class MessageServiceImpl implements MessageService {
         message.setTimestamp(new Date());
         message.setSubject(subject);
         message.setText(text);
+        message.setRead(false);
         message.setFrom(users.findByUsername(sender));
 
         Set<User> recieverAsUser = new HashSet<User>();
@@ -195,7 +195,6 @@ public class MessageServiceImpl implements MessageService {
         message.setTo(recieverAsUser);
 
         messages.insert(message);
-
         // TODO check online status and send mails
 
     }
@@ -209,7 +208,8 @@ public class MessageServiceImpl implements MessageService {
         message.setTimestamp(new Date());
         message.setSubject(subject);
         message.setText(text);
-        message.setFrom( users.findByUsername("postmaster") );
+        message.setRead(false);
+        message.setFrom(users.findByUsername("postmaster"));
 
         Set<User> recieverAsUser = new HashSet<User>();
         recieverAsUser.add( users.findByUsername(reciever) );
@@ -235,4 +235,14 @@ public class MessageServiceImpl implements MessageService {
     		users.commitTransaction();
     	}
     }
+
+    @Override
+    public void updateReadStatus(Long id) {
+
+        Message message = messages.findById(id);
+        message.setRead(true);
+        messages.update(message);
+
+    }
+
 }

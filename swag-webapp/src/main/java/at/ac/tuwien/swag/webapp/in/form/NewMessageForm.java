@@ -9,6 +9,7 @@ import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.model.Model;
 
+import at.ac.tuwien.swag.webapp.SwagWebSession;
 import at.ac.tuwien.swag.webapp.service.MessageService;
 
 import com.google.inject.Inject;
@@ -46,7 +47,9 @@ public class NewMessageForm extends Form<Void> {
             to.add(st.nextToken().trim());
         }
 
-        messages.sendMessage(subject.getModel().getObject(), text.getModel().getObject(), to, "TODO");
+        String username = ((SwagWebSession) getSession()).getUsername();
+
+        messages.sendMessage(subject.getModel().getObject(), text.getModel().getObject(), to, username);
 
         info("The message was sent");
     }

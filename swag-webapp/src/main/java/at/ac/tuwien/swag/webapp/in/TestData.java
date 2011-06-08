@@ -98,30 +98,35 @@ public class TestData extends InPage {
     private void setupMap() {
     	System.out.println("####### Create Map and Squares #######");
 
+    	
+    	int startX = 1;
+    	int endX = 30;
+    	int startY = 1;
+    	int endY = 30;
+    	
         Map map = new Map();
         map.setMaxNumUsers(100);
         map.setName("Markomannwar");
-        map.setXSize(10);
-        map.setYSize(10);
+        map.setXSize(endX);
+        map.setYSize(endY);
 
         Integer xAxis = 1;
         Integer yAxis = 1;
 
         List<Square> squares = new ArrayList<Square>();
        
-        for (int i = 0; i < 100; i++) {
-            if (xAxis > 10) {
-                xAxis = 1;
-                yAxis++;
-            }
+        for (int y = startY; y <= endY; y++) {
+            
+
+        	for (int x = startX; x <= endX; x++) {
 
             Square square = new Square();
-            square.setCoordX(xAxis);
-            square.setCoordY(yAxis);
+            square.setCoordX(x);
+            square.setCoordY(y);
             square.setMap(map);
             square.setIsHomeBase(false);
             squares.add(square);
-            xAxis++;
+            xAxis++;}
         }
 
         map.setSquares(squares);

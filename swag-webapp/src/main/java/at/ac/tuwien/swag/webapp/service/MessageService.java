@@ -19,4 +19,6 @@ public interface MessageService {
 
     public void sendNotification(String subject, String text, String reciever);
 
+    public void updateReadStatus(Long id);
+
 }

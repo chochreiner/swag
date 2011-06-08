@@ -14,6 +14,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import at.ac.tuwien.swag.model.dto.MessageDTO;
 import at.ac.tuwien.swag.model.dto.UserDTO;
+import at.ac.tuwien.swag.webapp.SwagWebSession;
 import at.ac.tuwien.swag.webapp.service.MessageService;
 
 import com.google.inject.Inject;
@@ -27,7 +28,9 @@ public class Outbox extends Panel {
     public Outbox(String id) {
         super(id);
 
-        List<MessageDTO> outboxList = messages.getOutMessages("TODO");
+        String username = ((SwagWebSession) getSession()).getUsername();
+
+        List<MessageDTO> outboxList = messages.getOutMessages(username);
 
         final Format formatter = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
 
