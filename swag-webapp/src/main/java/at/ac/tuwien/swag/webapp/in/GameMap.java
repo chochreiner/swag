@@ -2,7 +2,10 @@ package at.ac.tuwien.swag.webapp.in;
 
 import java.util.List;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
+import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -70,8 +73,39 @@ public class GameMap extends WebMarkupContainer {
 							
 							label= new Label("square", "X: "+square.getCoordX() +" EMPTY  Y: "+ square.getCoordY());
 						}
+						
+						 // The ModalWindow, showing some choices for the user to select.
+				       final ModalSquareWindow selectModalWindow = new ModalSquareWindow("modalSquare"){
+						
+						private static final long serialVersionUID = -770358065105369098L;
+
+							void onSelect(AjaxRequestTarget target, String selection) {              
+				                close(target);
+				            }
+
+				            void onCancel(AjaxRequestTarget target) {
+				                close(target);
+				            }
+
+				        };
+				        squareList.setOutputMarkupId(true);
+				        squareList.add(selectModalWindow);
+						
+						AjaxFallbackLink<String> squareLink = new AjaxFallbackLink<String>("squareLink") {
+							private static final long serialVersionUID = -2641432580203719830L;
+							
+							@Override
+							public void onClick(AjaxRequestTarget target) {
+								selectModalWindow.show(target);
+							}
+							
+						};
+						
+						squareLink.setOutputMarkupId(true);
+						squareList.add(squareLink);
+						
 						label.setOutputMarkupId(true);
-						squareList.add(label);
+						squareLink.add(label);
 					}
 				};
 				row.add(rowListView);

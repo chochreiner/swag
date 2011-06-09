@@ -9,10 +9,11 @@
 	</tr><tr>
 		<td><a class ="mapNav" wicket:id="mapLeft"><span>[mapLeft]</span></a></td>
 		<td>
-			<table id = "gameMap" wicket:id="gameMapContainer">
+			<table id ="gameMap" wicket:id="gameMapContainer">
 			    <tr wicket:id="gameMap">
 					<td wicket:id="row">
-			        	<span class ="square" wicket:id="square">[cell] </span>
+			        	<a class ="squareLink" wicket:id="squareLink"><span class ="square" wicket:id="square">[cell] </span></a>
+			        	<div wicket:id="modalSquare"></div>
 			        </td>
 			    </tr>
 			</table>
