@@ -10,13 +10,12 @@
 	  <module>swag-auth</module>
 	  <module>swag-model</module>
 	  <module>swag-executor</module>
-	  <module>swag-mail</module>
 	  <module>swag-webapp</module>
 	  <module>swag-util</module>
 	  <module>swag-messages</module>
       <module>swag-notification</module>
       <module>mailserver</module>
-      <module>swag-ear</module>
+<!--      <module>swag-ear</module>-->
   </modules>
  <properties>
   <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
