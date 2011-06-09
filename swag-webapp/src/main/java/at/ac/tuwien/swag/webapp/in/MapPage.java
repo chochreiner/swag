@@ -4,16 +4,11 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.AjaxSelfUpdatingTimerBehavior;
 import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
-import org.apache.wicket.util.time.Duration;
 
 import at.ac.tuwien.swag.model.dao.MapDAO;
 import at.ac.tuwien.swag.model.dao.MapUserDAO;
@@ -28,7 +23,6 @@ import com.google.inject.Inject;
 
 public class MapPage extends InPage {
     private static final long serialVersionUID = -5939284250869774500L;
-	private ListView<List<Square>> gameMaplistView;
 
 	@Inject
     private MapDAO mapDao;
@@ -79,7 +73,7 @@ public class MapPage extends InPage {
         }
     };   
 		
-		gameMapContainer = new GameMap("gameMapContainer", gameMapList);
+		gameMapContainer = new GameMap("gameMapContainer", mapUser, gameMapList);
         add(gameMapContainer);
     }
     
@@ -137,10 +131,6 @@ public class MapPage extends InPage {
         return mapUsers.get(0);
     }
     
-    
-    
-    
-    
  ////////////////////////////////NAV ///////////////////////////////////////////////////////////////////////////////   
     /**
      * 
@@ -154,6 +144,8 @@ public class MapPage extends InPage {
 				if(startY == 1 || startY < 0) {
 					startY = 1;endY = mapDim;
 				}else {startY --;endY --;}
+				
+				//target.addChildren(gameMapContainer, Label.class);
 				target.addComponent(gameMapContainer);
 			}
         });
@@ -167,6 +159,7 @@ public class MapPage extends InPage {
 					startY = gameMapProvider.getMapYSize() -(mapDim-1);
 					endY = gameMapProvider.getMapYSize();
 				}else { startY ++; endY ++;}
+				
 				target.addComponent(gameMapContainer);
 			}
         });
