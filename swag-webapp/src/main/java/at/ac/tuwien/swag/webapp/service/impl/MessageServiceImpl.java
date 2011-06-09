@@ -34,31 +34,31 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public List<MessageDTO> getInMessages(String username) {
-    	User user = users.findByUsername( username );
-    	
-    	Set<Message>     inMessages = user.getReceivedMessages();
-    	List<MessageDTO> dtos       = new ArrayList<MessageDTO>( inMessages.size() );
-    	
+        User user = users.findByUsername(username);
+
+        Set<Message> inMessages = user.getReceivedMessages();
+        List<MessageDTO> dtos = new ArrayList<MessageDTO>(inMessages.size());
+
         for (Message m : inMessages) {
             dtos.add(
-            	new MessageDTO(
-            		m.getTimestamp(),
-            		m.getSubject(),
-            		"",
-            		m.getRead(),
-            		new UserDTO(
-            			m.getFrom().getUsername(),
-            			"",
-            			"",
-            			"",
-            			"",
-            			null,
-            			null,
-            			null
-            		),
-            		null
-            	)
-            );
+                new MessageDTO(
+                    m.getTimestamp(),
+                    m.getSubject(),
+                    "",
+                    m.getRead(),
+                    new UserDTO(
+                        m.getFrom().getUsername(),
+                        "",
+                        "",
+                        "",
+                        "",
+                        null,
+                        null,
+                        null
+                    ),
+                    null
+                )
+                );
         }
 
         return dtos;
@@ -66,31 +66,31 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public List<MessageDTO> getOutMessages(String username) {
-    	User user = users.findByUsername( username );
-    	
-    	List<Message>    outMessages = user.getSentMessages();
-    	List<MessageDTO> dtos        = new ArrayList<MessageDTO>( outMessages.size() );
+        User user = users.findByUsername(username);
 
-        for ( Message m : outMessages ) {
+        List<Message> outMessages = user.getSentMessages();
+        List<MessageDTO> dtos = new ArrayList<MessageDTO>(outMessages.size());
+
+        for (Message m : outMessages) {
             dtos.add(
-            	new MessageDTO(
-            		m.getTimestamp(), 
-            		m.getSubject(), 
-            		"",
-            		m.getRead(),
-            		new UserDTO(
-            			m.getFrom().getUsername(),
-            			"",
-            			"",
-            			"",
-            			"",
-            			null,
-            			null,
-            			null
-            		),
-            		null
-            	)
-            );
+                new MessageDTO(
+                    m.getTimestamp(),
+                    m.getSubject(),
+                    "",
+                    m.getRead(),
+                    new UserDTO(
+                        m.getFrom().getUsername(),
+                        "",
+                        "",
+                        "",
+                        "",
+                        null,
+                        null,
+                        null
+                    ),
+                    null
+                )
+                );
         }
 
         return dtos;
@@ -104,29 +104,29 @@ public class MessageServiceImpl implements MessageService {
         Map<String, String> values = new HashMap<String, String>();
         values.put("username", user);
 
-        List<Message>    inMessages = messages.findByQuery(query, values);
-        List<MessageDTO> result     = new ArrayList<MessageDTO>();
+        List<Message> inMessages = messages.findByQuery(query, values);
+        List<MessageDTO> result = new ArrayList<MessageDTO>();
 
         for (Message m : inMessages) {
             result.add(
-            	new MessageDTO(
-            		m.getTimestamp(),
-            		m.getSubject(),
-            		"",
-            		m.getRead(),
-            		new UserDTO(
-            			m.getFrom().getUsername(),
-            			"",
-            			"",
-            			"",
-            			"",
-            			null,
-            			null,
-            			null
-            		),
-            		null
-            	)
-            );
+                new MessageDTO(
+                    m.getTimestamp(),
+                    m.getSubject(),
+                    "",
+                    m.getRead(),
+                    new UserDTO(
+                        m.getFrom().getUsername(),
+                        "",
+                        "",
+                        "",
+                        "",
+                        null,
+                        null,
+                        null
+                    ),
+                    null
+                )
+                );
         }
 
         return result;
@@ -150,22 +150,21 @@ public class MessageServiceImpl implements MessageService {
         Message m = message.get(0);
 
         return new MessageDTO(
-        		m.getTimestamp(),
-        		m.getSubject(),
-        		m.getText(),
-        		m.getRead(),
-        		new UserDTO(
-            		m.getFrom().getUsername(),
-            		"",
-            		"",
-            		"",
-            		"",
-            		null,
-            		null,
-            		null
-            	),
-        		null
-        );
+            m.getTimestamp(),
+            m.getSubject(),
+            m.getText(),
+            m.getRead(),
+            new UserDTO(
+                m.getFrom().getUsername(),
+                "",
+                "",
+                "",
+                "",
+                null,
+                null,
+                null
+            ),
+            null);
     }
 
     @Override
@@ -176,17 +175,37 @@ public class MessageServiceImpl implements MessageService {
         message.setSubject(subject);
         message.setText(text);
         message.setRead(false);
-        message.setFrom(users.findByUsername(sender));
+
+        User senderUser = getUserWithMessages(sender);
+
+        message.setFrom(senderUser);
+
+        List<Message> sentMessages = new ArrayList<Message>();
+        sentMessages.addAll(senderUser.getSentMessages());
+        sentMessages.add(message);
+        senderUser.setSentMessages(sentMessages);
 
         Set<User> recieverAsUser = new HashSet<User>();
         for (String rec : reciever) {
-            recieverAsUser.add(users.findByUsername(rec));
+            recieverAsUser.add(getUserWithMessages(rec));
         }
 
         message.setTo(recieverAsUser);
 
+        messages.beginTransaction();
+        // users.update(senderUser);
+        //
+        // for (User u : recieverAsUser) {
+        // Set<Message> recievedMessages = new HashSet<Message>();
+        // recievedMessages.addAll(u.getReceivedMessages());
+        // recievedMessages.add(message);
+        // u.setReceivedMessages(recievedMessages);
+        // users.update(u);
+        // }
+
         messages.insert(message);
-        // TODO check online status and send mails
+
+        messages.commitTransaction();
 
     }
 
@@ -203,28 +222,28 @@ public class MessageServiceImpl implements MessageService {
         message.setFrom(users.findByUsername("postmaster"));
 
         Set<User> recieverAsUser = new HashSet<User>();
-        recieverAsUser.add( users.findByUsername(reciever) );
+        recieverAsUser.add(users.findByUsername(reciever));
 
         message.setTo(recieverAsUser);
 
         messages.insert(message);
 
         // TODO check online status and send mails
-
+        // TODO set transaction
     }
 
     private void checkPostmaster() {
         // create postmaster aka root oder so
 
-    	try {
-    		users.findByUsername( "postmaster" );
-    	} catch ( NoResultException e ) {
-    		users.beginTransaction();
-    			User user = new User();
-    			user.setUsername("postmaster");
-    			users.insert(user);
-    		users.commitTransaction();
-    	}
+        try {
+            users.findByUsername("postmaster");
+        } catch (NoResultException e) {
+            users.beginTransaction();
+            User user = new User();
+            user.setUsername("postmaster");
+            users.insert(user);
+            users.commitTransaction();
+        }
     }
 
     @Override
@@ -234,6 +253,18 @@ public class MessageServiceImpl implements MessageService {
         message.setRead(true);
         messages.update(message);
 
+    }
+
+    private User getUserWithMessages(String name) {
+        String query =
+            "SELECT u FROM User u LEFT JOIN FETCH u.sentMessages LEFT JOIN FETCH u.receivedMessages WHERE u.username = :username";
+
+        Map<String, String> values = new HashMap<String, String>();
+        values.put("username", name);
+
+        List<User> message = users.findByQuery(query, values);
+
+        return message.get(0);
     }
 
 }

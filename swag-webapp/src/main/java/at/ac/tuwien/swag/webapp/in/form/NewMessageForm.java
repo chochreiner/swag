@@ -9,6 +9,7 @@ import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextArea;
 import org.apache.wicket.model.Model;
 
+import at.ac.tuwien.swag.model.dao.UserDAO;
 import at.ac.tuwien.swag.webapp.SwagWebSession;
 import at.ac.tuwien.swag.webapp.service.MessageService;
 
@@ -23,6 +24,9 @@ public class NewMessageForm extends Form<Void> {
 
     @Inject
     private MessageService messages;
+
+    @Inject
+    private UserDAO users;
 
     public NewMessageForm(String id) {
         super(id);
@@ -44,7 +48,18 @@ public class NewMessageForm extends Form<Void> {
 
         StringTokenizer st = new StringTokenizer(reciever.getModel().getObject(), ";");
         while (st.hasMoreTokens()) {
-            to.add(st.nextToken().trim());
+            String reciever = st.nextToken().trim();
+            to.add(reciever);
+            try {
+
+                if (users.findByUsername(reciever) == null) {
+                    error("The user " + reciever + " does not exist.");
+                    return;
+                }
+            } catch (Exception e) {
+                error("The user " + reciever + " does not exist.");
+                return;
+            }
         }
 
         String username = ((SwagWebSession) getSession()).getUsername();
