@@ -34,11 +34,13 @@ public class JMSHelper implements Serializable {
 		return request( dest, makeMessage( msg ) );
 	}
 
-	public <Response> Response request( Destination dest, String msg, long timeout ) throws JMSException {
+	public <Response> Response request( Destination dest, String msg, long timeout ) throws JMSException, 
+	                                                                                        TimeoutExpiredException {
 		return request( dest, makeMessage( msg ), timeout );
 	}
 	
-	public <Response> Response request( Destination dest, Serializable msg, long timeout ) throws JMSException {
+	public <Response> Response request( Destination dest, Serializable msg, long timeout ) throws JMSException, 
+	                                                                                        TimeoutExpiredException {
 		return request( dest, makeMessage( msg ), timeout );
 	}
 	
@@ -60,12 +62,14 @@ public class JMSHelper implements Serializable {
 		return msg;
 	}
 	
-	public Message receive( Destination dest, long timeout ) throws JMSException {
+	public Message receive( Destination dest, long timeout ) throws JMSException, TimeoutExpiredException {
 		MessageConsumer consumer = session.createConsumer( dest );
 		
 		Message msg = consumer.receive( timeout );
 		
 		consumer.close();
+		
+		if ( msg == null ) throw new TimeoutExpiredException();
 		
 		return msg;
 	}
@@ -103,7 +107,8 @@ public class JMSHelper implements Serializable {
 		
 		return response;
 	}
-	private <Response> Response request( Destination dest, Message msg, long timeout ) throws JMSException {
+	private <Response> Response request( Destination dest, Message msg, long timeout ) throws JMSException, 
+	                                                                                          TimeoutExpiredException {
 		TemporaryQueue replyTo = session.createTemporaryQueue();
 		
 		send( dest, replyTo, msg );

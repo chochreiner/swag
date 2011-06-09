@@ -70,6 +70,9 @@ public class WebappModule extends ServletModule {
         // /**** JMS ******************************************//
         bindJNDI( Queue.class, "swag.queue.Authentication" );
         bindJNDI( Queue.class, "swag.queue.Notification" );
+        
+        // default time to wait for message replies
+        bindConstant().annotatedWith( Names.named( "MESSAGE_TIMEOUT" ) ).to( 3000l );
     }
     
     private <T> void bindJNDI( Class<T> c, String jndiName ) {

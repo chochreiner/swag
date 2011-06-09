@@ -16,8 +16,8 @@ import javax.jms.ObjectMessage;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 
-import at.ac.tuwien.swag.messages.AuthenticationReply;
-import at.ac.tuwien.swag.messages.AuthenticationRequest;
+import at.ac.tuwien.swag.messages.auth.AuthenticationReply;
+import at.ac.tuwien.swag.messages.auth.AuthenticationRequest;
 
 @MessageDriven( mappedName="swag.queue.Authentication" )
 public class AuthenticationBean implements MessageListener {
@@ -50,7 +50,7 @@ public class AuthenticationBean implements MessageListener {
 //		String password = request.password;
 		String token    = "DUMMY TOKEN";
 
-		reply( replyTo, new AuthenticationReply( username, token ) );
+		reply( replyTo, new AuthenticationReply( username, new String[0], token ) );
 	}
 	
 	private void handleTextMessage( TextMessage msg ) throws JMSException {
