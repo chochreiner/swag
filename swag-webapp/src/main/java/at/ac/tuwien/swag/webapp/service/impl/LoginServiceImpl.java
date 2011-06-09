@@ -33,13 +33,13 @@ public class LoginServiceImpl implements LoginService {
 	@Inject
 	private UserDAO users;
 	
-	@Inject
-	private JMSHelper jms;
-	@Inject
-	private ConnectionFactory factory;
-	@Inject
-	@Named("swag.queue.Authentication")
-	private Queue   authentication;
+//	@Inject
+//	private JMSHelper jms;
+//	@Inject
+//	private ConnectionFactory factory;
+//	@Inject
+//	@Named("swag.queue.Authentication")
+//	private Queue   authentication;
 	
 	@Inject
 	private PasswordHasher hasher;
