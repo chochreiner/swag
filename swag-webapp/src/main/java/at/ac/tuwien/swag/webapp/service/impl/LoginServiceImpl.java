@@ -50,25 +50,25 @@ public class LoginServiceImpl implements LoginService {
 	
     @Override
     public boolean authenticate(String username, String password) {
-    	try {
-    		Connection connection = factory.createConnection();
-    		Session    session    = connection.createSession( false, Session.AUTO_ACKNOWLEDGE );
-    		
-    		MessageProducer producer = session.createProducer( authentication );
-    		
-    		ObjectMessage o = session.createObjectMessage();
-    		o.setObject( new AuthenticationRequest( username, password ) );
-    		
-    		producer.send( o, producer.getDeliveryMode(), producer.getPriority(), 2000 );
-    		
-    		MessageConsumer consumer = session.createConsumer( authentication );
-    		
-    		Message m = consumer.receive( 2000 );
-    		
-    		System.err.println( m );
-		} catch ( JMSException e ) {
-			e.printStackTrace();
-		}
+//    	try {
+//    		Connection connection = factory.createConnection();
+//    		Session    session    = connection.createSession( false, Session.AUTO_ACKNOWLEDGE );
+//    		
+//    		MessageProducer producer = session.createProducer( authentication );
+//    		
+//    		ObjectMessage o = session.createObjectMessage();
+//    		o.setObject( new AuthenticationRequest( username, password ) );
+//    		
+//    		producer.send( o, producer.getDeliveryMode(), producer.getPriority(), 2000 );
+//    		
+//    		MessageConsumer consumer = session.createConsumer( authentication );
+//    		
+//    		Message m = consumer.receive( 2000 );
+//    		
+//    		System.err.println( m );
+//		} catch ( JMSException e ) {
+//			e.printStackTrace();
+//		}
     	
     	try {
     		User user = users.findByUsername( username );
