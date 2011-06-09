@@ -17,21 +17,27 @@ public class GameMapDataProvider{
 	private MapDAO mapDao;
 	private SquareDAO squareDao;
 	private HashMap<Integer, HashMap<Integer,Square>> fullMap;
+	private Integer mapXSize;
+	private Integer mapYSize;
 	
-	public GameMapDataProvider(MapDAO mapDao, SquareDAO squareDao) {
+	public GameMapDataProvider(String mapname, MapDAO mapDao, SquareDAO squareDao) {
 		this.mapDao = mapDao;
 		this.squareDao = squareDao;
 		this.fullMap = new HashMap<Integer, HashMap<Integer,Square>>();
 		
-		this.loadFullMap("Markomannwar");
+		this.loadFullMap(mapname);
 	}
 
 	private void loadFullMap(String mapName) {
 	
-		for(Square square :mapDao.findByName(mapName).getSquares()) {
+		Map map = mapDao.findByName(mapName);
+		for(Square square :map.getSquares()) {
 			
 			addSquareToFullMap(square, fullMap);
 		}
+		
+		mapXSize = map.getXSize();
+		mapYSize = map.getYSize();
 	}
 	
 	/**
@@ -103,5 +109,12 @@ public class GameMapDataProvider{
 		
 		return mapRowList;
 	}
-	
+
+	public Integer getMapXSize() {
+		return mapXSize;
+	}
+
+	public Integer getMapYSize() {
+		return mapYSize;
+	}
 }

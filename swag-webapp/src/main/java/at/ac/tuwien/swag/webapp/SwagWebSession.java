@@ -6,6 +6,7 @@ import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.authroles.authorization.strategies.role.Roles;
 import org.apache.wicket.request.Request;
 
+import at.ac.tuwien.swag.model.dto.SquareDTO;
 import at.ac.tuwien.swag.webapp.service.LoginService;
 
 import com.google.inject.Inject;
@@ -39,6 +40,7 @@ public final class SwagWebSession extends AuthenticatedWebSession {
         super.signOut();
         username = null;
         mapname = null;
+        homebase = null;
     }
 
     @Override
@@ -57,6 +59,7 @@ public final class SwagWebSession extends AuthenticatedWebSession {
 
     private String username;
     private String mapname;
+    private SquareDTO homebase;
 
     public String getUsername() {
         return username;
@@ -68,5 +71,13 @@ public final class SwagWebSession extends AuthenticatedWebSession {
 
 	public void setMapname(String mapname) {
 		this.mapname = mapname;
+	}
+
+	public SquareDTO getHomebase() {
+		return homebase;
+	}
+
+	public void setHomebase(SquareDTO homebase) {
+		this.homebase = homebase;
 	}
 }
