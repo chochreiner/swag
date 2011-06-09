@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE resources PUBLIC "-//GlassFish.org//DTD GlassFish Application Server 3.1 Resource Definitions//EN" "http://glassfish.org/dtds/glassfish-resources_1_5.dtd">
 <resources>
-  <mail-resource debug="true" enabled="true" from="test@example.com" host="localhost" jndi-name="mail/session" object-type="user" store-protocol="imap" store-protocol-class="com.sun.mail.imap.IMAPStore" transport-protocol="smtp" transport-protocol-class="com.sun.mail.smtp.SMTPTransport" user="test@example.com">
-    <description/>
+  <mail-resource debug="false" enabled="true" from="test@example.com" host="localhost" jndi-name="mail/session" object-type="user" store-protocol="imap" store-protocol-class="com.sun.mail.imap.IMAPStore" transport-protocol="smtp" transport-protocol-class="com.sun.mail.smtp.SMTPTransport" user="test@example.com">
+    <property name="mail-smtp.port" value="2525"/>
   </mail-resource>
   <admin-object-resource enabled="true" jndi-name="jms/swag.queue.Notification" object-type="user" res-adapter="jmsra" res-type="javax.jms.Queue">
     <property name="Name" value="PhysicalQueue"/>
