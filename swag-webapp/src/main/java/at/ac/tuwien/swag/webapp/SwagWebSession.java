@@ -37,7 +37,7 @@ public final class SwagWebSession extends AuthenticatedWebSession {
 			error( e.getMessage() );
             return false;
 		} catch ( TimeoutExpiredException e ) {
-			error( "An error occured while connecting to the authentication server" );
+			error( "The connection to the authentication server timed out" );
             return false;
 		} catch ( JMSException e ) {
 			error( "An error occured while connecting to the authentication server" );

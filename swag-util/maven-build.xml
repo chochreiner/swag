@@ -15,7 +15,7 @@
 <!--                                                                        -->
 <!-- ====================================================================== -->
 
-<project name="swag-executor-from-maven" default="package" basedir=".">
+<project name="swag-util-from-maven" default="package" basedir=".">
 
   <!-- ====================================================================== -->
   <!-- Build environment properties                                           -->
@@ -24,7 +24,7 @@
   <property file="${user.home}/.m2/maven.properties"/>
   <property file="maven-build.properties"/>
 
-  <property name="maven.build.finalName" value="swag-executor-1.0-SNAPSHOT"/>
+  <property name="maven.build.finalName" value="swag-util-1.0-SNAPSHOT"/>
   <property name="maven.build.dir" value="target"/>
   <property name="maven.build.outputDir" value="${maven.build.dir}/classes"/>
   <property name="maven.build.srcDir.0" value="src/main/java"/>
@@ -44,11 +44,13 @@
   <!-- ====================================================================== -->
 
   <path id="build.classpath">
-    <pathelement location="${maven.repo.local}/javax/jms/jms/1.1/jms-1.1.jar"/>
+    <pathelement location="${maven.repo.local}/javax/javaee-api/6.0/javaee-api-6.0.jar"/>
+    <pathelement location="${maven.repo.local}/commons-codec/commons-codec/1.5/commons-codec-1.5.jar"/>
   </path>
   <path id="build.test.classpath">
-    <pathelement location="${maven.repo.local}/junit/junit/4.8.2/junit-4.8.2.jar"/>
-    <pathelement location="${maven.repo.local}/javax/jms/jms/1.1/jms-1.1.jar"/>
+    <pathelement location="${maven.repo.local}/junit/junit/3.8.1/junit-3.8.1.jar"/>
+    <pathelement location="${maven.repo.local}/javax/javaee-api/6.0/javaee-api-6.0.jar"/>
+    <pathelement location="${maven.repo.local}/commons-codec/commons-codec/1.5/commons-codec-1.5.jar"/>
   </path>
 
   <!-- ====================================================================== -->
@@ -232,38 +234,55 @@
           description="Download all dependencies" 
           unless="maven.mode.offline">
     <mkdir dir="${maven.repo.local}"/>
-    <mkdir dir="${maven.repo.local}/junit/junit/4.8.2"/>
-    <get src="https://repository.jboss.org/nexus/content/groups/public-jboss//junit/junit/4.8.2/junit-4.8.2.jar" 
-         dest="${maven.repo.local}/junit/junit/4.8.2/junit-4.8.2.jar" 
+    <mkdir dir="${maven.repo.local}/junit/junit/3.8.1"/>
+    <get src="https://repository.jboss.org/nexus/content/groups/public-jboss//junit/junit/3.8.1/junit-3.8.1.jar" 
+         dest="${maven.repo.local}/junit/junit/3.8.1/junit-3.8.1.jar" 
          usetimestamp="false" 
          ignoreerrors="true"/>
-    <get src="http://repository.jboss.org/nexus/content/groups/public-jboss//junit/junit/4.8.2/junit-4.8.2.jar" 
-         dest="${maven.repo.local}/junit/junit/4.8.2/junit-4.8.2.jar" 
+    <get src="http://repository.jboss.org/nexus/content/groups/public-jboss//junit/junit/3.8.1/junit-3.8.1.jar" 
+         dest="${maven.repo.local}/junit/junit/3.8.1/junit-3.8.1.jar" 
          usetimestamp="false" 
          ignoreerrors="true"/>
-    <get src="http://download.java.net/maven/glassfish/junit/junit/4.8.2/junit-4.8.2.jar" 
-         dest="${maven.repo.local}/junit/junit/4.8.2/junit-4.8.2.jar" 
+    <get src="http://download.java.net/maven/glassfish/junit/junit/3.8.1/junit-3.8.1.jar" 
+         dest="${maven.repo.local}/junit/junit/3.8.1/junit-3.8.1.jar" 
          usetimestamp="false" 
          ignoreerrors="true"/>
-    <get src="http://repo1.maven.org/maven2/junit/junit/4.8.2/junit-4.8.2.jar" 
-         dest="${maven.repo.local}/junit/junit/4.8.2/junit-4.8.2.jar" 
+    <get src="http://repo1.maven.org/maven2/junit/junit/3.8.1/junit-3.8.1.jar" 
+         dest="${maven.repo.local}/junit/junit/3.8.1/junit-3.8.1.jar" 
          usetimestamp="false" 
          ignoreerrors="true"/>
-    <mkdir dir="${maven.repo.local}/javax/jms/jms/1.1"/>
-    <get src="https://repository.jboss.org/nexus/content/groups/public-jboss//javax/jms/jms/1.1/jms-1.1.jar" 
-         dest="${maven.repo.local}/javax/jms/jms/1.1/jms-1.1.jar" 
+    <mkdir dir="${maven.repo.local}/javax/javaee-api/6.0"/>
+    <get src="https://repository.jboss.org/nexus/content/groups/public-jboss//javax/javaee-api/6.0/javaee-api-6.0.jar" 
+         dest="${maven.repo.local}/javax/javaee-api/6.0/javaee-api-6.0.jar" 
          usetimestamp="false" 
          ignoreerrors="true"/>
-    <get src="http://repository.jboss.org/nexus/content/groups/public-jboss//javax/jms/jms/1.1/jms-1.1.jar" 
-         dest="${maven.repo.local}/javax/jms/jms/1.1/jms-1.1.jar" 
+    <get src="http://repository.jboss.org/nexus/content/groups/public-jboss//javax/javaee-api/6.0/javaee-api-6.0.jar" 
+         dest="${maven.repo.local}/javax/javaee-api/6.0/javaee-api-6.0.jar" 
          usetimestamp="false" 
          ignoreerrors="true"/>
-    <get src="http://download.java.net/maven/glassfish/javax/jms/jms/1.1/jms-1.1.jar" 
-         dest="${maven.repo.local}/javax/jms/jms/1.1/jms-1.1.jar" 
+    <get src="http://download.java.net/maven/glassfish/javax/javaee-api/6.0/javaee-api-6.0.jar" 
+         dest="${maven.repo.local}/javax/javaee-api/6.0/javaee-api-6.0.jar" 
          usetimestamp="false" 
          ignoreerrors="true"/>
-    <get src="http://repo1.maven.org/maven2/javax/jms/jms/1.1/jms-1.1.jar" 
-         dest="${maven.repo.local}/javax/jms/jms/1.1/jms-1.1.jar" 
+    <get src="http://repo1.maven.org/maven2/javax/javaee-api/6.0/javaee-api-6.0.jar" 
+         dest="${maven.repo.local}/javax/javaee-api/6.0/javaee-api-6.0.jar" 
+         usetimestamp="false" 
+         ignoreerrors="true"/>
+    <mkdir dir="${maven.repo.local}/commons-codec/commons-codec/1.5"/>
+    <get src="https://repository.jboss.org/nexus/content/groups/public-jboss//commons-codec/commons-codec/1.5/commons-codec-1.5.jar" 
+         dest="${maven.repo.local}/commons-codec/commons-codec/1.5/commons-codec-1.5.jar" 
+         usetimestamp="false" 
+         ignoreerrors="true"/>
+    <get src="http://repository.jboss.org/nexus/content/groups/public-jboss//commons-codec/commons-codec/1.5/commons-codec-1.5.jar" 
+         dest="${maven.repo.local}/commons-codec/commons-codec/1.5/commons-codec-1.5.jar" 
+         usetimestamp="false" 
+         ignoreerrors="true"/>
+    <get src="http://download.java.net/maven/glassfish/commons-codec/commons-codec/1.5/commons-codec-1.5.jar" 
+         dest="${maven.repo.local}/commons-codec/commons-codec/1.5/commons-codec-1.5.jar" 
+         usetimestamp="false" 
+         ignoreerrors="true"/>
+    <get src="http://repo1.maven.org/maven2/commons-codec/commons-codec/1.5/commons-codec-1.5.jar" 
+         dest="${maven.repo.local}/commons-codec/commons-codec/1.5/commons-codec-1.5.jar" 
          usetimestamp="false" 
          ignoreerrors="true"/>
   </target>

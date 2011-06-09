@@ -2,7 +2,7 @@
 
 <project name="swag-webapp-helpers" basedir=".">
 	<!-- import our own ant tasks -->
-	<import file="../ant-helpers.xml"/>
+	<import file="../ant-macros.xml"/>
 	
 	<!-- ***** PROPERTIES ***************************************************************** -->
 	<!-- application data -->

@@ -15,7 +15,7 @@
 <!--                                                                        -->
 <!-- ====================================================================== -->
 
-<project name="swag-messages-from-maven" default="package" basedir=".">
+<project name="swag-model-from-maven" default="package" basedir=".">
 
   <!-- ====================================================================== -->
   <!-- Build environment properties                                           -->
@@ -24,14 +24,15 @@
   <property file="${user.home}/.m2/maven.properties"/>
   <property file="maven-build.properties"/>
 
-  <property name="maven.build.finalName" value="swag-messages-1.0-SNAPSHOT"/>
+  <property name="maven.build.finalName" value="swag-model-1.0-SNAPSHOT"/>
   <property name="maven.build.dir" value="target"/>
   <property name="maven.build.outputDir" value="${maven.build.dir}/classes"/>
   <property name="maven.build.srcDir.0" value="src/main/java"/>
   <property name="maven.build.resourceDir.0" value="src/main/resources"/>
+  <property name="maven.build.resourceDir.1" value="src/main/java"/>
   <property name="maven.build.testOutputDir" value="${maven.build.dir}/test-classes"/>
   <property name="maven.build.testDir.0" value="src/test/java"/>
-  <property name="maven.build.testResourceDir.0" value="src/test/resources"/>
+  <property name="maven.build.testResourceDir.0" value="src/test/java"/>
   <property name="maven.test.reports" value="${maven.build.dir}/test-reports"/>
   <property name="maven.reporting.outputDirectory" value="${maven.build.dir}/site"/>
 
@@ -44,7 +45,6 @@
   <!-- ====================================================================== -->
 
   <path id="build.classpath">
-    <pathelement location="${maven.repo.local}/at/ac/tuwien/swag-model/1.0-SNAPSHOT/swag-model-1.0-SNAPSHOT.jar"/>
     <pathelement location="${maven.repo.local}/com/google/inject/guice/3.0/guice-3.0.jar"/>
     <pathelement location="${maven.repo.local}/javax/inject/javax.inject/1/javax.inject-1.jar"/>
     <pathelement location="${maven.repo.local}/aopalliance/aopalliance/1.0/aopalliance-1.0.jar"/>
@@ -65,13 +65,12 @@
     <pathelement location="${maven.repo.local}/javassist/javassist/3.9.0.GA/javassist-3.9.0.GA.jar"/>
     <pathelement location="${maven.repo.local}/org/hibernate/javax/persistence/hibernate-jpa-2.0-api/1.0.0.Final/hibernate-jpa-2.0-api-1.0.0.Final.jar"/>
     <pathelement location="${maven.repo.local}/com/google/code/gson/gson/1.7.1/gson-1.7.1.jar"/>
+    <pathelement location="${maven.repo.local}/org/projectlombok/lombok/0.9.3/lombok-0.9.3.jar"/>
     <pathelement location="${maven.repo.local}/org/slf4j/slf4j-api/1.6.1/slf4j-api-1.6.1.jar"/>
     <pathelement location="${maven.repo.local}/org/slf4j/slf4j-log4j12/1.6.1/slf4j-log4j12-1.6.1.jar"/>
     <pathelement location="${maven.repo.local}/log4j/log4j/1.2.16/log4j-1.2.16.jar"/>
-    <pathelement location="${maven.repo.local}/javax/jms/jms/1.1/jms-1.1.jar"/>
   </path>
   <path id="build.test.classpath">
-    <pathelement location="${maven.repo.local}/at/ac/tuwien/swag-model/1.0-SNAPSHOT/swag-model-1.0-SNAPSHOT.jar"/>
     <pathelement location="${maven.repo.local}/com/google/inject/guice/3.0/guice-3.0.jar"/>
     <pathelement location="${maven.repo.local}/javax/inject/javax.inject/1/javax.inject-1.jar"/>
     <pathelement location="${maven.repo.local}/aopalliance/aopalliance/1.0/aopalliance-1.0.jar"/>
@@ -92,11 +91,11 @@
     <pathelement location="${maven.repo.local}/javassist/javassist/3.9.0.GA/javassist-3.9.0.GA.jar"/>
     <pathelement location="${maven.repo.local}/org/hibernate/javax/persistence/hibernate-jpa-2.0-api/1.0.0.Final/hibernate-jpa-2.0-api-1.0.0.Final.jar"/>
     <pathelement location="${maven.repo.local}/com/google/code/gson/gson/1.7.1/gson-1.7.1.jar"/>
+    <pathelement location="${maven.repo.local}/org/projectlombok/lombok/0.9.3/lombok-0.9.3.jar"/>
     <pathelement location="${maven.repo.local}/org/slf4j/slf4j-api/1.6.1/slf4j-api-1.6.1.jar"/>
     <pathelement location="${maven.repo.local}/org/slf4j/slf4j-log4j12/1.6.1/slf4j-log4j12-1.6.1.jar"/>
     <pathelement location="${maven.repo.local}/log4j/log4j/1.2.16/log4j-1.2.16.jar"/>
-    <pathelement location="${maven.repo.local}/junit/junit/3.8.1/junit-3.8.1.jar"/>
-    <pathelement location="${maven.repo.local}/javax/jms/jms/1.1/jms-1.1.jar"/>
+    <pathelement location="${maven.repo.local}/junit/junit/4.8.2/junit-4.8.2.jar"/>
   </path>
 
   <!-- ====================================================================== -->
@@ -118,15 +117,24 @@
            debug="true" 
            optimize="true" 
            deprecation="true" 
-           target="1.6" 
+           target="1.5" 
            verbose="false" 
            fork="false" 
-           source="1.6">
+           source="1.5">
       <src>
         <pathelement location="${maven.build.srcDir.0}"/>
       </src>
       <classpath refid="build.classpath"/>
     </javac>
+    <copy todir="${maven.build.outputDir}">
+      <fileset dir="${maven.build.resourceDir.0}"/>
+    </copy>
+    <copy todir="${maven.build.outputDir}">
+      <fileset dir="${maven.build.resourceDir.1}">
+        <include name="**"/>
+        <exclude name="**/*.java"/>
+      </fileset>
+    </copy>
   </target>
 
   <!-- ====================================================================== -->
@@ -138,23 +146,6 @@
           description="Compile the test code" 
           unless="maven.test.skip">
     <mkdir dir="${maven.build.testOutputDir}"/>
-    <javac destdir="${maven.build.testOutputDir}" 
-           nowarn="false" 
-           debug="true" 
-           optimize="true" 
-           deprecation="true" 
-           target="1.6" 
-           verbose="false" 
-           fork="false" 
-           source="1.6">
-      <src>
-        <pathelement location="${maven.build.testDir.0}"/>
-      </src>
-      <classpath>
-        <path refid="build.test.classpath"/>
-        <pathelement location="${maven.build.outputDir}"/>
-      </classpath>
-    </javac>
   </target>
 
   <!-- ====================================================================== -->
@@ -164,33 +155,7 @@
   <target name="test" 
           depends="compile-tests, junit-missing" 
           unless="junit.skipped" 
-          description="Run the test cases">
-    <mkdir dir="${maven.test.reports}"/>
-    <junit printSummary="yes" haltonerror="true" haltonfailure="true" fork="true" dir=".">
-      <sysproperty key="basedir" value="."/>
-      <formatter type="xml"/>
-      <formatter type="plain" usefile="false"/>
-      <classpath>
-        <path refid="build.test.classpath"/>
-        <pathelement location="${maven.build.outputDir}"/>
-        <pathelement location="${maven.build.testOutputDir}"/>
-      </classpath>
-      <batchtest todir="${maven.test.reports}" unless="test">
-        <fileset dir="${maven.build.testDir.0}">
-          <include name="**/Test*.java"/>
-          <include name="**/*Test.java"/>
-          <include name="**/*TestCase.java"/>
-          <exclude name="**/*Abstract*Test.java"/>
-        </fileset>
-      </batchtest>
-      <batchtest todir="${maven.test.reports}" if="test">
-        <fileset dir="${maven.build.testDir.0}">
-          <include name="**/${test}.java"/>
-          <exclude name="**/*Abstract*Test.java"/>
-        </fileset>
-      </batchtest>
-    </junit>
-  </target>
+          description="Run the test cases"/>
 
   <target name="test-junit-present">
     <available classname="junit.framework.Test" property="junit.present"/>
@@ -280,23 +245,6 @@
           description="Download all dependencies" 
           unless="maven.mode.offline">
     <mkdir dir="${maven.repo.local}"/>
-    <mkdir dir="${maven.repo.local}/at/ac/tuwien/swag-model/1.0-SNAPSHOT"/>
-    <get src="https://repository.jboss.org/nexus/content/groups/public-jboss//at/ac/tuwien/swag-model/1.0-SNAPSHOT/swag-model-1.0-SNAPSHOT.jar" 
-         dest="${maven.repo.local}/at/ac/tuwien/swag-model/1.0-SNAPSHOT/swag-model-1.0-SNAPSHOT.jar" 
-         usetimestamp="false" 
-         ignoreerrors="true"/>
-    <get src="http://repository.jboss.org/nexus/content/groups/public-jboss//at/ac/tuwien/swag-model/1.0-SNAPSHOT/swag-model-1.0-SNAPSHOT.jar" 
-         dest="${maven.repo.local}/at/ac/tuwien/swag-model/1.0-SNAPSHOT/swag-model-1.0-SNAPSHOT.jar" 
-         usetimestamp="false" 
-         ignoreerrors="true"/>
-    <get src="http://download.java.net/maven/glassfish/at/ac/tuwien/swag-model/1.0-SNAPSHOT/swag-model-1.0-SNAPSHOT.jar" 
-         dest="${maven.repo.local}/at/ac/tuwien/swag-model/1.0-SNAPSHOT/swag-model-1.0-SNAPSHOT.jar" 
-         usetimestamp="false" 
-         ignoreerrors="true"/>
-    <get src="http://repo1.maven.org/maven2/at/ac/tuwien/swag-model/1.0-SNAPSHOT/swag-model-1.0-SNAPSHOT.jar" 
-         dest="${maven.repo.local}/at/ac/tuwien/swag-model/1.0-SNAPSHOT/swag-model-1.0-SNAPSHOT.jar" 
-         usetimestamp="false" 
-         ignoreerrors="true"/>
     <mkdir dir="${maven.repo.local}/com/google/inject/guice/3.0"/>
     <get src="https://repository.jboss.org/nexus/content/groups/public-jboss//com/google/inject/guice/3.0/guice-3.0.jar" 
          dest="${maven.repo.local}/com/google/inject/guice/3.0/guice-3.0.jar" 
@@ -637,6 +585,23 @@
          dest="${maven.repo.local}/com/google/code/gson/gson/1.7.1/gson-1.7.1.jar" 
          usetimestamp="false" 
          ignoreerrors="true"/>
+    <mkdir dir="${maven.repo.local}/org/projectlombok/lombok/0.9.3"/>
+    <get src="https://repository.jboss.org/nexus/content/groups/public-jboss//org/projectlombok/lombok/0.9.3/lombok-0.9.3.jar" 
+         dest="${maven.repo.local}/org/projectlombok/lombok/0.9.3/lombok-0.9.3.jar" 
+         usetimestamp="false" 
+         ignoreerrors="true"/>
+    <get src="http://repository.jboss.org/nexus/content/groups/public-jboss//org/projectlombok/lombok/0.9.3/lombok-0.9.3.jar" 
+         dest="${maven.repo.local}/org/projectlombok/lombok/0.9.3/lombok-0.9.3.jar" 
+         usetimestamp="false" 
+         ignoreerrors="true"/>
+    <get src="http://download.java.net/maven/glassfish/org/projectlombok/lombok/0.9.3/lombok-0.9.3.jar" 
+         dest="${maven.repo.local}/org/projectlombok/lombok/0.9.3/lombok-0.9.3.jar" 
+         usetimestamp="false" 
+         ignoreerrors="true"/>
+    <get src="http://repo1.maven.org/maven2/org/projectlombok/lombok/0.9.3/lombok-0.9.3.jar" 
+         dest="${maven.repo.local}/org/projectlombok/lombok/0.9.3/lombok-0.9.3.jar" 
+         usetimestamp="false" 
+         ignoreerrors="true"/>
     <mkdir dir="${maven.repo.local}/org/slf4j/slf4j-api/1.6.1"/>
     <get src="https://repository.jboss.org/nexus/content/groups/public-jboss//org/slf4j/slf4j-api/1.6.1/slf4j-api-1.6.1.jar" 
          dest="${maven.repo.local}/org/slf4j/slf4j-api/1.6.1/slf4j-api-1.6.1.jar" 
@@ -688,38 +653,21 @@
          dest="${maven.repo.local}/log4j/log4j/1.2.16/log4j-1.2.16.jar" 
          usetimestamp="false" 
          ignoreerrors="true"/>
-    <mkdir dir="${maven.repo.local}/junit/junit/3.8.1"/>
-    <get src="https://repository.jboss.org/nexus/content/groups/public-jboss//junit/junit/3.8.1/junit-3.8.1.jar" 
-         dest="${maven.repo.local}/junit/junit/3.8.1/junit-3.8.1.jar" 
+    <mkdir dir="${maven.repo.local}/junit/junit/4.8.2"/>
+    <get src="https://repository.jboss.org/nexus/content/groups/public-jboss//junit/junit/4.8.2/junit-4.8.2.jar" 
+         dest="${maven.repo.local}/junit/junit/4.8.2/junit-4.8.2.jar" 
          usetimestamp="false" 
          ignoreerrors="true"/>
-    <get src="http://repository.jboss.org/nexus/content/groups/public-jboss//junit/junit/3.8.1/junit-3.8.1.jar" 
-         dest="${maven.repo.local}/junit/junit/3.8.1/junit-3.8.1.jar" 
+    <get src="http://repository.jboss.org/nexus/content/groups/public-jboss//junit/junit/4.8.2/junit-4.8.2.jar" 
+         dest="${maven.repo.local}/junit/junit/4.8.2/junit-4.8.2.jar" 
          usetimestamp="false" 
          ignoreerrors="true"/>
-    <get src="http://download.java.net/maven/glassfish/junit/junit/3.8.1/junit-3.8.1.jar" 
-         dest="${maven.repo.local}/junit/junit/3.8.1/junit-3.8.1.jar" 
+    <get src="http://download.java.net/maven/glassfish/junit/junit/4.8.2/junit-4.8.2.jar" 
+         dest="${maven.repo.local}/junit/junit/4.8.2/junit-4.8.2.jar" 
          usetimestamp="false" 
          ignoreerrors="true"/>
-    <get src="http://repo1.maven.org/maven2/junit/junit/3.8.1/junit-3.8.1.jar" 
-         dest="${maven.repo.local}/junit/junit/3.8.1/junit-3.8.1.jar" 
-         usetimestamp="false" 
-         ignoreerrors="true"/>
-    <mkdir dir="${maven.repo.local}/javax/jms/jms/1.1"/>
-    <get src="https://repository.jboss.org/nexus/content/groups/public-jboss//javax/jms/jms/1.1/jms-1.1.jar" 
-         dest="${maven.repo.local}/javax/jms/jms/1.1/jms-1.1.jar" 
-         usetimestamp="false" 
-         ignoreerrors="true"/>
-    <get src="http://repository.jboss.org/nexus/content/groups/public-jboss//javax/jms/jms/1.1/jms-1.1.jar" 
-         dest="${maven.repo.local}/javax/jms/jms/1.1/jms-1.1.jar" 
-         usetimestamp="false" 
-         ignoreerrors="true"/>
-    <get src="http://download.java.net/maven/glassfish/javax/jms/jms/1.1/jms-1.1.jar" 
-         dest="${maven.repo.local}/javax/jms/jms/1.1/jms-1.1.jar" 
-         usetimestamp="false" 
-         ignoreerrors="true"/>
-    <get src="http://repo1.maven.org/maven2/javax/jms/jms/1.1/jms-1.1.jar" 
-         dest="${maven.repo.local}/javax/jms/jms/1.1/jms-1.1.jar" 
+    <get src="http://repo1.maven.org/maven2/junit/junit/4.8.2/junit-4.8.2.jar" 
+         dest="${maven.repo.local}/junit/junit/4.8.2/junit-4.8.2.jar" 
          usetimestamp="false" 
          ignoreerrors="true"/>
   </target>

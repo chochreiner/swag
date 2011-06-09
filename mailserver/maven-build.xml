@@ -15,7 +15,7 @@
 <!--                                                                        -->
 <!-- ====================================================================== -->
 
-<project name="swag-executor-from-maven" default="package" basedir=".">
+<project name="mailserver-from-maven" default="package" basedir=".">
 
   <!-- ====================================================================== -->
   <!-- Build environment properties                                           -->
@@ -24,7 +24,7 @@
   <property file="${user.home}/.m2/maven.properties"/>
   <property file="maven-build.properties"/>
 
-  <property name="maven.build.finalName" value="swag-executor-1.0-SNAPSHOT"/>
+  <property name="maven.build.finalName" value="mailserver-1.0-SNAPSHOT"/>
   <property name="maven.build.dir" value="target"/>
   <property name="maven.build.outputDir" value="${maven.build.dir}/classes"/>
   <property name="maven.build.srcDir.0" value="src/main/java"/>
@@ -44,11 +44,13 @@
   <!-- ====================================================================== -->
 
   <path id="build.classpath">
-    <pathelement location="${maven.repo.local}/javax/jms/jms/1.1/jms-1.1.jar"/>
+    <pathelement location="${maven.repo.local}/dumbster/dumbster/1.6/dumbster-1.6.jar"/>
+    <pathelement location="${maven.repo.local}/javax/javaee-api/6.0/javaee-api-6.0.jar"/>
   </path>
   <path id="build.test.classpath">
+    <pathelement location="${maven.repo.local}/dumbster/dumbster/1.6/dumbster-1.6.jar"/>
+    <pathelement location="${maven.repo.local}/javax/javaee-api/6.0/javaee-api-6.0.jar"/>
     <pathelement location="${maven.repo.local}/junit/junit/4.8.2/junit-4.8.2.jar"/>
-    <pathelement location="${maven.repo.local}/javax/jms/jms/1.1/jms-1.1.jar"/>
   </path>
 
   <!-- ====================================================================== -->
@@ -79,6 +81,9 @@
       </src>
       <classpath refid="build.classpath"/>
     </javac>
+    <copy todir="${maven.build.outputDir}">
+      <fileset dir="${maven.build.resourceDir.0}"/>
+    </copy>
   </target>
 
   <!-- ====================================================================== -->
@@ -90,23 +95,6 @@
           description="Compile the test code" 
           unless="maven.test.skip">
     <mkdir dir="${maven.build.testOutputDir}"/>
-    <javac destdir="${maven.build.testOutputDir}" 
-           nowarn="false" 
-           debug="true" 
-           optimize="true" 
-           deprecation="true" 
-           target="1.6" 
-           verbose="false" 
-           fork="false" 
-           source="1.6">
-      <src>
-        <pathelement location="${maven.build.testDir.0}"/>
-      </src>
-      <classpath>
-        <path refid="build.test.classpath"/>
-        <pathelement location="${maven.build.outputDir}"/>
-      </classpath>
-    </javac>
   </target>
 
   <!-- ====================================================================== -->
@@ -116,33 +104,7 @@
   <target name="test" 
           depends="compile-tests, junit-missing" 
           unless="junit.skipped" 
-          description="Run the test cases">
-    <mkdir dir="${maven.test.reports}"/>
-    <junit printSummary="yes" haltonerror="true" haltonfailure="true" fork="true" dir=".">
-      <sysproperty key="basedir" value="."/>
-      <formatter type="xml"/>
-      <formatter type="plain" usefile="false"/>
-      <classpath>
-        <path refid="build.test.classpath"/>
-        <pathelement location="${maven.build.outputDir}"/>
-        <pathelement location="${maven.build.testOutputDir}"/>
-      </classpath>
-      <batchtest todir="${maven.test.reports}" unless="test">
-        <fileset dir="${maven.build.testDir.0}">
-          <include name="**/Test*.java"/>
-          <include name="**/*Test.java"/>
-          <include name="**/*TestCase.java"/>
-          <exclude name="**/*Abstract*Test.java"/>
-        </fileset>
-      </batchtest>
-      <batchtest todir="${maven.test.reports}" if="test">
-        <fileset dir="${maven.build.testDir.0}">
-          <include name="**/${test}.java"/>
-          <exclude name="**/*Abstract*Test.java"/>
-        </fileset>
-      </batchtest>
-    </junit>
-  </target>
+          description="Run the test cases"/>
 
   <target name="test-junit-present">
     <available classname="junit.framework.Test" property="junit.present"/>
@@ -232,6 +194,40 @@
           description="Download all dependencies" 
           unless="maven.mode.offline">
     <mkdir dir="${maven.repo.local}"/>
+    <mkdir dir="${maven.repo.local}/dumbster/dumbster/1.6"/>
+    <get src="https://repository.jboss.org/nexus/content/groups/public-jboss//dumbster/dumbster/1.6/dumbster-1.6.jar" 
+         dest="${maven.repo.local}/dumbster/dumbster/1.6/dumbster-1.6.jar" 
+         usetimestamp="false" 
+         ignoreerrors="true"/>
+    <get src="http://repository.jboss.org/nexus/content/groups/public-jboss//dumbster/dumbster/1.6/dumbster-1.6.jar" 
+         dest="${maven.repo.local}/dumbster/dumbster/1.6/dumbster-1.6.jar" 
+         usetimestamp="false" 
+         ignoreerrors="true"/>
+    <get src="http://download.java.net/maven/glassfish/dumbster/dumbster/1.6/dumbster-1.6.jar" 
+         dest="${maven.repo.local}/dumbster/dumbster/1.6/dumbster-1.6.jar" 
+         usetimestamp="false" 
+         ignoreerrors="true"/>
+    <get src="http://repo1.maven.org/maven2/dumbster/dumbster/1.6/dumbster-1.6.jar" 
+         dest="${maven.repo.local}/dumbster/dumbster/1.6/dumbster-1.6.jar" 
+         usetimestamp="false" 
+         ignoreerrors="true"/>
+    <mkdir dir="${maven.repo.local}/javax/javaee-api/6.0"/>
+    <get src="https://repository.jboss.org/nexus/content/groups/public-jboss//javax/javaee-api/6.0/javaee-api-6.0.jar" 
+         dest="${maven.repo.local}/javax/javaee-api/6.0/javaee-api-6.0.jar" 
+         usetimestamp="false" 
+         ignoreerrors="true"/>
+    <get src="http://repository.jboss.org/nexus/content/groups/public-jboss//javax/javaee-api/6.0/javaee-api-6.0.jar" 
+         dest="${maven.repo.local}/javax/javaee-api/6.0/javaee-api-6.0.jar" 
+         usetimestamp="false" 
+         ignoreerrors="true"/>
+    <get src="http://download.java.net/maven/glassfish/javax/javaee-api/6.0/javaee-api-6.0.jar" 
+         dest="${maven.repo.local}/javax/javaee-api/6.0/javaee-api-6.0.jar" 
+         usetimestamp="false" 
+         ignoreerrors="true"/>
+    <get src="http://repo1.maven.org/maven2/javax/javaee-api/6.0/javaee-api-6.0.jar" 
+         dest="${maven.repo.local}/javax/javaee-api/6.0/javaee-api-6.0.jar" 
+         usetimestamp="false" 
+         ignoreerrors="true"/>
     <mkdir dir="${maven.repo.local}/junit/junit/4.8.2"/>
     <get src="https://repository.jboss.org/nexus/content/groups/public-jboss//junit/junit/4.8.2/junit-4.8.2.jar" 
          dest="${maven.repo.local}/junit/junit/4.8.2/junit-4.8.2.jar" 
@@ -247,23 +243,6 @@
          ignoreerrors="true"/>
     <get src="http://repo1.maven.org/maven2/junit/junit/4.8.2/junit-4.8.2.jar" 
          dest="${maven.repo.local}/junit/junit/4.8.2/junit-4.8.2.jar" 
-         usetimestamp="false" 
-         ignoreerrors="true"/>
-    <mkdir dir="${maven.repo.local}/javax/jms/jms/1.1"/>
-    <get src="https://repository.jboss.org/nexus/content/groups/public-jboss//javax/jms/jms/1.1/jms-1.1.jar" 
-         dest="${maven.repo.local}/javax/jms/jms/1.1/jms-1.1.jar" 
-         usetimestamp="false" 
-         ignoreerrors="true"/>
-    <get src="http://repository.jboss.org/nexus/content/groups/public-jboss//javax/jms/jms/1.1/jms-1.1.jar" 
-         dest="${maven.repo.local}/javax/jms/jms/1.1/jms-1.1.jar" 
-         usetimestamp="false" 
-         ignoreerrors="true"/>
-    <get src="http://download.java.net/maven/glassfish/javax/jms/jms/1.1/jms-1.1.jar" 
-         dest="${maven.repo.local}/javax/jms/jms/1.1/jms-1.1.jar" 
-         usetimestamp="false" 
-         ignoreerrors="true"/>
-    <get src="http://repo1.maven.org/maven2/javax/jms/jms/1.1/jms-1.1.jar" 
-         dest="${maven.repo.local}/javax/jms/jms/1.1/jms-1.1.jar" 
          usetimestamp="false" 
          ignoreerrors="true"/>
   </target>

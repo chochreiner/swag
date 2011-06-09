@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="swag" default="build" basedir=".">
+
+	<import file="ant-asadmin-macros.xml"/>
+	<import file="ant-domain-macros.xml"/>
+	
+	<target name="build">
+		<call-targets target="build" />
+	</target>
+	<target name="clean">
+		<call-targets target="clean"/>
+	</target>
+	<target name="run">
+		<antcall target="start-domain"/>
+		
+		<call-targets target="run"/>
+	</target>
+
+	<target name="compile">
+		<call-targets target="compile"/>
+	</target>
+	<target name="setup">
+		<copy file="lib/postgresql-jdbc.jar" dir="${domain.dir}/lib/ext"/>
+		
+		<call-targets target="setup"/>
+	</target>
+	<target name="deploy">
+		<call-targets target="deploy"/>
+	</target>
+	<target name="redeploy">
+		<call-targets target="redeploy"/>
+	</target>
+
+	<macrodef name="call-targets">
+		<attribute name="target" />
+		<sequential>
+			<echo message=">>>>> @{target}"/>
+
+			<call-target dir="swag-auth"         target="@{target}" />
+			<call-target dir="swag-model"        target="@{target}" />
+			<call-target dir="swag-executor"     target="@{target}" />
+			<call-target dir="swag-webapp"       target="@{target}" />
+			<call-target dir="swag-util"         target="@{target}" />
+			<call-target dir="swag-messages"     target="@{target}" />
+			<call-target dir="swag-notification" target="@{target}" />
+			<call-target dir="mailserver"        target="@{target}" />
+		</sequential>
+	</macrodef>
+
+	<macrodef name="call-target">
+		<attribute name="dir" />
+		<attribute name="target" />
+		<sequential>
+			<echo message=">>> @{dir}: @{target}"/>
+
+			<ant antfile="build.xml" dir="@{dir}" target="@{target}" />
+		</sequential>
+	</macrodef>
+</project>

@@ -26,30 +26,30 @@ public class JMSHelper implements Serializable {
 		connection.start();
 	}
 
-	public <Response> Response request( Destination dest, String msg ) throws JMSException {
-		return request( dest, makeMessage( msg ) );
+	public <T> T request( Destination dest, Class<T> c, String msg ) throws JMSException {
+		return doRequest( dest, c, makeMessage( msg ) );
 	}
 	
-	public <Response> Response request( Destination dest, Serializable msg ) throws JMSException {
-		return request( dest, makeMessage( msg ) );
+	public <T> T request( Destination dest, Class<T> c, Serializable msg ) throws JMSException {
+		return doRequest( dest, c, makeMessage( msg ) );
 	}
 
-	public <Response> Response request( Destination dest, String msg, long timeout ) throws JMSException, 
-	                                                                                        TimeoutExpiredException {
-		return request( dest, makeMessage( msg ), timeout );
+	public <T> T request( Destination dest, Class<T> c, String msg, long timeout )
+	  throws JMSException, TimeoutExpiredException {
+		return doRequest( dest, c, makeMessage( msg ), timeout );
 	}
 	
-	public <Response> Response request( Destination dest, Serializable msg, long timeout ) throws JMSException, 
-	                                                                                        TimeoutExpiredException {
-		return request( dest, makeMessage( msg ), timeout );
+	public <T> T request( Destination dest, Class<T> c, Serializable msg, long timeout ) 
+	  throws JMSException, TimeoutExpiredException {
+		return doRequest( dest, c, makeMessage( msg ), timeout );
 	}
 	
 	public void send( Destination dest, String msg ) throws JMSException {
-		send( dest, null, makeMessage( msg ) );
+		doSend( dest, null, makeMessage( msg ) );
 	}
 	
 	public void send( Destination dest, Serializable msg ) throws JMSException {
-		send( dest, null, makeMessage( msg ) );
+		doSend( dest, null, makeMessage( msg ) );
 	}
 
 	public Message receive( Destination dest ) throws JMSException {
@@ -94,35 +94,35 @@ public class JMSHelper implements Serializable {
 	
 	//***** PRIVATE PARTS
 	
-	private <Response> Response request( Destination dest, Message msg ) throws JMSException {
+	private <T> T doRequest( Destination dest, Class<T> c, Message msg ) throws JMSException {
 		TemporaryQueue replyTo = session.createTemporaryQueue();
 		
-		send( dest, replyTo, msg );
+		doSend( dest, replyTo, msg );
 
 		Message reply = receive( replyTo );
 		
-		Response response = getResponse( reply );
+		T response = getResponse( reply, c );
 		
 		replyTo.delete();
 		
 		return response;
 	}
-	private <Response> Response request( Destination dest, Message msg, long timeout ) throws JMSException, 
-	                                                                                          TimeoutExpiredException {
+	private <T> T doRequest( Destination dest, Class<T> c, Message msg, long timeout ) 
+	  throws JMSException, TimeoutExpiredException {
 		TemporaryQueue replyTo = session.createTemporaryQueue();
 		
-		send( dest, replyTo, msg );
+		doSend( dest, replyTo, msg );
 
 		Message reply = receive( replyTo, timeout );
 		
-		Response response = getResponse( reply );
+		T response = getResponse( reply, c );
 		
 		replyTo.delete();
 		
 		return response;
 	}
 	
-	private void send( Destination dest, Destination replyTo, Message msg ) throws JMSException {
+	private void doSend( Destination dest, Destination replyTo, Message msg ) throws JMSException {
 		MessageProducer producer = session.createProducer( dest );
 		
 		msg.setJMSReplyTo( replyTo );
@@ -132,15 +132,20 @@ public class JMSHelper implements Serializable {
 		producer.close();
 	}
 	
-	@SuppressWarnings("unchecked")
-	private <Response> Response getResponse( Message msg ) throws JMSException {
-		if ( msg instanceof ObjectMessage ) {
-			return (Response) ((ObjectMessage) msg).getObject();
-		} else if ( msg instanceof TextMessage ){
-			return (Response) ((TextMessage) msg).getText();
-		} else {
-			return (Response) msg;
+	private <Response> Response getResponse( Message msg, Class<Response> c ) throws JMSException {
+		if ( c.isAssignableFrom( msg.getClass() ) ) {
+			return c.cast( msg );
 		}
+		
+		if ( msg instanceof ObjectMessage ) {
+			return c.cast( ((ObjectMessage) msg).getObject() );
+		} 
+		
+		if ( msg instanceof TextMessage ){
+			return c.cast( ((TextMessage) msg).getText() );
+		}
+		
+		return null;
 	}
 	
 	private Message makeMessage( String txt ) throws JMSException {

@@ -1,11 +1,10 @@
 package at.ac.tuwien.swag.webapp.service;
 
-import java.util.Set;
-
 import javax.jms.JMSException;
 
 import at.ac.tuwien.swag.messages.TimeoutExpiredException;
 import at.ac.tuwien.swag.messages.auth.AuthenticationReply;
+import at.ac.tuwien.swag.model.domain.User;
 
 public interface LoginService {
 
@@ -18,9 +17,8 @@ public interface LoginService {
 	                                                                            TimeoutExpiredException, 
 	                                                                            JMSException;
 
-	/**
-	 * Get a users roles
-	 */
-	Set<String> getRoles( String username );
+	boolean userExists( String username ) throws JMSException, TimeoutExpiredException;
+
+	void storeUser( User user ) throws JMSException, TimeoutExpiredException;
 	
 }

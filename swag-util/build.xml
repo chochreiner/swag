@@ -4,13 +4,13 @@
 <!-- Ant build file (http://ant.apache.org/) for Ant 1.6.2 or above.        -->
 <!-- ====================================================================== -->
 
-<project name="swag-executor" default="package" basedir=".">
+<project name="swag-util" default="package" basedir=".">
 
 	<import file="../ant-macros.xml"/>
 	
 	<target name="setup"/>
 	<target name="deploy"/>
-	<target name="undeploy"/>
+	<target name="undeploy"/>	
 	
   <!-- ====================================================================== -->
   <!-- Import maven-build.xml into the current project                        -->

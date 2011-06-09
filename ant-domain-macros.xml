@@ -1,0 +1,27 @@
+<project name="domain-macros.xml">
+
+	<import file="ant-asadmin-macros.xml"/>
+
+	<target name="init-domain" depends="init-asadmin">
+		<property name="domain.name"    value="swag"/>
+		<property name="domain.dir"     value="${glassfish.home}/domains/${domain.name}"/>
+	</target>
+
+	<!-- START AND STOP GLASSFISH ********************************************************* -->
+    <target name="start-domain" depends="init-domain">
+		<asadmin command="start-domain" parameters="${domain.name}"/>
+    </target>
+    <target name="stop-domain" depends="init-domain">		
+		<asadmin command="stop-domain" parameters="${domain.name}"/>
+    </target>
+    <target name="restart-domain" depends="stop-domain, start-domain"/>	
+ 	   	
+	<!-- DELETE AND CREATE DOMAIN ********************************************************* -->
+    <target name="create-domain" depends="init-domain">		
+		<asadmin command="create-domain" parameters="--nopassword ${domain.name}"/>
+    </target>
+    <target name="delete-domain" depends="stop-domain">		
+		<asadmin command="delete-domain" parameters="${domain.name}"/>
+    </target>
+    <target name="recreate-domain" depends="stop-domain, delete-domain, create-domain, start-domain"/>	
+</project>
