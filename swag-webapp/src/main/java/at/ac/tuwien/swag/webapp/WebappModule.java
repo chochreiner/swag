@@ -11,6 +11,8 @@ import javax.naming.NamingException;
 
 import at.ac.tuwien.swag.messages.JMSHelper;
 import at.ac.tuwien.swag.model.dao.MapDAO;
+import at.ac.tuwien.swag.model.dao.MapUserDAO;
+import at.ac.tuwien.swag.model.dao.SquareDAO;
 import at.ac.tuwien.swag.model.dao.UserDAO;
 import at.ac.tuwien.swag.webapp.service.LoginService;
 import at.ac.tuwien.swag.webapp.service.MessageService;
@@ -55,6 +57,8 @@ public class WebappModule extends ServletModule {
         // /**** DAOS *****************************************//
         bind(UserDAO.class);
         bind(MapDAO.class);
+        bind(MapUserDAO.class);
+        bind(SquareDAO.class);
 
         // /**** WEBAPP SERVICES ******************************//
         bind(LoginService.class).to(LoginServiceImpl.class);

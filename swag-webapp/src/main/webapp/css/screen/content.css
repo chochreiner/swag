@@ -191,8 +191,8 @@
   tbody td { border-bottom:1px solid #eee; }
 
   tbody tr:hover th[scope="row"],
-  tbody tr:hover tbody th.sub { background:#f0e8e8; }
-  tbody tr:hover td { background:#fff8f8; }
+  tbody tr:hover tbody th.sub { }
+  tbody tr:hover td { }
 
 
 	/**
@@ -268,20 +268,46 @@
 
 	
 	
-.mapNav {
+#gameMapNav {
+	border: 0;
+}	
+
+#gameMapNav td{
+	border: 0;
+}	
+	
+.mapNav span {
 	text-align: center;
-	
+	float: left;
+	width: 100%;
 }
-	
+
 .square {
-	padding: 25px;
+	float: left;
+	width: 100px;
+	height: 100px;
+	background:   #83d384;
+	margin: 2px;
 }
 	
 	
 #gameMap{
+	border-collapse: collapse;
+	border:1px solid #000;
+	width: 100%;
+	height: 100%;
+	padding:0;
+	margin: 0;
+}
 
-	widht= 100%;
-	height= 100%;
+#gameMap td:hover span {
+	background-color: #dcfee7;
+}	
+
+#gameMap td {
+	padding: 0;
+	border:0;
+	
 }
  /**
   * ------------------------------------------------------------------------------------------------- #
