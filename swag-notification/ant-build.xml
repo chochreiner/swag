@@ -12,10 +12,18 @@
 	<!-- MANAGE GLASSFISH RESOURCES ******************************************************* -->
 	<target name="setup" depends="setup-jms"></target>
 	
-	<target name="setup-jms">
-		<create-jms-pool/>
+	<target name="setup-jms" depends="clean-jms">
+		<asadmin command="create-connector-connection-pool"
+		         parameters="--raname jmsra 
+		                     --connectiondefinition javax.jms.ConnectionFactory
+		                     swag.JMSPool"/>
+		
+		<create-jms-queue name="swag.queue.Notification"/>
 	</target>
 	<target name="clean-jms">
-		<delete-jms-pool/>
+		<asadmin command="delete-connector-connection-pool"
+		         parameters="--cascade=true swag.JMSPool"/>
+
+		<delete-jms-resource name="swag.queue.Notification"/>
 	</target>
 </project>

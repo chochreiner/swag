@@ -13,7 +13,7 @@ import org.apache.wicket.validation.validator.EmailAddressValidator;
 
 import at.ac.tuwien.swag.model.dao.UserDAO;
 import at.ac.tuwien.swag.model.domain.User;
-import at.ac.tuwien.swag.webapp.service.PasswordHasher;
+import at.ac.tuwien.swag.util.PasswordHasher;
 
 import com.google.inject.Inject;
 

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="swag-messages-helpers" basedir="." default="build">
+	<!-- import our own ant tasks -->
+	<import file="../ant-helpers.xml"/>
+	
+	<!-- ***** PROPERTIES ***************************************************************** -->
+	<!-- application data -->
+	<property name="application.name" value="swag-messages"/>
+	<property name="packaging.type"   value="jar"/>
+	
+	<target name="build" depends="redeploy">
+		<exec executable="mvn">
+			<arg value="package"/>
+		</exec>
+		<antcall target="deploy"/>
+	</target>
+	
+	<!-- MANAGE GLASSFISH RESOURCES ******************************************************* -->
+	<target name="deploy" depends="init">
+		  <copy file="${packaging.file}" todir="${domain.dir}/lib"/>
+	</target>
+	<target name="undeploy">
+		  <delete file="${domain.dir}/lib/${packaging.name}.${packaging.type}"/>
+	</target>
+	<target name="redeploy" depends="deploy">
+	</target>
+
+	<target name="setup"></target>
+
+</project>

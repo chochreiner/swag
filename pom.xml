@@ -7,13 +7,15 @@
  <version>1.0-SNAPSHOT</version>
  <name>swag-root</name>
  <modules>
-    <module>swag-model</module>
-    <module>swag-executor</module>
-    <module>swag-webapp</module>
-    <module>swag-util</module>
-    <module>swag-notification</module>
-    <module>mailserver</module>
-    <module>swag-ear</module>
+	  <module>swag-auth</module>
+	  <module>swag-model</module>
+	  <module>swag-executor</module>
+	  <module>swag-webapp</module>
+	  <module>swag-util</module>
+	  <module>swag-messages</module>
+      <module>swag-notification</module>
+      <module>mailserver</module>
+<!--      <module>swag-ear</module>-->
   </modules>
  <properties>
   <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -26,6 +28,16 @@
    <dependency>
     <groupId>at.ac.tuwien</groupId>
     <artifactId>swag-model</artifactId>
+    <version>1.0-SNAPSHOT</version>
+   </dependency>
+   <dependency>
+    <groupId>at.ac.tuwien</groupId>
+    <artifactId>swag-messages</artifactId>
+    <version>1.0-SNAPSHOT</version>
+   </dependency>
+   <dependency>
+    <groupId>at.ac.tuwien</groupId>
+    <artifactId>swag-util</artifactId>
     <version>1.0-SNAPSHOT</version>
    </dependency>
    <!-- guice DI -->

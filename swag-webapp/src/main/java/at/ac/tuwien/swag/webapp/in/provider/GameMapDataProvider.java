@@ -17,21 +17,27 @@ public class GameMapDataProvider{
 	private MapDAO mapDao;
 	private SquareDAO squareDao;
 	private HashMap<Integer, HashMap<Integer,Square>> fullMap;
-
-	public GameMapDataProvider(MapDAO mapDao, SquareDAO squareDao) {
+	private Integer mapXSize;
+	private Integer mapYSize;
+	
+	public GameMapDataProvider(String mapname, MapDAO mapDao, SquareDAO squareDao) {
 		this.mapDao = mapDao;
 		this.squareDao = squareDao;
 		this.fullMap = new HashMap<Integer, HashMap<Integer,Square>>();
 		
-		this.loadFullMap("Markomannwar");
+		this.loadFullMap(mapname);
 	}
 
 	private void loadFullMap(String mapName) {
 	
-		for(Square square :mapDao.findByName(mapName).getSquares()) {
+		Map map = mapDao.findByName(mapName);
+		for(Square square :map.getSquares()) {
 			
 			addSquareToFullMap(square, fullMap);
 		}
+		
+		mapXSize = map.getXSize();
+		mapYSize = map.getYSize();
 	}
 	
 	/**
@@ -60,16 +66,16 @@ public class GameMapDataProvider{
 		
 		ArrayList<List<Square>> mapList = new ArrayList<List<Square>>();
 		for(int y = startY; y <= endY; y++) {
-			System.out.println("BLAAAAAAAAAAAAAAAAAA"+y);
+			
 			HashMap<Integer, Square> row = this.fullMap.get(y);
 			if(row != null) {
 				
 				ArrayList<Square> mapRowList = new ArrayList<Square>();
 				for(int x = startX; x <= endX; x++) {
-					System.out.println("BLAAAAAAAAAAAAAAAAAA"+x);
+					
 					Square square = row.get(x);
 					if(square != null) {
-						System.out.println("BLAAAAAAAAAAAAAAAAAA"+square);
+						
 						mapRowList.add(square);
 					}else { return null;}
 				}
@@ -103,5 +109,12 @@ public class GameMapDataProvider{
 		
 		return mapRowList;
 	}
-	
+
+	public Integer getMapXSize() {
+		return mapXSize;
+	}
+
+	public Integer getMapYSize() {
+		return mapYSize;
+	}
 }

@@ -1,4 +1,4 @@
-package at.ac.tuwien.swag.webapp.service.impl;
+package at.ac.tuwien.swag.util;
 
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
@@ -8,11 +8,9 @@ import java.util.Arrays;
 
 import org.apache.commons.codec.binary.Base64;
 
-import at.ac.tuwien.swag.webapp.service.PasswordHasher;
+public class PasswordHasher {
 
-public class PasswordHasherImpl implements PasswordHasher {
-
-	public PasswordHasherImpl() {
+	public PasswordHasher() {
 		try {
 			this.random  = new SecureRandom();
 			this.digest  = MessageDigest.getInstance( HASH_ALGORITHM );
@@ -22,7 +20,6 @@ public class PasswordHasherImpl implements PasswordHasher {
 		}
 	}
 	
-	@Override
 	public String hash( String password ) {
 		return hash( password, generateSalt() );
 	}
