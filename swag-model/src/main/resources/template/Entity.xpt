@@ -23,6 +23,8 @@
 			}
 		)
 		public class «name» extends AbstractEntity {
+			private static final long serialVersionUID = 666;
+		
 			//*** constructors
 			
 			// no arg constructor
