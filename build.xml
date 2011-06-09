@@ -21,7 +21,7 @@
 		<call-targets target="compile"/>
 	</target>
 	<target name="setup">
-		<copy file="lib/postgresql-jdbc.jar" dir="${domain.dir}/lib/ext"/>
+	<!--	<copy file="lib/postgresql-jdbc.jar" todir="${domain.dir}/lib/ext"/> -->
 		
 		<call-targets target="setup"/>
 	</target>

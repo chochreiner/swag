@@ -28,6 +28,7 @@ public abstract class MessageHandler {
 		} catch ( IllegalArgumentException e ) {
 		} catch ( IllegalAccessException e ) {
 		} catch ( InvocationTargetException e ) {
+			System.err.println( e );
 		}
 	}
 	

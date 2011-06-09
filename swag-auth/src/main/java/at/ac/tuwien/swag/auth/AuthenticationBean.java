@@ -2,7 +2,9 @@ package at.ac.tuwien.swag.auth;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import javax.ejb.EJB;
 import javax.ejb.MessageDriven;
+import javax.inject.Inject;
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
@@ -14,10 +16,7 @@ import javax.jms.TextMessage;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
-
 import at.ac.tuwien.swag.messages.auth.AuthenticationReply;
 import at.ac.tuwien.swag.messages.auth.AuthenticationRequest;
 import at.ac.tuwien.swag.messages.auth.StoreUserRequest;
@@ -31,7 +30,7 @@ public class AuthenticationBean extends MessageHandler implements MessageListene
 
 	@PostConstruct
 	public void initialize() throws JMSException {
-		users  = new UserDAO( em );
+		users  = new UserDAO( persistence.makeEntityManager() );
 		hasher = new PasswordHasher();
 		
 		connection = connectionFactory.createConnection();
@@ -43,17 +42,8 @@ public class AuthenticationBean extends MessageHandler implements MessageListene
 	@Override
 	public void onMessage( Message msg ) {
 		try {
-			Context ctx = new InitialContext();
-			
-			Object o = ctx.lookup( "jdbc/PostgresPool" );
-			
-			System.out.println( o );
-			
 			handleMessage( session, msg.getJMSReplyTo(), getPayload( msg ) );
 		} catch ( JMSException e ) {
-			e.printStackTrace();
-		} catch ( NamingException e ) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -95,7 +85,7 @@ public class AuthenticationBean extends MessageHandler implements MessageListene
 	public void handle( StoreUserRequest msg ) throws JMSException {
 		User u = new User(
 			msg.user.getUsername(),
-			msg.user.getPassword(),
+			hasher.hash( msg.user.getPassword() ),
 			msg.user.getAddress(),
 			msg.user.getEmail(),
 			msg.user.getFullname(),
@@ -122,9 +112,8 @@ public class AuthenticationBean extends MessageHandler implements MessageListene
 		}
 	}
 	
-	
-	@PersistenceContext( unitName="swag" )
-	private EntityManager em;
+	@EJB
+	private PersistenceBean persistence;
 	
 	@Resource(mappedName="swag.JMS")
 	private ConnectionFactory connectionFactory;

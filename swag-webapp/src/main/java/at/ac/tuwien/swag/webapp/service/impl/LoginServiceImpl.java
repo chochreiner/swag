@@ -31,21 +31,18 @@ public class LoginServiceImpl implements LoginService {
     public AuthenticationReply authenticate(String username, String password) throws AuthenticationException,
                                                                                      TimeoutExpiredException,
                                                                                      JMSException            {
-//    	boolean b = jms.request( authentication, Boolean.class, new UserExistsRequest( username ), timeout );
-//
-//    	AuthenticationReply auth = jms.request( authentication, 
-//   		                                        AuthenticationReply.class,
-//   		                                        new AuthenticationRequest( username, password ),
-//   		                                        timeout );
-//    		
-//   		
-//   		// request denied
-//   		if ( !b || auth.token == null || auth.roles == null || auth.roles.length == 0 ) 
-//   			throw new AuthenticationException("Username or password are incorrect" );	
-//    		
-//   		return auth;
     	
-    	return new AuthenticationReply( username, new String[] {"ADMIN", "USER"}, "TOKEN" );
+    	AuthenticationReply auth = jms.request( authentication, 
+   		                                        AuthenticationReply.class,
+   		                                        new AuthenticationRequest( username, password ),
+   		                                        timeout );
+    		
+   		
+   		// request denied
+   		if ( auth.token == null || auth.roles == null || auth.roles.length == 0 ) 
+   			throw new AuthenticationException("Username or password are incorrect" );	
+    		
+   		return auth;
     }
 
     public boolean userExists( String username ) throws JMSException, TimeoutExpiredException {
