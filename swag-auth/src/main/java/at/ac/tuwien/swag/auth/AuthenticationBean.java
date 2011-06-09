@@ -11,6 +11,7 @@ import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
+import javax.jms.MessageProducer;
 import javax.jms.ObjectMessage;
 import javax.jms.Session;
 import javax.jms.TextMessage;
@@ -68,7 +69,11 @@ public class AuthenticationBean implements MessageListener {
 	}
 	
 	private void reply( Destination replyTo, Message msg ) throws JMSException {
-		session.createProducer( replyTo ).send( msg );
+		MessageProducer producer = session.createProducer( replyTo );
+
+		producer.send( msg );
+		
+		producer.close();
 	}
 
 	private void reply( Destination replyTo, String msg ) throws JMSException {
@@ -79,7 +84,7 @@ public class AuthenticationBean implements MessageListener {
 		reply( replyTo, session.createObjectMessage( msg ) );
 	}
 	
-	@Resource(mappedName="swag.JMSPool")
+	@Resource(mappedName="swag.JMS")
 	private ConnectionFactory connectionFactory;
 	
 	private Connection connection;
