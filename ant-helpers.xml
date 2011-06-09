@@ -6,11 +6,10 @@
     <property environment="env"/>
     <property name="glassfish.home" value="${env.GLASSFISH_HOME}"/>
 	<property name="admin.cli.jar"  value="${glassfish.home}/modules/admin-cli.jar"/>
-	<property name="domain.dir"     value="${glassfish.home}/domains/${app-name}"/>
+	<property name="domain.name"    value="swag"/>
+	<property name="domain.dir"     value="${glassfish.home}/domains/${domain.name}"/>
 	
 	<!-- application data -->
-	<property name="packaging.name"  value="${application.name}-1.0-SNAPSHOT"/>
-	<property name="packaging.file"  value="target/${packaging.name}.${packaging.type}"/>
 	
 	<!-- INITIALIZE PROPERTIES & CHECK THE ENVIRONMENT ************************************ -->
     <target name="init">
@@ -22,26 +21,34 @@
         </fail>
     	
     	<!-- default values for properties -->
-    	<property name="context.root"   value="${application.name}"/>
-		<property name="packaging.type" value="jar"/>
+    	<property name="context.root" value="${application.name}"/>
+
+		<property name="packaging.type"  value="war"/>
+		<property name="packaging.name"  value="${application.name}-1.0-SNAPSHOT"/>
+		<property name="packaging.file"  value="target/${packaging.name}.${packaging.type}"/>
     </target>
 	
 	<!-- START AND STOP GLASSFISH ********************************************************* -->
-    <target name="start-domain" depends="init">		
- 	   <java jar="${admin.cli.jar}" fork="true" spawn="false">
- 		  <arg line="start-domain"/>
-     	   </java>
+    <target name="start-domain" depends="init">
+		<asadmin command="start-domain" parameters="${domain.name}"/>
     </target>
     <target name="stop-domain" depends="init">		
- 	   <java jar="${admin.cli.jar}" fork="true" spawn="false">
- 		  <arg line="stop-domain"/>
-     	   </java>
+		<asadmin command="stop-domain" parameters="${domain.name}"/>
     </target>
     <target name="restart-domain" depends="stop-domain, start-domain"/>	
  	   	
+    <target name="create-domain" depends="init">		
+		<asadmin command="create-domain" parameters="--nopassword ${domain.name}"/>
+    </target>
+    <target name="delete-domain" depends="init, stop-domain">		
+		<asadmin command="delete-domain" parameters="${domain.name}"/>
+    </target>
+    <target name="recreate-domain" depends="stop-domain, delete-domain, create-domain, start-domain"/>	
+
+
 	<!-- APPLICATION DEPLOYMENT *********************************************************** -->
     <target name="deploy" depends="init">
-    	<asadmin command="deploy" parameters="--contextroot=${application.name} ${packaging.file}"/>
+    	<asadmin command="deploy" parameters="--contextroot=${context.root} ${packaging.file}"/>
     </target>    
     <target name="undeploy" depends="init">
     	<asadmin command="undeploy" parameters="${packaging.name}"/>

@@ -7,7 +7,6 @@
 	<!-- ***** PROPERTIES ***************************************************************** -->
 	<!-- application data -->
 	<property name="application.name" value="swag-auth"/>
-	<property name="context.root"     value="swag"/>
 	
 	<target name="build" depends="undeploy, setup">
 		<exec executable="mvn">
@@ -24,9 +23,13 @@
 		         parameters="--raname jmsra 
 		                     --connectiondefinition javax.jms.ConnectionFactory
 		                     swag.JMSPool"/>
+		
+		<create-jms-queue name="swag.queue.Authentication"/>
 	</target>
 	<target name="clean-jms">
 		<asadmin command="delete-connector-connection-pool"
 		         parameters="--cascade=true swag.JMSPool"/>
+
+		<delete-jms-resource name="swag.queue.Authentication"/>
 	</target>
 </project>

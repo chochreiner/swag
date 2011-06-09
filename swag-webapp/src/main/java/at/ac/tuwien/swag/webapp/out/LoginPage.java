@@ -7,9 +7,9 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import at.ac.tuwien.swag.model.dao.UserDAO;
 import at.ac.tuwien.swag.model.domain.User;
+import at.ac.tuwien.swag.util.PasswordHasher;
 import at.ac.tuwien.swag.webapp.in.MainPage;
 import at.ac.tuwien.swag.webapp.out.form.LoginForm;
-import at.ac.tuwien.swag.webapp.service.PasswordHasher;
 
 import com.google.inject.Inject;
 

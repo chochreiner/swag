@@ -8,11 +8,19 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>at.ac.tuwien</groupId>
 	<artifactId>swag-auth</artifactId>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 	<version>1.0-SNAPSHOT</version>
 	<name>swag-auth</name>
 	<url>http://maven.apache.org</url>
 	<dependencies>
+		<dependency>
+			<groupId>at.ac.tuwien</groupId>
+			<artifactId>swag-messages</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>at.ac.tuwien</groupId>
+			<artifactId>swag-util</artifactId>
+		</dependency>
 		<!-- JUNIT DEPENDENCY FOR TESTING -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -22,6 +30,11 @@
 		<dependency>
 			<groupId>javax.jms</groupId>
 			<artifactId>jms</artifactId>
+		</dependency>
+		<!-- POSTGRESQL DEPENDENCY -->
+		<dependency>
+			<groupId>postgresql</groupId>
+			<artifactId>postgresql</artifactId>
 		</dependency>
 		<!-- JAVA EE DEPENDENCY (JPA, EJB, ...) -->
 		<dependency>
