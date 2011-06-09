@@ -34,7 +34,7 @@ import com.google.inject.servlet.ServletModule;
 public class WebappModule extends ServletModule {
 
     private static final String PERSISTENCE_UNIT = "swag";
-    private static final String JMS_POOL_NAME    = "swag.JMSPool";
+    private static final String JMS_FACTORY      = "swag.JMS";
 
     private Context jndiCtx;
     
@@ -85,7 +85,7 @@ public class WebappModule extends ServletModule {
     
     @Provides
     public ConnectionFactory provideJMSConnectionFactory( Context jndiCtx ) throws NamingException {
-		return (ConnectionFactory) jndiCtx.lookup( JMS_POOL_NAME );
+		return (ConnectionFactory) jndiCtx.lookup( JMS_FACTORY );
     }
     
     @Provides

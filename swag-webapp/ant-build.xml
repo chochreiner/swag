@@ -13,13 +13,9 @@
 	<target name="setup" depends="setup-jms"></target>
 	
 	<target name="setup-jms">
-		<asadmin command="create-connector-connection-pool"
-		         parameters="--raname jmsra 
-		                     --connectiondefinition javax.jms.ConnectionFactory
-		                     swag.JMSPool"/>
+		<create-jms-pool/>
 	</target>
 	<target name="clean-jms">
-		<asadmin command="delete-connector-connection-pool"
-		         parameters="--cascade=true swag.JMSPool"/>
+		<delete-jms-pool/>
 	</target>
 </project>

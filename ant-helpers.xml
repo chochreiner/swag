@@ -68,7 +68,24 @@
 			<create-jms-resource name="@{name}" type="javax.jms.Topic"/>
 		</sequential>
 	</macrodef>
-	
+
+	<macrodef name="create-jms-pool">
+		<sequential>
+			<asadmin command="create-connector-connection-pool"
+		         parameters="--raname jmsra 
+		                     --connectiondefinition javax.jms.ConnectionFactory
+		                     swag.JMSPool"/>
+			<asadmin command="create-connector-resource"
+		         parameters="--poolname swag.JMSPool swag.JMS"/>
+		</sequential>
+	</macrodef>		
+	<macrodef name="delete-jms-pool">
+		<sequential>
+			<asadmin command="delete-connector-connection-pool" parameters="swag.JMSPool"/>
+			<asadmin command="delete-connector-resource"        parameters="swag.JMS"/>
+		</sequential>
+	</macrodef>		
+
 	<macrodef name="create-jms-resource">
 		<attribute name="name"/>
 		<attribute name="type"/>	
@@ -76,7 +93,6 @@
 		<sequential>
 			<asadmin command="create-jms-resource"
 			         parameters="--restype=@{type}
-			                     --raname=jmsra
 			                     --enabled=@{enabled}
 			                     @{name}"/>
 		</sequential>
