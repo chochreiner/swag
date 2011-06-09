@@ -15,6 +15,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import at.ac.tuwien.swag.model.dto.MessageDTO;
 import at.ac.tuwien.swag.model.dto.UserDTO;
 import at.ac.tuwien.swag.webapp.SwagWebSession;
+import at.ac.tuwien.swag.webapp.in.provider.MessageSortableDataProvider;
 import at.ac.tuwien.swag.webapp.service.MessageService;
 
 import com.google.inject.Inject;

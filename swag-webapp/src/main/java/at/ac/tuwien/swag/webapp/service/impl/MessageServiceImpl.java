@@ -17,6 +17,7 @@ import at.ac.tuwien.swag.model.domain.Message;
 import at.ac.tuwien.swag.model.domain.User;
 import at.ac.tuwien.swag.model.dto.MessageDTO;
 import at.ac.tuwien.swag.model.dto.UserDTO;
+import at.ac.tuwien.swag.webapp.service.LogService;
 import at.ac.tuwien.swag.webapp.service.MessageService;
 
 import com.google.inject.Inject;
@@ -25,6 +26,9 @@ public class MessageServiceImpl implements MessageService {
 
     private MessageDAO messages;
     private UserDAO users;
+
+    @Inject
+    private LogService logger;
 
     @Inject
     public MessageServiceImpl(EntityManager em) {
@@ -207,6 +211,7 @@ public class MessageServiceImpl implements MessageService {
 
         messages.commitTransaction();
 
+        logger.logUserAction("send Message", "user [" + sender + "] sent a message.");
     }
 
     @Override
@@ -230,6 +235,8 @@ public class MessageServiceImpl implements MessageService {
 
         // TODO check online status and send mails
         // TODO set transaction
+
+        logger.logUserAction("send Notification", "user [" + reciever + "] recieved a notification.");
     }
 
     private void checkPostmaster() {

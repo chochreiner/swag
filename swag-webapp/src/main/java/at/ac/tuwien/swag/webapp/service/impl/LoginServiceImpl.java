@@ -16,6 +16,7 @@ import at.ac.tuwien.swag.messages.JMSHelper;
 import at.ac.tuwien.swag.model.dao.UserDAO;
 import at.ac.tuwien.swag.model.domain.User;
 import at.ac.tuwien.swag.util.PasswordHasher;
+import at.ac.tuwien.swag.webapp.service.LogService;
 import at.ac.tuwien.swag.webapp.service.LoginService;
 
 import com.google.inject.Inject;
@@ -23,45 +24,50 @@ import com.google.inject.name.Named;
 
 public class LoginServiceImpl implements LoginService {
 
-	@Inject
-	private UserDAO users;
-	
-	@Inject
-	private JMSHelper jms;
-	@Inject
-	@Named("swag.queue.Authentication")
-	private Queue   authentication;
-	
-	@Inject
-	private PasswordHasher hasher;
-	
-	public LoginServiceImpl() {
-		
-	}
-	
+    @Inject
+    private UserDAO users;
+
+    @Inject
+    private JMSHelper jms;
+    @Inject
+    @Named("swag.queue.Authentication")
+    private Queue authentication;
+
+    @Inject
+    private PasswordHasher hasher;
+
+    @Inject
+    private LogService logger;
+
+    public LoginServiceImpl() {
+
+    }
+
     @Override
     public boolean authenticate(String username, String password) {
-    	try {
-    		AuthenticationReply auth = jms.request( authentication, new AuthenticationRequest( username, password ) );
-    		
-    		System.err.println( auth );
-		} catch ( JMSException e ) {
-			e.printStackTrace();
-		}
-    	
-    	try {
-    		User user = users.findByUsername( username );
+        try {
+            AuthenticationReply auth = jms.request(authentication, new AuthenticationRequest(username, password));
 
-    		return hasher.checkPassword( password, user.getPassword() );
-//    		return true;
-    	} catch ( NoResultException e ) {
-    		return false;
-    	}
+            System.err.println(auth);
+        } catch (JMSException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            User user = users.findByUsername(username);
+
+            logger.logUserAction("Login", "User [" + username + "] logged in.");
+
+            return hasher.checkPassword(password, user.getPassword());
+            // return true;
+        } catch (NoResultException e) {
+            return false;
+        }
     }
 
     @Override
     public Set<String> getRoles(String username) {
         return new HashSet<String>(Arrays.asList(Roles.ADMIN, Roles.USER));
     }
-    
+
 }
