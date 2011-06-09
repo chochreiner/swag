@@ -9,16 +9,16 @@ import at.ac.tuwien.swag.webapp.service.LogService;
 
 import com.google.inject.Inject;
 
-public class SystemEvents extends Panel {
+public class UserMonitoring extends Panel {
     private static final long serialVersionUID = -4045913776508864182L;
 
     @Inject
     private LogService logger;
 
-    public SystemEvents(String id) {
+    public UserMonitoring(String id) {
         super(id);
 
-        DataView<LogMessageDTO> dataView = logger.getAdminLog();
+        DataView<LogMessageDTO> dataView = logger.getUserLog();
 
         dataView.setItemsPerPage(25);
         add(dataView);

@@ -286,11 +286,26 @@
 	float: left;
 	width: 100px;
 	height: 100px;
-	background:   #83d384;
+	background: #83d384;
 	margin: 2px;
 }
 	
+.baseSquare {
+	float: left;
+	width: 100px;
+	height: 100px;
+	background: #a57a44;
+	margin: 2px;
+
+}
 	
+.homeBaseSquare {
+	float: left;
+	width: 100px;
+	height: 100px;
+	background: red;
+	margin: 2px;
+}	
 #gameMap{
 	border-collapse: collapse;
 	border:1px solid #000;

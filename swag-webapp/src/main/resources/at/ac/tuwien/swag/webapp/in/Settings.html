@@ -48,6 +48,25 @@
 		  	<input type="submit" value="change password" id="change password" name="change password" />
 		</div>
 	</form>
+	
+	<form wicket:id="registerToMapForm" class="yform">
+		<fieldset>
+        <legend>Register to a new Map</legend>
+        
+		<div class="subcolumns">
+			<fieldset>
+				<select wicket:id="allmaps">
+					<option>site 1</option>
+					<option>site 2</option>
+				</select>
+			</fieldset>
+		</div>
+        </fieldset>
+        <div class="type-button">
+		  	<input type="reset" value="reset" id="reset" name="reset" />
+		  	<input type="submit" value="register to map" id="reg2map" name="reg2map" />
+		</div>
+	</form>
 
 	<form wicket:id="deleteUser" class="yform">
 		<fieldset>

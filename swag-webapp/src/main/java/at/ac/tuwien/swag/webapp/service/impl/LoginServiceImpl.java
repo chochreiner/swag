@@ -61,5 +61,4 @@ public class LoginServiceImpl implements LoginService {
 		
 		jms.request( authentication, Boolean.class, new StoreUserRequest( dto ), timeout );
 	}
-    
 }

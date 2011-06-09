@@ -14,9 +14,11 @@ import at.ac.tuwien.swag.model.dao.MapDAO;
 import at.ac.tuwien.swag.model.dao.MapUserDAO;
 import at.ac.tuwien.swag.model.dao.SquareDAO;
 import at.ac.tuwien.swag.model.dao.UserDAO;
+import at.ac.tuwien.swag.webapp.service.LogService;
 import at.ac.tuwien.swag.webapp.service.LoginService;
 import at.ac.tuwien.swag.webapp.service.MessageService;
 import at.ac.tuwien.swag.webapp.service.SetupService;
+import at.ac.tuwien.swag.webapp.service.impl.LogServiceImpl;
 import at.ac.tuwien.swag.webapp.service.impl.LoginServiceImpl;
 import at.ac.tuwien.swag.webapp.service.impl.MessageServiceImpl;
 import at.ac.tuwien.swag.webapp.service.impl.SetupServiceImpl;
@@ -34,18 +36,18 @@ import com.google.inject.servlet.ServletModule;
 public class WebappModule extends ServletModule {
 
     private static final String PERSISTENCE_UNIT = "swag";
-    private static final String JMS_FACTORY      = "swag.JMS";
+    private static final String JMS_FACTORY = "swag.JMS";
 
     private final Context jndiCtx;
-    
+
     public WebappModule() {
-    	try {
-			jndiCtx = new InitialContext();
-		} catch ( NamingException e ) {
-			throw new RuntimeException( e );
-		}
+        try {
+            jndiCtx = new InitialContext();
+        } catch (NamingException e) {
+            throw new RuntimeException(e);
+        }
     }
-    
+
     @Override
     protected void configureServlets() {
         // /**** JPA ******************************************//
@@ -66,7 +68,8 @@ public class WebappModule extends ServletModule {
         bind(LoginService.class).to(LoginServiceImpl.class);
         bind(MessageService.class).to(MessageServiceImpl.class);
         bind(SetupService.class).to(SetupServiceImpl.class);
-        
+        bind(LogService.class).to(LogServiceImpl.class);
+
         // /**** JMS ******************************************//
         bindJNDI( Queue.class, "swag.queue.Authentication" );
         bindJNDI( Queue.class, "swag.queue.Notification" );
@@ -74,40 +77,40 @@ public class WebappModule extends ServletModule {
         // default time to wait for message replies
         bindConstant().annotatedWith( Names.named( "MESSAGE_TIMEOUT" ) ).to( 3000l );
     }
-    
-    private <T> void bindJNDI( Class<T> c, String jndiName ) {
-    	bind( c ).annotatedWith( Names.named( jndiName ) ).toProvider( new JNDIProvider<T>( jndiName, jndiCtx ) );
-    }
-    
-    @Provides
-    public JMSHelper provideJMSHelper( Connection connection ) throws JMSException {
-    	return new JMSHelper( connection );
-    }
-    
-    @Provides
-    public Context provideJNDIContext() throws NamingException {
-    	return jndiCtx;
-    }
-    
-    @Provides
-    public ConnectionFactory provideJMSConnectionFactory( Context jndiCtx ) throws NamingException {
-		return (ConnectionFactory) jndiCtx.lookup( JMS_FACTORY );
-    }
-    
-    @Provides
-    public Connection provideJMSConnection( ConnectionFactory factory ) throws JMSException {
-    	return factory.createConnection();
+
+    private <T> void bindJNDI(Class<T> c, String jndiName) {
+        bind(c).annotatedWith(Names.named(jndiName)).toProvider(new JNDIProvider<T>(jndiName, jndiCtx));
     }
 
     @Provides
-    public Session provideJMSSession( Connection connection ) throws JMSException {
-    	Session session = connection.createSession( false, Session.AUTO_ACKNOWLEDGE );
-    	
-    	connection.start();
-    	
-    	return session;
+    public JMSHelper provideJMSHelper(Connection connection) throws JMSException {
+        return new JMSHelper(connection);
     }
-    
+
+    @Provides
+    public Context provideJNDIContext() throws NamingException {
+        return jndiCtx;
+    }
+
+    @Provides
+    public ConnectionFactory provideJMSConnectionFactory(Context jndiCtx) throws NamingException {
+        return (ConnectionFactory) jndiCtx.lookup(JMS_FACTORY);
+    }
+
+    @Provides
+    public Connection provideJMSConnection(ConnectionFactory factory) throws JMSException {
+        return factory.createConnection();
+    }
+
+    @Provides
+    public Session provideJMSSession(Connection connection) throws JMSException {
+        Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+
+        connection.start();
+
+        return session;
+    }
+
     // dummy helper that initializes JPA on startup
     @Singleton
     public static final class JPAInitializer {
@@ -116,26 +119,26 @@ public class WebappModule extends ServletModule {
             service.start();
         }
     }
-    
-    public static final class JNDIProvider<T> implements Provider<T> {
-    	public JNDIProvider( String jndiName, Context jndiCtx ) {
-			super();
-			this.jndiName = jndiName;
-			this.jndiCtx = jndiCtx;
-		}
 
-		@Override
-		@SuppressWarnings("unchecked")
-		public T get() {
-			try {
-				return (T) jndiCtx.lookup( jndiName );
-			} catch ( NamingException e ) {
-				throw new RuntimeException( e );
-			}
-		}
-    	
-    	private final String  jndiName;
-    	private final Context jndiCtx;    	
+    public static final class JNDIProvider<T> implements Provider<T> {
+        public JNDIProvider(String jndiName, Context jndiCtx) {
+            super();
+            this.jndiName = jndiName;
+            this.jndiCtx = jndiCtx;
+        }
+
+        @Override
+        @SuppressWarnings("unchecked")
+        public T get() {
+            try {
+                return (T) jndiCtx.lookup(jndiName);
+            } catch (NamingException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        private final String jndiName;
+        private final Context jndiCtx;
     }
-    
+
 }

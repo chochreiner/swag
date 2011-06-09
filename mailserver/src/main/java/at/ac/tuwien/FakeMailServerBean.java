@@ -9,10 +9,10 @@ import javax.ejb.LocalBean;
 @LocalBean
 public class FakeMailServerBean {
 
-    private SimpleSmtpServer server = SimpleSmtpServer.start();
+    private SimpleSmtpServer server = SimpleSmtpServer.start(2525);
 
     @PreDestroy
-    public void start() {
+    public void stop() {
         server.stop();
     }
 }
