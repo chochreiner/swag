@@ -51,40 +51,40 @@ public class RegisterToMapForm extends Form<Void> {
     }
 
     private void addAllMapSelection() {
-    	
-        
-        LoadableDetachableModel<List<String>> userMapList =  new LoadableDetachableModel<List<String>>() {
-		
-			private static final long serialVersionUID = -5466406801708536032L;
+    	 LoadableDetachableModel<List<String>> userMapList =  new LoadableDetachableModel<List<String>>() {	
+ 			private static final long serialVersionUID = -5466406801708536032L;
 
-			protected List<String> load() {
-                
-				String username = ((SwagWebSession) getSession()).getUsername();
-		    	
-		    	// TODO replace me with an query
-		    	List<String> usermap = new ArrayList<String>();
-		        for(Map map: mapDao.getAll()){
-		        	boolean flag = true;
-		        	List<MapUser> mus = map.getUsers();
-		        	for(MapUser mu :mus) {
-		        		String uname = mu.getUser().getUsername();
-		        		if(uname.equals(username)) {
-		        			flag = false;
-		        		}
-		        	}
-		    	  if(flag) { usermap.add(map.getName()); }
-		       }
-				return usermap;
-            }
-       };
-        
-       allmaps = new DropDownChoice<String>("allmaps", userMapList);
-       allmaps.setDefaultModel(new Model<String>());
-       add(allmaps);
+ 			protected List<String> load() {    
+ 				String username = ((SwagWebSession) getSession()).getUsername();
+ 		    	
+ 		    	// TODO replace me with an query
+ 		    	List<String> usermap = new ArrayList<String>();
+ 		        for(Map map: mapDao.getAll()){
+ 		        	boolean flag = true;
+ 		        	List<MapUser> mus = map.getUsers();
+ 		        	for(MapUser mu :mus) {
+ 		        		String uname = mu.getUser().getUsername();
+ 		        		if(uname.equals(username)) {
+ 		        			flag = false;
+ 		        		}
+ 		        	}
+ 		    	  if(flag) { usermap.add(map.getName()); }
+ 		       }
+ 				return usermap;
+             }
+        };
+         
+        allmaps = new DropDownChoice<String>("allmaps", userMapList);
+        allmaps.setDefaultModel(new Model<String>());
+        add(allmaps);
+
    }
     
     @Override
     protected void onSubmit() {
+       
+       
+        
         try{
         	
         	mapname = (String)allmaps.getDefaultModel().getObject();
@@ -106,28 +106,25 @@ public class RegisterToMapForm extends Form<Void> {
                 	startsquare.setIsHomeBase(true);
                     usersquares.add(startsquare);
                     
+                    // create MapUSer object
+                    MapUser mapUser = new MapUser();
+                    mapUser.setMap(playground);
+                    mapUser.setUser(user);
+                    mapUser.setSquares(usersquares);
+
+                    // add mapuser to map
+                    	mapUsers.add(mapUser);  
+                    	playground.setUsers(mapUsers);
+
+                    // persist the stuff
                     mapUserDao.beginTransaction();
-	                    // create MapUSer object
-	                    MapUser mapUser = new MapUser();
-	                    mapUser.setMap(mapDao.update(playground));
-	                    mapUser.setUser(user);
-	                    mapUser.setSquares(usersquares);
-
-                    	// add mapuser to map
-                    	//mapUsers.add(mapUser);  
-                    	//playground.setUsers(mapUsers);
-
-                    	// persist the stuff
                     	mapUserDao.insert(mapUser);
-                    mapUserDao.commitTransaction();
-                    mapUserDao.beginTransaction();	
+                    	mapUserDao.commitTransaction();	
                     	mapDao.insert(playground);
                     	squareDao.insert(startsquare);
                     mapUserDao.commitTransaction();
                   
                     info("Your was added to the map: "+mapname);
-                    
-                    add(allmaps);
                 }else {info("New free squares avaibile on map: "+mapname);} 
         }catch(NoResultException e) {
         	info(e.getMessage());
