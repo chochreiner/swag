@@ -202,8 +202,8 @@ public class MapPage extends InPage {
 			@Override
 			public void onClick(AjaxRequestTarget target) {
 				
-				if(endY == gameMapProvider.getMapYSize() || endY < gameMapProvider.getMapYSize()) {
-					startY = gameMapProvider.getMapYSize() -mapDim;
+				if(endY == gameMapProvider.getMapYSize() || endY > gameMapProvider.getMapYSize()) {
+					startY = gameMapProvider.getMapYSize() -(mapDim-1);
 					endY = gameMapProvider.getMapYSize();
 					
 				}else {
@@ -223,7 +223,7 @@ public class MapPage extends InPage {
 			public void onClick(AjaxRequestTarget target) {
 				
 				if(endX == gameMapProvider.getMapXSize() || endX > gameMapProvider.getMapXSize()) {
-					startX = gameMapProvider.getMapXSize() -mapDim;
+					startX = gameMapProvider.getMapXSize() -(mapDim-1);
 					endX = gameMapProvider.getMapXSize();
 					
 				}else {

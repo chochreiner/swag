@@ -36,16 +36,18 @@ public class WebappModule extends ServletModule {
     private static final String PERSISTENCE_UNIT = "swag";
     private static final String JMS_FACTORY      = "swag.JMS";
 
-    private Context jndiCtx;
+    private final Context jndiCtx;
     
-    @Override
-    protected void configureServlets() {
+    public WebappModule() {
     	try {
 			jndiCtx = new InitialContext();
 		} catch ( NamingException e ) {
 			throw new RuntimeException( e );
 		}
-    	
+    }
+    
+    @Override
+    protected void configureServlets() {
         // /**** JPA ******************************************//
         // add JPA beans
         install(new JpaPersistModule(PERSISTENCE_UNIT));
@@ -67,6 +69,7 @@ public class WebappModule extends ServletModule {
         
         // /**** JMS ******************************************//
         bindJNDI( Queue.class, "swag.queue.Authentication" );
+        bindJNDI( Queue.class, "swag.queue.Notification" );
     }
     
     private <T> void bindJNDI( Class<T> c, String jndiName ) {
@@ -74,13 +77,13 @@ public class WebappModule extends ServletModule {
     }
     
     @Provides
-    public JMSHelper provideJMSHelper( Session session ) {
-    	return new JMSHelper( session );
+    public JMSHelper provideJMSHelper( Connection connection ) throws JMSException {
+    	return new JMSHelper( connection );
     }
     
     @Provides
     public Context provideJNDIContext() throws NamingException {
-    	return new InitialContext();
+    	return jndiCtx;
     }
     
     @Provides
@@ -95,7 +98,11 @@ public class WebappModule extends ServletModule {
 
     @Provides
     public Session provideJMSSession( Connection connection ) throws JMSException {
-    	return connection.createSession( false, Session.AUTO_ACKNOWLEDGE );
+    	Session session = connection.createSession( false, Session.AUTO_ACKNOWLEDGE );
+    	
+    	connection.start();
+    	
+    	return session;
     }
     
     // dummy helper that initializes JPA on startup

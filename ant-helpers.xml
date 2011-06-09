@@ -81,7 +81,7 @@
 	</macrodef>		
 	<macrodef name="delete-jms-pool">
 		<sequential>
-			<asadmin command="delete-connector-connection-pool" parameters="swag.JMSPool"/>
+			<asadmin command="delete-connector-connection-pool" parameters="--cascade swag.JMSPool"/>
 			<asadmin command="delete-connector-resource"        parameters="swag.JMS"/>
 		</sequential>
 	</macrodef>		
