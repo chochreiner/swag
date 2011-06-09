@@ -18,6 +18,8 @@ public final class SwagWebSession extends AuthenticatedWebSession {
 
     public SwagWebSession(Request request) {
         super(request);
+        username = null;
+        mapname = null;
     }
 
     // authentication authorization stuff
@@ -36,6 +38,7 @@ public final class SwagWebSession extends AuthenticatedWebSession {
     public void signOut() {
         super.signOut();
         username = null;
+        mapname = null;
     }
 
     @Override
@@ -53,9 +56,17 @@ public final class SwagWebSession extends AuthenticatedWebSession {
     }
 
     private String username;
+    private String mapname;
 
     public String getUsername() {
         return username;
     }
 
+	public String getMapname() {
+		return mapname;
+	}
+
+	public void setMapname(String mapname) {
+		this.mapname = mapname;
+	}
 }
