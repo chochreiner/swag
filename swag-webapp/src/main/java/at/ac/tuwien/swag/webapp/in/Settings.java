@@ -6,6 +6,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import at.ac.tuwien.swag.webapp.in.form.DeleteUserForm;
 import at.ac.tuwien.swag.webapp.in.form.PasswordForm;
+import at.ac.tuwien.swag.webapp.in.form.RegisterToMapForm;
 import at.ac.tuwien.swag.webapp.in.form.SettingsForm;
 
 public class Settings extends InPage {
@@ -22,6 +23,9 @@ public class Settings extends InPage {
 
         Form<?> passwordForm = new PasswordForm("passwordForm");
         add(passwordForm);
+        
+        Form<?> registerToMapForm = new RegisterToMapForm("registerToMapForm");
+        add(registerToMapForm);
 
         Form<?> deleteUserForm = new DeleteUserForm( "deleteUser" );
         add(deleteUserForm);
