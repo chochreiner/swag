@@ -48,7 +48,7 @@ public class AuthenticationBean implements MessageListener {
 	private void handleAuthenticationRequest( AuthenticationRequest request, Destination replyTo ) throws JMSException {
 		String username = request.username;
 //		String password = request.password;
-		String token    = "";
+		String token    = "DUMMY TOKEN";
 
 		reply( replyTo, new AuthenticationReply( username, token ) );
 	}
