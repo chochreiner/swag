@@ -34,6 +34,14 @@ public class JMSHelper implements Serializable {
 		return request( dest, makeMessage( msg ) );
 	}
 
+	public <Response> Response request( Destination dest, String msg, long timeout ) throws JMSException {
+		return request( dest, makeMessage( msg ), timeout );
+	}
+	
+	public <Response> Response request( Destination dest, Serializable msg, long timeout ) throws JMSException {
+		return request( dest, makeMessage( msg ), timeout );
+	}
+	
 	public void send( Destination dest, String msg ) throws JMSException {
 		send( dest, null, makeMessage( msg ) );
 	}
@@ -52,6 +60,26 @@ public class JMSHelper implements Serializable {
 		return msg;
 	}
 	
+	public Message receive( Destination dest, long timeout ) throws JMSException {
+		MessageConsumer consumer = session.createConsumer( dest );
+		
+		Message msg = consumer.receive( timeout );
+		
+		consumer.close();
+		
+		return msg;
+	}
+	
+	public Message receiveNoWait( Destination dest ) throws JMSException {
+		MessageConsumer consumer = session.createConsumer( dest );
+		
+		Message msg = consumer.receiveNoWait();
+		
+		consumer.close();
+		
+		return msg;
+	}
+	
 	public void close() {
 		try {
 			connection.close();
@@ -62,22 +90,27 @@ public class JMSHelper implements Serializable {
 	
 	//***** PRIVATE PARTS
 	
-	@SuppressWarnings("unchecked")
 	private <Response> Response request( Destination dest, Message msg ) throws JMSException {
 		TemporaryQueue replyTo = session.createTemporaryQueue();
 		
 		send( dest, replyTo, msg );
-	
+
 		Message reply = receive( replyTo );
 		
-		final Response response;
-		if ( reply instanceof ObjectMessage ) {
-			response = (Response) ((ObjectMessage) reply).getObject();
-		} else if ( reply instanceof TextMessage ){
-			response = (Response) ((TextMessage) reply).getText();
-		} else {
-			response = (Response) reply;
-		}
+		Response response = getResponse( reply );
+		
+		replyTo.delete();
+		
+		return response;
+	}
+	private <Response> Response request( Destination dest, Message msg, long timeout ) throws JMSException {
+		TemporaryQueue replyTo = session.createTemporaryQueue();
+		
+		send( dest, replyTo, msg );
+
+		Message reply = receive( replyTo, timeout );
+		
+		Response response = getResponse( reply );
 		
 		replyTo.delete();
 		
@@ -92,6 +125,17 @@ public class JMSHelper implements Serializable {
 		producer.send( msg );
 		
 		producer.close();
+	}
+	
+	@SuppressWarnings("unchecked")
+	private <Response> Response getResponse( Message msg ) throws JMSException {
+		if ( msg instanceof ObjectMessage ) {
+			return (Response) ((ObjectMessage) msg).getObject();
+		} else if ( msg instanceof TextMessage ){
+			return (Response) ((TextMessage) msg).getText();
+		} else {
+			return (Response) msg;
+		}
 	}
 	
 	private Message makeMessage( String txt ) throws JMSException {
