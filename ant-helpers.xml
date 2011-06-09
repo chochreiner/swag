@@ -76,6 +76,7 @@
 		<sequential>
 			<asadmin command="create-jms-resource"
 			         parameters="--restype=@{type}
+			                     --raname=jmsra
 			                     --enabled=@{enabled}
 			                     @{name}"/>
 		</sequential>
@@ -83,7 +84,7 @@
 	<macrodef name="delete-jms-resource">
 		<attribute name="name"/>
 		<sequential>
-			<asadmin command="delete-jms-resource" parameters="@name"/>
+			<asadmin command="delete-jms-resource" parameters="@{name}"/>
 		</sequential>
 	</macrodef>
 	
