@@ -7,7 +7,7 @@
 	<!-- ***** PROPERTIES ***************************************************************** -->
 	<!-- application data -->
 	<property name="application.name" value="swag-notification"/>
-   	<property name="context.root"     value="swag"/>
+   	<property name="context.root"     value="swag-notification"/>
  	   	
 	<!-- MANAGE GLASSFISH RESOURCES ******************************************************* -->
 	<target name="setup" depends="setup-jms"></target>
