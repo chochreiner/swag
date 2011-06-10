@@ -1,12 +1,15 @@
 package at.ac.tuwien.swag.webapp;
 
-import java.util.Set;
+import javax.jms.JMSException;
 
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.authroles.authorization.strategies.role.Roles;
 import org.apache.wicket.request.Request;
 
+import at.ac.tuwien.swag.messages.TimeoutExpiredException;
+import at.ac.tuwien.swag.messages.auth.AuthenticationReply;
 import at.ac.tuwien.swag.model.dto.SquareDTO;
+import at.ac.tuwien.swag.webapp.service.AuthenticationException;
 import at.ac.tuwien.swag.webapp.service.LoginService;
 
 import com.google.inject.Inject;
@@ -19,28 +22,36 @@ public final class SwagWebSession extends AuthenticatedWebSession {
 
     public SwagWebSession(Request request) {
         super(request);
-        username = null;
         mapname = null;
     }
 
     // authentication authorization stuff
     @Override
     public boolean authenticate(String username, String password) {
-        if (login.authenticate(username, password)) {
-            this.username = username;
+    	try {
+			credentials = login.authenticate( username, password );
+			
             signIn(true);
             return true;
-        } else {
+		} catch ( AuthenticationException e ) {
+			error( e.getMessage() );
             return false;
-        }
+		} catch ( TimeoutExpiredException e ) {
+			error( "The connection to the authentication server timed out" );
+            return false;
+		} catch ( JMSException e ) {
+			error( "An error occured while connecting to the authentication server" );
+			return false;
+		}
     }
 
     @Override
     public void signOut() {
         super.signOut();
-        username = null;
-        mapname = null;
-        homebase = null;
+        
+        credentials = null;
+        mapname     = null;
+        homebase    = null;
     }
 
     @Override
@@ -49,20 +60,15 @@ public final class SwagWebSession extends AuthenticatedWebSession {
             return new Roles();
         }
 
-        Set<String> roles = login.getRoles(username);
-        Roles r = new Roles();
-
-        r.addAll(roles);
-
-        return r;
+        return new Roles( credentials.roles );
     }
 
-    private String username;
+    private AuthenticationReply credentials;
     private String mapname;
     private SquareDTO homebase;
 
     public String getUsername() {
-        return username;
+        return credentials.username;
     }
 
 	public String getMapname() {

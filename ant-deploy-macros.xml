@@ -1,0 +1,40 @@
+<project name="deploy-macros">
+
+	<import file="ant-asadmin-macros.xml"/>
+	
+	<!-- set property defaults -->
+	<target name="init-deploy" depends="init-asadmin">
+		<property name="application.name" value="${ant.project.name}"/>
+		
+    	<property name="context.root" value="${application.name}"/>
+		
+		<property name="packaging.type"  value="war"/>
+		<property name="packaging.name"  value="${application.name}-1.0-SNAPSHOT"/>
+		<property name="packaging.file"  value="target/${packaging.name}.${packaging.type}"/>
+	</target>
+	
+	<!-- APPLICATION DEPLOYMENT *********************************************************** -->
+	<macrodef name="deploy">
+		<attribute name="context.root"/>
+		<attribute name="file"/>
+		<sequential>
+			<asadmin command="deploy" parameters="--contextroot=@{context.root} @{file}"/>
+		</sequential>
+	</macrodef>
+	<macrodef name="undeploy">
+		<attribute name="name"/>
+		<sequential>
+			<asadmin command="undeploy" parameters="@{name}"/>
+		</sequential>
+	</macrodef>
+
+	<!-- DEFAULT TARGETS -->
+	<target name="deploy" depends="init-deploy">
+		<deploy context.root="${context.root}" file="${packaging.file}"/>
+	</target>
+	<target name="undeploy" depends="init-deploy">
+		<undeploy name="${packaging.name}"/>
+	</target>
+	<target name="redeploy" depends="undeploy,deploy"/>
+
+</project>

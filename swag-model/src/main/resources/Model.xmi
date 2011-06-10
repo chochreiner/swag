@@ -86,4 +86,10 @@
     <attributes name="speed" type="//@types.2"/>
     <associations name="troop" type="//@types.19" multiplicity="ManyToOne"/>
   </types>
+  <types xsi:type="metamodel:Entity" name="LogMessage" tableName="logmMessages">
+    <attributes name="timestamp" type="//@types.3" />
+    <attributes name="type" type="//@types.0"/>
+    <attributes name="subject" type="//@types.0"/>
+    <attributes name="text" type="//@types.0"/>
+  </types>  
 </metamodel:Model>

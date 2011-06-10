@@ -1,5 +1,6 @@
 package at.ac.tuwien.swag.model.domain;
 
+import java.io.Serializable;
 import java.util.Iterator;
 
 import javax.persistence.GeneratedValue;
@@ -7,7 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
-public abstract class AbstractEntity {
+public abstract class AbstractEntity implements Serializable {
+	private static final long serialVersionUID = -7007590793374147375L;
 
 	@Id
 	@GeneratedValue

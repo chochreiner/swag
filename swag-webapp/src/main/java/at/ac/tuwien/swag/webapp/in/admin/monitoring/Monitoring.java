@@ -24,7 +24,7 @@ public class Monitoring extends InPage {
 
             @Override
             public Panel getPanel(String panelId) {
-                return new PerformanceMonitoring(panelId);
+                return new UserMonitoring(panelId);
             }
         });
 
