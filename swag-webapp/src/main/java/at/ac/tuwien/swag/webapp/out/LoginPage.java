@@ -6,6 +6,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import at.ac.tuwien.swag.messages.TimeoutExpiredException;
 import at.ac.tuwien.swag.model.domain.User;
+import at.ac.tuwien.swag.model.dto.UserDTO;
 import at.ac.tuwien.swag.webapp.out.form.LoginForm;
 import at.ac.tuwien.swag.webapp.service.LoginService;
 
@@ -38,7 +39,7 @@ public class LoginPage extends OutPage {
 		
 		try {
 			if ( !login.userExists( "system" ) ) {
-				User system = new User(
+				UserDTO system = new UserDTO(
 						"system",
 						"aaa", 
 						"The interblag",

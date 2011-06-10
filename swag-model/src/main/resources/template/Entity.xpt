@@ -34,11 +34,10 @@
 				// constructor for all fields that mustn't be null
 				public «name»( «FOREACH fields().select( f | !f.nullable ) AS f SEPARATOR ", "»«f.typeName()» «f.name»«ENDFOREACH») {
 					«FOREACH fields() AS f»
-						this.«f.setter()»( «f.name» );
+						this.«f.name» = «f.name»;
 					«ENDFOREACH»
 				}
 			«ENDIF»
-		
 				
 			// all fields constructor
 			public «name»(«FOREACH fields() AS f SEPARATOR ", "»«f.typeName()» «f.name»«ENDFOREACH») {
@@ -77,10 +76,6 @@
 			//*** setters
 			«FOREACH fields() AS f»
 				public void «f.setter()»(«f.typeName()» «f.name») {
-					«IF !f.nullable»
-						if ( «f.name» == null ) throw new NullPointerException( "«f.name»" );
-					«ENDIF»
-									
 					this.«f.name» = «f.name»;
 				}
 			«ENDFOREACH»
@@ -89,7 +84,8 @@
 			
 			«FOREACH fields() AS f»
 				public «name» «f.name»(«f.typeName()» «f.name») {
-					this.«f.setter()»( «f.name» );
+					this.«f.name» = «f.name»;
+
 					return this;
 				}
 			«ENDFOREACH»

@@ -5,6 +5,7 @@ import javax.jms.JMSException;
 import at.ac.tuwien.swag.messages.TimeoutExpiredException;
 import at.ac.tuwien.swag.messages.auth.AuthenticationReply;
 import at.ac.tuwien.swag.model.domain.User;
+import at.ac.tuwien.swag.model.dto.UserDTO;
 
 public interface LoginService {
 
@@ -20,5 +21,7 @@ public interface LoginService {
 	boolean userExists( String username ) throws JMSException, TimeoutExpiredException;
 
 	void storeUser( User user ) throws JMSException, TimeoutExpiredException;
+
+	void storeUser( UserDTO dto ) throws JMSException, TimeoutExpiredException;
 	
 }

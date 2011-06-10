@@ -31,7 +31,6 @@ public class LoginServiceImpl implements LoginService {
     public AuthenticationReply authenticate(String username, String password) throws AuthenticationException,
                                                                                      TimeoutExpiredException,
                                                                                      JMSException            {
-    	
     	AuthenticationReply auth = jms.request( authentication, 
    		                                        AuthenticationReply.class,
    		                                        new AuthenticationRequest( username, password ),
@@ -49,16 +48,21 @@ public class LoginServiceImpl implements LoginService {
 		return jms.request( authentication, Boolean.class, new UserExistsRequest( username ), timeout );
     }
     
-	@Override
+    @Override
 	public void storeUser( User user ) throws JMSException, TimeoutExpiredException {
 		UserDTO dto = new UserDTO( 
-			user.getUsername(), 
-			user.getPassword(), 
-			user.getAddress(),
-			user.getEmail(), 
-			user.getFullname(), 
-			null, null, null ); 
-		
+				user.getUsername(), 
+				user.getPassword(), 
+				user.getAddress(),
+				user.getEmail(), 
+				user.getFullname(), 
+				null, null, null ); 
+
+		storeUser( dto );
+    }
+    
+	@Override
+	public void storeUser( UserDTO dto ) throws JMSException, TimeoutExpiredException {
 		jms.request( authentication, Boolean.class, new StoreUserRequest( dto ), timeout );
 	}
 }

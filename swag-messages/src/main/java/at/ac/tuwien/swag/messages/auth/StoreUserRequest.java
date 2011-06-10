@@ -11,6 +11,6 @@ public class StoreUserRequest implements Serializable {
 		this.user = user;
 	}
 
-	public final UserDTO user;
+	public UserDTO user;
 	
 }
