@@ -4,9 +4,6 @@
 	<!-- import our own ant tasks -->
 	<import file="../ant-macros.xml"/>
 	
-	<!-- ***** PROPERTIES ***************************************************************** -->
-	<!-- application data -->
-
 	<!-- MANAGE GLASSFISH RESOURCES ******************************************************* -->
 	<target name="setup" depends="setup-jms"/>
 	

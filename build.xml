@@ -7,6 +7,8 @@
 	
 	<target name="build">
 		<call-targets target="build" />
+		
+		<call-targets target="deploy"/>		
 	</target>
 	<target name="clean">
 		<call-targets target="clean"/>

@@ -58,15 +58,17 @@ public class AuthenticationBean extends MessageHandler implements MessageListene
 			String storedHash  = users.findByUsername( username ).getPassword();
 						
 			if ( hasher.checkPassword( password, storedHash ) ) {
-				reply.roles = new String[] {"ADMIN", "USER"};
+				if ( "system".equals( username ) ) {
+					reply.roles = new String[] {"ADMIN", "USER"};
+				} else {
+					reply.roles = new String[] {"USER"};
+				}
 				reply.token = token;
 			}
 		} catch ( NoResultException e ) {
 		} catch ( Throwable t ) {
 		}
 		
-		reply.roles = new String[] {"ADMIN", "USER"};
-		reply.token = token;
 		reply( reply );
 	}
 	public void handle( UserExistsRequest msg ) throws JMSException {

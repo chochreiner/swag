@@ -12,6 +12,9 @@
 	<target name="deploy"/>
 	<target name="undeploy"/>	
 	
+	<target name="build" depends="setup,package">		
+	</target>
+	
   <!-- ====================================================================== -->
   <!-- Import maven-build.xml into the current project                        -->
   <!-- ====================================================================== -->

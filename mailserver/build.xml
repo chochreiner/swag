@@ -8,6 +8,8 @@
 
 	<import file="../ant-macros.xml"/>
 	
+	<target name="build" depends="setup,package"/>
+	
   <!-- ====================================================================== -->
   <!-- Import maven-build.xml into the current project                        -->
   <!-- ====================================================================== -->

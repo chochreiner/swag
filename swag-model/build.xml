@@ -12,6 +12,9 @@
 	<target name="deploy"/>
 	<target name="undeploy"/>
 	
+	<target name="build" depends="setup,package">		
+	</target>
+	
 	<target name="generate">
 		<property name="src.dir" value="src/main/resources" />
 		<property name="lib.dir" value="emf-lib" />
