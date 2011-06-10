@@ -6,7 +6,7 @@
 	
 	<!-- ***** PROPERTIES ***************************************************************** -->
 	<!-- application data -->
-	<property name="application.name" value="swag-webapp"/>
+	<property name="application.name" value="swag-notification"/>
    	<property name="context.root"     value="swag"/>
  	   	
 	<!-- MANAGE GLASSFISH RESOURCES ******************************************************* -->
@@ -18,12 +18,12 @@
 		                     --connectiondefinition javax.jms.ConnectionFactory
 		                     swag.JMSPool"/>
 		
-		<create-jms-queue name="swag.queue.Notification"/>
+		<create-jms-queue name="swag.queue.notification"/>
 	</target>
 	<target name="clean-jms">
 		<asadmin command="delete-connector-connection-pool"
 		         parameters="--cascade=true swag.JMSPool"/>
 
-		<delete-jms-resource name="swag.queue.Notification"/>
+		<delete-jms-resource name="swag.queue.notification"/>
 	</target>
 </project>
