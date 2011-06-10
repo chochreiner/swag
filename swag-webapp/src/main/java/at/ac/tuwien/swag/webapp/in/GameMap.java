@@ -47,6 +47,7 @@ public class GameMap extends WebMarkupContainer {
 				
 				ListView<Square> rowListView = new ListView<Square>("row", rowList) {
 					private static final long serialVersionUID = 3054181382288233598L;
+					private MapModalWindow selectModalWindow;
 
 					@Override
 					protected void populateItem(ListItem<Square> squareList) {
@@ -74,34 +75,35 @@ public class GameMap extends WebMarkupContainer {
 							label= new Label("square", "X: "+square.getCoordX() +" EMPTY  Y: "+ square.getCoordY());
 						}
 						
-						 // The ModalWindow, showing some choices for the user to select.
-				       final ModalSquareWindow selectModalWindow = new ModalSquareWindow("modalSquare"){
-						
-						private static final long serialVersionUID = -770358065105369098L;
+/////////////////////////////////////////// TEST MODAL WINDOW ////////////////////////////////////////////////
+				        // The ModalWindow, showing some choices for the user to select.
+				        selectModalWindow = new MapModalWindow("modalwindow"){
 
-							void onSelect(AjaxRequestTarget target, String selection) {              
+							void onSelect(AjaxRequestTarget target, String selection) {
+				                // Handle Select action
 				                close(target);
 				            }
 
 				            void onCancel(AjaxRequestTarget target) {
+				                // Handle Cancel action
 				                close(target);
 				            }
 
+
 				        };
-				        squareList.setOutputMarkupId(true);
-				        squareList.add(selectModalWindow);
-						
+
 						AjaxFallbackLink<String> squareLink = new AjaxFallbackLink<String>("squareLink") {
 							private static final long serialVersionUID = -2641432580203719830L;
 							
 							@Override
 							public void onClick(AjaxRequestTarget target) {
-								selectModalWindow.show(target);
+								 selectModalWindow.show(target);
 							}
-							
+/////////////////////////////////////////// TEST MODAL WINDOW ////////////////////////////////////////////////	
 						};
-						
-						squareLink.setOutputMarkupId(true);
+				        
+				        squareList. add(selectModalWindow);
+				        squareLink.setOutputMarkupId(true);
 						squareList.add(squareLink);
 						
 						label.setOutputMarkupId(true);
@@ -113,6 +115,11 @@ public class GameMap extends WebMarkupContainer {
 	     };
 	}
 	
+	/**
+	 * 
+	 * @param sq
+	 * @return
+	 */
 	private boolean checkIfResourceBuildings(Square sq ) {
 		if(sq.getResourceBuildings() == null || sq.getResourceBuildings().isEmpty()) {
 			return false;
@@ -120,14 +127,15 @@ public class GameMap extends WebMarkupContainer {
 		return true;
 	}
 	
+	/**
+	 * 
+	 * @param sq
+	 * @return
+	 */
 	private boolean checkIfBaseBuildings(Square sq ) {
 		if(sq.getBaseBuildings() == null || sq.getBaseBuildings().isEmpty()) {
 			return false;
 		}
 		return true;
-	}
-	
-	public void updateModel() {
-		 gameMaplistView.setModel(gameMapList);
 	}
 }

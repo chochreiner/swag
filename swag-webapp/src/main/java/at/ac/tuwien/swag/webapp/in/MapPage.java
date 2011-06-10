@@ -5,9 +5,13 @@ import java.util.List;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
+import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.LoadableDetachableModel;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import at.ac.tuwien.swag.model.dao.MapDAO;
@@ -54,8 +58,7 @@ public class MapPage extends InPage {
    		endX = 5;
    		startY =1;
    		endY =5;
-     
-    
+   		
 		this.setupNavigationLinks();
 		SwagWebSession session = (SwagWebSession) getSession(); 
      
