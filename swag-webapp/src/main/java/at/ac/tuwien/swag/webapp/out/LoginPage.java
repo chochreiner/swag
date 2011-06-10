@@ -1,27 +1,23 @@
 package at.ac.tuwien.swag.webapp.out;
 
-import javax.persistence.NoResultException;
-
+import javax.jms.JMSException;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
-import at.ac.tuwien.swag.model.dao.UserDAO;
+import at.ac.tuwien.swag.messages.TimeoutExpiredException;
 import at.ac.tuwien.swag.model.domain.User;
-import at.ac.tuwien.swag.util.PasswordHasher;
-import at.ac.tuwien.swag.webapp.in.MainPage;
+import at.ac.tuwien.swag.model.dto.UserDTO;
 import at.ac.tuwien.swag.webapp.out.form.LoginForm;
+import at.ac.tuwien.swag.webapp.service.LoginService;
 
 import com.google.inject.Inject;
 
 public class LoginPage extends OutPage {
     private static final long serialVersionUID = -6712153643198619949L;
 
-	@Inject( optional = true)
-	private UserDAO users;
-
-	@Inject
-    private PasswordHasher hasher;
-	
+    @Inject( optional = true )
+    private LoginService login;
+    
     public LoginPage(PageParameters parameters) {
         super(parameters);
 
@@ -36,25 +32,28 @@ public class LoginPage extends OutPage {
     }
 
 	private void ensureAdminIsPresent() {
-		if ( users == null ) {
-			error( "The are database problems, look into that! Try clicking 'insertTestData'" );
-			setResponsePage( MainPage.class );
+		if ( login == null ) {
+			error( "Could not get JMS connection to auth-server, look into that! Try clicking 'insertTestData'" );
+			return;
 		}
 		
 		try {
-			users.findByUsername( "system" );
-		} catch ( NoResultException e ) {
-			User system = new User();
-			system.setUsername( "system" );
-			system.setPassword( hasher.hash( "aaa" ) );
-			system.setEmail( "swag@swag.com" );
-			
-			system.address( "The interblag" );
-			system.fullname( "System administration account" );
-			
-			users.beginTransaction();
-				users.insert( system );
-			users.commitTransaction();
+			if ( !login.userExists( "system" ) ) {
+				UserDTO system = new UserDTO(
+						"system",
+						"aaa", 
+						"The interblag",
+						"swag@swag.com", 
+						"System administration account", 
+						null ,null, null 
+				);
+				
+				login.storeUser( system );
+			}
+		} catch ( JMSException e ) {
+			error( "Could not get JMS connection to auth-server, look into that! Try clicking 'insertTestData'" );			
+		} catch ( TimeoutExpiredException e ) {
+			error( "Connection to authentication server timed out" );
 		}
 	}
 }

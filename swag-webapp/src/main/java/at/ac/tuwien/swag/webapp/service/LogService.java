@@ -1,6 +1,6 @@
 package at.ac.tuwien.swag.webapp.service;
 
-import java.util.List;
+import org.apache.wicket.markup.repeater.data.DataView;
 
 import at.ac.tuwien.swag.model.dto.LogMessageDTO;
 
@@ -12,10 +12,10 @@ public interface LogService {
 
     public void logAdminAction(String subject, String text);
 
-    public List<LogMessageDTO> getUserLog();
+    public DataView<LogMessageDTO> getUserLog();
 
-    public List<LogMessageDTO> getAdminLog();
+    public DataView<LogMessageDTO> getAdminLog();
 
-    public List<LogMessageDTO> getGameLog();
+    public DataView<LogMessageDTO> getGameLog();
 
 }

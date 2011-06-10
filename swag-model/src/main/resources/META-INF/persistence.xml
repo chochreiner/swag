@@ -7,6 +7,7 @@
 
 	<persistence-unit name="swag">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+
 		<properties>
 			<!-- Database connection settings -->
 			<property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
@@ -28,6 +29,7 @@
 			<property name="javax.persistence.validation.mode" value="NONE" />
 		</properties>
 	</persistence-unit>
+	
 <!--
 	<persistence-unit name="swag" transaction-type="JTA">
 		<provider>oracle.toplink.essentials.PersistenceProvider</provider>

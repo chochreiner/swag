@@ -1,4 +1,4 @@
-package at.ac.tuwien.swag.messages;
+package at.ac.tuwien.swag.messages.auth;
 
 import java.io.Serializable;
 

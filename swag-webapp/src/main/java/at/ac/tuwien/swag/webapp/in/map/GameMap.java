@@ -1,8 +1,11 @@
-package at.ac.tuwien.swag.webapp.in;
+package at.ac.tuwien.swag.webapp.in.map;
 
 import java.util.List;
 
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
+import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -44,6 +47,7 @@ public class GameMap extends WebMarkupContainer {
 				
 				ListView<Square> rowListView = new ListView<Square>("row", rowList) {
 					private static final long serialVersionUID = 3054181382288233598L;
+					private MapModalWindow selectModalWindow;
 
 					@Override
 					protected void populateItem(ListItem<Square> squareList) {
@@ -51,7 +55,7 @@ public class GameMap extends WebMarkupContainer {
 						Square square = (Square) squareList.getModelObject();
 						
 						Label label = null;
-						if(mapUser.getSquares().contains(square)) {
+						if(mapUser != null && mapUser.getSquares().contains(square)) {
 							
 							label = new Label("square", "X: "+square.getCoordX() +" AAAAA Y: "+ square.getCoordY());
 							if(checkIfResourceBuildings(square) || checkIfBaseBuildings(square)) {
@@ -70,8 +74,40 @@ public class GameMap extends WebMarkupContainer {
 							
 							label= new Label("square", "X: "+square.getCoordX() +" EMPTY  Y: "+ square.getCoordY());
 						}
+						
+/////////////////////////////////////////// TEST MODAL WINDOW ////////////////////////////////////////////////
+				        // The ModalWindow, showing some choices for the user to select.
+				        selectModalWindow = new MapModalWindow("modalwindow"){
+
+							void onSelect(AjaxRequestTarget target, String selection) {
+				                // Handle Select action
+				                close(target);
+				            }
+
+				            void onCancel(AjaxRequestTarget target) {
+				                // Handle Cancel action
+				                close(target);
+				            }
+
+
+				        };
+
+						AjaxFallbackLink<String> squareLink = new AjaxFallbackLink<String>("squareLink") {
+							private static final long serialVersionUID = -2641432580203719830L;
+							
+							@Override
+							public void onClick(AjaxRequestTarget target) {
+								 selectModalWindow.show(target);
+							}
+/////////////////////////////////////////// TEST MODAL WINDOW ////////////////////////////////////////////////	
+						};
+				        
+				        squareList. add(selectModalWindow);
+				        squareLink.setOutputMarkupId(true);
+						squareList.add(squareLink);
+						
 						label.setOutputMarkupId(true);
-						squareList.add(label);
+						squareLink.add(label);
 					}
 				};
 				row.add(rowListView);
@@ -79,6 +115,11 @@ public class GameMap extends WebMarkupContainer {
 	     };
 	}
 	
+	/**
+	 * 
+	 * @param sq
+	 * @return
+	 */
 	private boolean checkIfResourceBuildings(Square sq ) {
 		if(sq.getResourceBuildings() == null || sq.getResourceBuildings().isEmpty()) {
 			return false;
@@ -86,14 +127,15 @@ public class GameMap extends WebMarkupContainer {
 		return true;
 	}
 	
+	/**
+	 * 
+	 * @param sq
+	 * @return
+	 */
 	private boolean checkIfBaseBuildings(Square sq ) {
 		if(sq.getBaseBuildings() == null || sq.getBaseBuildings().isEmpty()) {
 			return false;
 		}
 		return true;
-	}
-	
-	public void updateModel() {
-		 gameMaplistView.setModel(gameMapList);
 	}
 }

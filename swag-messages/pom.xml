@@ -13,6 +13,10 @@
   <name>swag-messages</name>
   <url>http://maven.apache.org</url>
   <dependencies>
+	<dependency>
+		<groupId>at.ac.tuwien</groupId>
+		<artifactId>swag-model</artifactId>
+	</dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>

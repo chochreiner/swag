@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="swag-webapp-helpers" basedir=".">
+<project name="swag-notification-helpers" basedir=".">
 	<!-- import our own ant tasks -->
-	<import file="../ant-helpers.xml"/>
+	<import file="../ant-macros.xml"/>
 	
 	<!-- ***** PROPERTIES ***************************************************************** -->
 	<!-- application data -->

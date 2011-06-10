@@ -12,7 +12,7 @@ import at.ac.tuwien.swag.webapp.in.MainPage;
 public class LoginForm extends Form<Void> {
     private static final long serialVersionUID = 6040480253914226510L;
 
-    private static final String ERR_MSG_BAD_CREDENTIALS = "The password and/or username you entered were incorrect";
+//    private static final String ERR_MSG_BAD_CREDENTIALS = "The password and/or username you entered were incorrect";
     
     private final TextField<String> username;
     private final PasswordTextField password;
@@ -34,8 +34,8 @@ public class LoginForm extends Form<Void> {
     	
    		if ( ((AbstractAuthenticatedWebSession) getSession()).authenticate( usr, pwd ) ) {
    			getPage().setResponsePage( MainPage.class );    			
-   		} else {
-   			this.error( ERR_MSG_BAD_CREDENTIALS );    		    			
+//   		} else {
+//   			this.error( ERR_MSG_BAD_CREDENTIALS );    		    			
    		}
     }
 }

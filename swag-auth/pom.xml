@@ -19,6 +19,10 @@
 		</dependency>
 		<dependency>
 			<groupId>at.ac.tuwien</groupId>
+			<artifactId>swag-model</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>at.ac.tuwien</groupId>
 			<artifactId>swag-util</artifactId>
 		</dependency>
 		<!-- JUNIT DEPENDENCY FOR TESTING -->

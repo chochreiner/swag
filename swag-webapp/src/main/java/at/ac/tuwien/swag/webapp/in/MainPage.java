@@ -7,5 +7,6 @@ public class MainPage extends InPage {
 
 	public MainPage(PageParameters parameters) {
 		super(parameters);
+		
 	}
 }
