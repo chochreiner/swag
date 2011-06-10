@@ -1,4 +1,4 @@
-package at.ac.tuwien.swag.webapp.in;
+package at.ac.tuwien.swag.webapp.in.map;
 
 
 

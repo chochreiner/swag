@@ -1,4 +1,4 @@
-package at.ac.tuwien.swag.webapp.in;
+package at.ac.tuwien.swag.webapp.in.map;
 
 import java.util.List;
 
@@ -55,7 +55,7 @@ public class GameMap extends WebMarkupContainer {
 						Square square = (Square) squareList.getModelObject();
 						
 						Label label = null;
-						if(mapUser.getSquares().contains(square)) {
+						if(mapUser != null && mapUser.getSquares().contains(square)) {
 							
 							label = new Label("square", "X: "+square.getCoordX() +" AAAAA Y: "+ square.getCoordY());
 							if(checkIfResourceBuildings(square) || checkIfBaseBuildings(square)) {

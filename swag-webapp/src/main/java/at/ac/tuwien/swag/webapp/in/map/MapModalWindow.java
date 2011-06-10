@@ -1,9 +1,10 @@
-package at.ac.tuwien.swag.webapp.in;
+package at.ac.tuwien.swag.webapp.in.map;
 
 
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
+
 
 
 public abstract class MapModalWindow extends ModalWindow {
