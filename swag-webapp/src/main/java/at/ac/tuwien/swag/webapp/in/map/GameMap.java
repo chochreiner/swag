@@ -15,127 +15,77 @@ import at.ac.tuwien.swag.model.domain.MapUser;
 import at.ac.tuwien.swag.model.domain.Square;
 
 public class GameMap extends Panel {
-
-	
-	private static final long serialVersionUID = -2473064801663338918L;
-	private ListView<List<Square>> gameMaplistView;
-	private IModel<List<List<Square>>> gameMapList;
-	private MapUser mapUser;
-	
-	
-	public GameMap(String id, MapUser mapUser, IModel<List<List<Square>>> gameMapList) {
-		super(id);
 		
-		this.mapUser		= mapUser;
-		this.gameMapList	= gameMapList;
-		
-		this.setOutputMarkupId(true);
-		
-		this.setupGameMapView();
-		this.add(gameMaplistView);
-	}
+    private static final long serialVersionUID = -2473064801663338918L;
+    private ListView<List<Square>> gameMaplistView;
+    private IModel<List<List<Square>>> gameMapList;
+    private MapUser mapUser;
 
-	private void setupGameMapView() {
-		gameMaplistView = new ListView<List<Square>>("gameMap", gameMapList) {
-			private static final long serialVersionUID = 7083713778515545799L;
+    public GameMap(String id, MapUser mapUser, IModel<List<List<Square>>> gameMapList) {
+        super(id);
 
-			@Override
-			protected void populateItem( ListItem<List<Square>> row) {
-				
-				List<Square> rowList = row.getModelObject();
-				
-				ListView<Square> rowListView = new ListView<Square>("row", rowList) {
-					private static final long serialVersionUID = 3054181382288233598L;
-					private MapModalWindow selectModalWindow;
+        this.mapUser = mapUser;
+        this.gameMapList = gameMapList;
 
-					@Override
-					protected void populateItem(ListItem<Square> squareList) {
-						
-						Square square = (Square) squareList.getModelObject();
-						
-						Label label = null;
-						if(mapUser != null && mapUser.getSquares().contains(square)) {
-							
-							label = new Label("square", "X: "+square.getCoordX() +" AAAAA Y: "+ square.getCoordY());
-							if(checkIfResourceBuildings(square) || checkIfBaseBuildings(square)) {
-								label = new Label("square", "BASEOWNEDBYME");
-								label.add(new SimpleAttributeModifier("class", "baseSquare"));
-							}
-							if(square.getIsHomeBase()) {
-								label = new Label("square", "HOMEBASE");
-								label.add(new SimpleAttributeModifier("class", "homeBaseSquare"));
-							}
-						}else {
-							if(checkIfResourceBuildings(square) || checkIfBaseBuildings(square)) {
-								label= new Label("square", "X: "+square.getCoordX() +" "+square.getUser().getUser().getUsername()+" Y: "+ square.getCoordY());
-								label.add(new SimpleAttributeModifier("class", "baseSquare"));
-							}
-							
-							label= new Label("square", "X: "+square.getCoordX() +" EMPTY  Y: "+ square.getCoordY());
-						}
-						
-/////////////////////////////////////////// TEST MODAL WINDOW ////////////////////////////////////////////////
-				        // The ModalWindow, showing some choices for the user to select.
-				        selectModalWindow = new MapModalWindow("modalwindow"){
-							private static final long serialVersionUID = 6244873170722607468L;
+        this.setOutputMarkupId(true);
 
-							void onSelect(AjaxRequestTarget target, String selection) {
-				                // Handle Select action
-				                close(target);
-				            }
+        this.setupGameMapView();
+        this.add(gameMaplistView);
+    }
 
-				            void onCancel(AjaxRequestTarget target) {
-				                // Handle Cancel action
-				                close(target);
-				            }
+    private void setupGameMapView() {
+        gameMaplistView = new ListView<List<Square>>("gameMap", gameMapList) {
+            private static final long serialVersionUID = 7083713778515545799L;
 
+            @Override
+            protected void populateItem(ListItem<List<Square>> row) {
 
-				        };
+                List<Square> rowList = row.getModelObject();
 
-						AjaxFallbackLink<String> squareLink = new AjaxFallbackLink<String>("squareLink") {
-							private static final long serialVersionUID = -2641432580203719830L;
-							
-							@Override
-							public void onClick(AjaxRequestTarget target) {
-								 selectModalWindow.show(target);
-							}
-/////////////////////////////////////////// TEST MODAL WINDOW ////////////////////////////////////////////////	
-						};
-				        
-				        squareList. add(selectModalWindow);
-				        squareLink.setOutputMarkupId(true);
-						squareList.add(squareLink);
-						
-						label.setOutputMarkupId(true);
-						squareLink.add(label);
-					}
-				};
-				row.add(rowListView);
-			}
-	     };
-	}
-	
-	/**
-	 * 
-	 * @param sq
-	 * @return
-	 */
-	private boolean checkIfResourceBuildings(Square sq ) {
-		if(sq.getResourceBuildings() == null || sq.getResourceBuildings().isEmpty()) {
-			return false;
-		}
-		return true;
-	}
-	
-	/**
-	 * 
-	 * @param sq
-	 * @return
-	 */
-	private boolean checkIfBaseBuildings(Square sq ) {
-		if(sq.getBaseBuildings() == null || sq.getBaseBuildings().isEmpty()) {
-			return false;
-		}
-		return true;
-	}
+                ListView<Square> rowListView = new ListView<Square>("row", rowList) {
+                    private static final long serialVersionUID = 3054181382288233598L;
+
+                    @Override
+                    protected void populateItem(ListItem<Square> squareList) {
+
+                        Square square = squareList.getModelObject();
+
+                        Label label = null;
+                        if (mapUser.getSquares().contains(square)) {
+
+                            label = new Label("square", "X: " + square.getCoordX() + " AAAAA Y: " + square.getCoordY());
+                            if (checkIfBuildings(square)) {
+                                label = new Label("square", "BASEOWNEDBYME");
+                                label.add(new SimpleAttributeModifier("class", "baseSquare"));
+                            }
+                            if (square.getIsHomeBase()) {
+                                label = new Label("square", "HOMEBASE");
+                                label.add(new SimpleAttributeModifier("class", "homeBaseSquare"));
+                            }
+                        } else {
+                            if (checkIfBuildings(square)) {
+                                label =
+                                    new Label("square", "X: " + square.getCoordX() + " "
+                                            + square.getUser().getUser().getUsername() + " Y: " + square.getCoordY());
+                                label.add(new SimpleAttributeModifier("class", "baseSquare"));
+                            }
+
+                            label =
+                                new Label("square", "X: " + square.getCoordX() + " EMPTY  Y: " + square.getCoordY());
+                        }
+                        label.setOutputMarkupId(true);
+                        squareList.add(label);
+                    }
+                };
+                row.add(rowListView);
+            }
+        };
+    }
+
+    private boolean checkIfBuildings(Square sq) {
+        if (sq.getBuildings() == null || sq.getBuildings().isEmpty()) {
+            return false;
+        }
+        return true;
+    }
 }

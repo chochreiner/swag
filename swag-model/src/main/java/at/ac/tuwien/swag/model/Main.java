@@ -15,28 +15,24 @@ import at.ac.tuwien.swag.model.dao.MapDAO;
 import at.ac.tuwien.swag.model.dao.MessageDAO;
 import at.ac.tuwien.swag.model.dao.SquareDAO;
 import at.ac.tuwien.swag.model.dao.UserDAO;
-import at.ac.tuwien.swag.model.domain.BaseBuilding;
-import at.ac.tuwien.swag.model.domain.BaseBuildingType;
 import at.ac.tuwien.swag.model.domain.Map;
 import at.ac.tuwien.swag.model.domain.MapUser;
 import at.ac.tuwien.swag.model.domain.Message;
-import at.ac.tuwien.swag.model.domain.RessourceBuilding;
-import at.ac.tuwien.swag.model.domain.RessourceBuildingType;
 import at.ac.tuwien.swag.model.domain.Square;
 import at.ac.tuwien.swag.model.domain.StoredRessource;
 import at.ac.tuwien.swag.model.domain.User;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-    	EntityManagerFactory factory = Persistence.createEntityManagerFactory("swag");
+        EntityManagerFactory factory = Persistence.createEntityManagerFactory("swag");
         EntityManager em = factory.createEntityManager();
 
         EntityTransaction tx = em.getTransaction();
-        
-        UserDAO    userDao    = new UserDAO(em);
-        MapDAO     mapDao     = new MapDAO(em);
+
+        UserDAO userDao = new UserDAO(em);
+        MapDAO mapDao = new MapDAO(em);
         MessageDAO messageDao = new MessageDAO(em);
-        SquareDAO  squareDao  = new SquareDAO(em);
+        SquareDAO squareDao = new SquareDAO(em);
 
         System.out.println("####### Register users #######");
 
@@ -63,9 +59,9 @@ public class Main {
 
         System.out.println("####### List registered users #######");
 
-         for (User user : userDao.getAll()) {
-         System.out.println(user);
-         }
+        for (User user : userDao.getAll()) {
+            System.out.println(user);
+        }
 
         System.out.println("####### Find user by EmailAdress #######");
 
@@ -117,14 +113,14 @@ public class Main {
         List<MapUser> users = new ArrayList<MapUser>();
 
         List<StoredRessource> neroresources = new ArrayList<StoredRessource>();
-        
+
         List<Square> nerosquares = new ArrayList<Square>();
         Square neroStartsquare = squares.get(0);
-        
+
         neroStartsquare.setIsHomeBase(true);
         nerosquares.add(neroStartsquare);
 
-        MapUser neroMap = new MapUser( playground, nero, neroresources, nerosquares );
+        MapUser neroMap = new MapUser(playground, nero, neroresources, nerosquares);
 
         users.add(neroMap);
 
@@ -136,7 +132,7 @@ public class Main {
         ariovistStartsquare.setIsHomeBase(true);
         ariovistsquares.add(ariovistStartsquare);
 
-        MapUser ariovistMap = new MapUser( playground, ariovist, ariovistresources, ariovistsquares );
+        MapUser ariovistMap = new MapUser(playground, ariovist, ariovistresources, ariovistsquares);
 
         users.add(ariovistMap);
 
@@ -151,36 +147,37 @@ public class Main {
 
         System.out.println("####### Build Building for Nero #######");
 
-        List<BaseBuilding>      basebuilding      = new ArrayList<BaseBuilding>();
-        List<RessourceBuilding> ressourcebuilding = new ArrayList<RessourceBuilding>();
+        // List<BaseBuilding> basebuilding = new ArrayList<BaseBuilding>();
+        // List<RessourceBuilding> ressourcebuilding = new ArrayList<RessourceBuilding>();
+        //
+        // BaseBuilding neroBarrack = new BaseBuilding( 1, BaseBuildingType.BARRACKS, neroStartsquare );
+        //
+        // RessourceBuilding neroLumberjack = new RessourceBuilding( 1, RessourceBuildingType.LUMBERJACK,
+        // neroStartsquare );
+        //
+        // basebuilding.add(neroBarrack);
+        // ressourcebuilding.add(neroLumberjack);
+        //
+        // neroStartsquare.setBaseBuildings(basebuilding);
+        // neroStartsquare.setResourceBuildings(ressourcebuilding);
+        //
+        // tx.begin();
+        // em.persist(neroBarrack);
+        // em.persist(neroLumberjack);
+        // em.merge(neroStartsquare);
+        // tx.commit();
 
-        BaseBuilding neroBarrack = new BaseBuilding( 1, BaseBuildingType.BARRACKS, neroStartsquare );
-
-        RessourceBuilding neroLumberjack = new RessourceBuilding( 1, RessourceBuildingType.LUMBERJACK, neroStartsquare );
-
-        basebuilding.add(neroBarrack);
-        ressourcebuilding.add(neroLumberjack);
-
-        neroStartsquare.setBaseBuildings(basebuilding);
-        neroStartsquare.setResourceBuildings(ressourcebuilding);
-
-        tx.begin();
-        em.persist(neroBarrack);
-        em.persist(neroLumberjack);
-        em.merge(neroStartsquare);
-        tx.commit();
-
-        System.out.println("####### Print Homesquares #######");
-
-        for (Square sq : squareDao.findByIsHomeBase(true)) {
-            System.out.println("Coords: " + sq.getCoordX() + sq.getCoordY());
-            if (sq.getBaseBuildings() != null) {
-                 System.out.println(sq.getBaseBuildings().toString());
-            }
-            if (sq.getResourceBuildings() != null) {
-                // System.out.println(sq.getResourceBuildings().toString());
-            }
-        }
+        // System.out.println("####### Print Homesquares #######");
+        //
+        // for (Square sq : squareDao.findByIsHomeBase(true)) {
+        // System.out.println("Coords: " + sq.getCoordX() + sq.getCoordY());
+        // if (sq.getBaseBuildings() != null) {
+        // System.out.println(sq.getBaseBuildings().toString());
+        // }
+        // if (sq.getResourceBuildings() != null) {
+        // // System.out.println(sq.getResourceBuildings().toString());
+        // }
+        // }
 
         System.out.println("####### Send Message Between User #######");
 
@@ -188,13 +185,13 @@ public class Main {
         recipients.add(ariovist);
 
         Message message = new Message(
-        	new Date(),
-        	"welcome",
-        	"You are going to die",
-        	true,
-        	nero,
-        	recipients
-        );
+            new Date(),
+            "welcome",
+            "You are going to die",
+            true,
+            nero,
+            recipients
+            );
 
         tx.begin();
         em.persist(message);
@@ -209,6 +206,6 @@ public class Main {
         }
 
         // UNDO EVERYTHING
-        new SQLHelper( em ).dropDatabase();
+        new SQLHelper(em).dropDatabase();
     }
 }

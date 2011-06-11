@@ -1,0 +1,99 @@
+<wicket:extend>
+<h2>Base</h2>
+
+<table id="base">
+<table>
+	<tr>
+		<td class="ressource">
+		Wood <br />
+		<form wicket:id="buildWood">
+			<input wicket:id="woodButton" type="submit" value="" />
+		</form>
+		</td>
+		<td class="green"></td>
+		<td class="green"></td>
+		<td class="green"></td>
+		<td class="ressource">
+		Clay <br />
+		<form wicket:id="buildClay">
+			<input wicket:id="clayButton" type="submit" value="" />
+		</form>
+		</td>
+	</tr>
+	<tr>
+		<td class="green"></td>
+		<td class="building">
+		Stable <br />
+		<form wicket:id="buildStable">
+			<input wicket:id="stableButton" type="submit" value="" />
+		</form>
+		<br />
+		<a wicket:id="stableLink">go to Stable</a>
+		</td>
+		<td class="city"></td>
+		<td class="building">
+		Barracks <br />
+		<form wicket:id="buildBarracks">
+			<input wicket:id="barracksButton" type="submit" value="" />
+		</form>
+		<br />
+		<a wicket:id="barracksLink">go to Barracks</a>
+		</td>
+		<td class="green"></td>
+	</tr>
+	<tr>
+		<td class="green"></td>
+		<td class="city"></td>
+		<td class="building"><a wicket:id="troopsLink">Troops</a></td>
+		<td class="city"></td>
+		<td class="green"></td>
+	</tr>
+	<tr>
+		<td class="green"></td>
+		<td class="building">
+		Upgrades <br />
+		<form wicket:id="buildUpgrades">
+			<input wicket:id="upgradesButton" type="submit" value="" />
+		</form>
+		<br />
+		<a wicket:id="upgradeLink">go to Upgrades</a>		
+		</td>
+		<td class="city"></td>
+		<td class="building">
+		Destruction <br />
+		<form wicket:id="buildDestruction">
+			<input wicket:id="destructionButton" type="submit" value="" />
+		</form>
+		<br />
+		<a wicket:id="destructionLink">go to Destruction</a>				
+		</td>
+		<td class="green"></td>
+	</tr>
+	<tr>
+		<td class="ressource">
+		Grain <br />
+		<form wicket:id="buildGrain">
+			<input wicket:id="grainButton" type="submit" value="" />
+		</form>
+		</td>
+		<td class="green"></td>
+		<td class="green"></td>
+		<td class="green"></td>
+		<td class="ressource">
+		Iron<br />
+		<form wicket:id="buildIron">
+			<input wicket:id="ironButton" type="submit" value="" />
+		</form>
+		</td>
+	</tr>
+</table>
+
+
+
+<span wicket:id="feedback"></span>
+
+
+
+
+</table>
+</wicket:extend>
