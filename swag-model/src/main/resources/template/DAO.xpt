@@ -15,7 +15,6 @@
 		import javax.persistence.EntityManager;
 		
 		import com.google.inject.Inject;
-		import com.google.inject.persist.Transactional;
 		
 		import «package()».domain.*;
 		
@@ -27,14 +26,12 @@
 				super( em );
 			}
 
-			@Transactional
 			@Override
 			@SuppressWarnings("unchecked")
 			public Iterable<«name»> getAll() {
 				return getEntityManager().createQuery( "SELECT obj FROM «name» obj" ).getResultList();
 			}
 			
-			@Transactional
 			@Override
 			@SuppressWarnings("unchecked")
 			public void deleteAll() {
@@ -43,7 +40,6 @@
 
 			«FOREACH attributes AS attr»
 				«IF attr.unique»
-					@Transactional
 					@SuppressWarnings("unchecked")
 					public «name» findBy«attr.name.toFirstUpper()»( «attr.type.name» «attr.name» ) {
 						return («name») getEntityManager().createQuery(
@@ -52,7 +48,6 @@
 							.getSingleResult();
 					}
 				«ELSE»
-					@Transactional
 					@SuppressWarnings("unchecked")
 					public List<«name»> findBy«attr.name.toFirstUpper()»( «attr.type.name» «attr.name» ) {
 						return getEntityManager().createQuery(

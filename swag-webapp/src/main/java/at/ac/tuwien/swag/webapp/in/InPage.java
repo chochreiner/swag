@@ -16,7 +16,6 @@ public abstract class InPage extends WebPage {
 		add(new InTopNavigation("topNavigation"));
 		add(new InNavigation("mainNavigation"));
 		add(new ResourcenSidePanel("resourcenSidePanel"));
-		
 		AdminNavigation adminNav = new AdminNavigation("adminNavigation");
 		adminNav.setVisible(false);
 		if(session.getRoles().hasRole(Roles.ADMIN)) {

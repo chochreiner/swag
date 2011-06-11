@@ -21,9 +21,9 @@ import at.ac.tuwien.swag.model.domain.Square;
 import com.google.inject.Inject;
 
 public abstract class BasePanel extends Panel {
-	private static final long serialVersionUID = -7684943204211861124L;
+private static final long serialVersionUID = -7684943204211861124L;
 
-	private HashMap<BuildingType, Building> buildings;
+private HashMap<BuildingType, Building> buildings;
 
     @Inject
     private BuildingDAO buildingsDao;
@@ -36,20 +36,19 @@ public abstract class BasePanel extends Panel {
 	private long squareId;
 
 	private Form<?> buildWood;
-
 	private Form<?> buildClay;
-
 	private Form<?> buildStable;
-
 	private Form<?> buildBarracks;
-
 	private Form<?> buildUpgrades;
-
 	private Form<?> buildGrain;
-
 	private Form<?> buildDestruction;
-
 	private Form<?> buildIron;
+
+	private BookmarkablePageLink<?> barracksLink;
+	private BookmarkablePageLink<?> stableLink;
+	private BookmarkablePageLink<?> destructionLink;
+	private BookmarkablePageLink<?> upgradeLink;
+	private BookmarkablePageLink<?> troopsLink;
     
     public BasePanel(String id, long squareId) {
         super(id);
@@ -64,44 +63,58 @@ public abstract class BasePanel extends Panel {
         FeedbackPanel feedbackPanel = new FeedbackPanel("feedback");
         add(feedbackPanel);
 
-        setupForm();
-
         PageParameters params = new PageParameters();
         params.add("square", squareId);
 
-        BookmarkablePageLink barracksLink = new BookmarkablePageLink("barracksLink", Barracks.class, params);
-        if (!buildings.containsKey(BuildingType.BARRACKS)) {
-            barracksLink.setVisible(false);
-        }
-        add(barracksLink);
-        BookmarkablePageLink stableLink = new BookmarkablePageLink("stableLink", Stable.class, params);
-        if (!buildings.containsKey(BuildingType.STABLE)) {
-            stableLink.setVisible(false);
-        }
-        add(stableLink);
-        BookmarkablePageLink destructionLink = new BookmarkablePageLink("destructionLink", Destruction.class, params);
-        if (!buildings.containsKey(BuildingType.DESTRUCTION)) {
-            destructionLink.setVisible(false);
-        }
-        add(destructionLink);
-        BookmarkablePageLink upgradeLink = new BookmarkablePageLink("upgradeLink", Upgrades.class, params);
-        if (!buildings.containsKey(BuildingType.UPGRADE)) {
-            upgradeLink.setVisible(false);
-        }
-        add(upgradeLink);
-        add(new BookmarkablePageLink("troopsLink", Troops.class, params));
-
+        setupLinks(params);
+        setupForm();
+        
+        checkVisiblityOfLinks();
     }
 
+    private void setupLinks(PageParameters params) {
+    	 barracksLink		= new BookmarkablePageLink<Object>("barracksLink", Barracks.class, params);
+         stableLink			= new BookmarkablePageLink<Object>("stableLink", Stable.class, params);
+         destructionLink	= new BookmarkablePageLink<Object>("destructionLink", Destruction.class, params);   
+         upgradeLink		= new BookmarkablePageLink<Object>("upgradeLink", Upgrades.class, params);
+         troopsLink			= new BookmarkablePageLink<Object>("troopsLink", Troops.class, params);
+         
+         barracksLink.setVisible(false);
+         stableLink.setVisible(false);
+         destructionLink.setVisible(false);
+         upgradeLink.setVisible(false);
+         
+         add(barracksLink);
+         add(stableLink);
+         add(destructionLink);
+         add(upgradeLink);
+         add(troopsLink );
+    }
+    
+    private void checkVisiblityOfLinks() {
+    	 if (buildings.containsKey(BuildingType.BARRACKS)) {
+             barracksLink.setVisible(true);
+         }
+    	 if (buildings.containsKey(BuildingType.STABLE)) {
+             stableLink.setVisible(true);
+         }
+    	 if (buildings.containsKey(BuildingType.DESTRUCTION)) {
+    		 destructionLink.setVisible(true);
+         }
+    	 if (buildings.containsKey(BuildingType.UPGRADE)) {
+             upgradeLink.setVisible(true);
+         }
+    }
+    
     private void setupForm() {
-        buildWood = createForm("buildWood", "woodButton", BuildingType.WOOD);
-        buildClay = createForm("buildClay", "clayButton", BuildingType.CLAY);
-        buildStable = createForm("buildStable", "stableButton", BuildingType.STABLE);
-        buildBarracks = createForm("buildBarracks", "barracksButton", BuildingType.BARRACKS);
-        buildUpgrades = createForm("buildUpgrades", "upgradesButton", BuildingType.UPGRADE);
-        buildDestruction = createForm("buildDestruction", "destructionButton", BuildingType.DESTRUCTION);
-        buildGrain = createForm("buildGrain", "grainButton", BuildingType.GRAIN);
-        buildIron = createForm("buildIron", "ironButton", BuildingType.IRON);
+        buildWood			= createForm("buildWood", "woodButton", BuildingType.WOOD);
+        buildClay			= createForm("buildClay", "clayButton", BuildingType.CLAY);
+        buildStable			= createForm("buildStable", "stableButton", BuildingType.STABLE);
+        buildBarracks		= createForm("buildBarracks", "barracksButton", BuildingType.BARRACKS);
+        buildUpgrades		= createForm("buildUpgrades", "upgradesButton", BuildingType.UPGRADE);
+        buildDestruction	= createForm("buildDestruction", "destructionButton", BuildingType.DESTRUCTION);
+        buildGrain			= createForm("buildGrain", "grainButton", BuildingType.GRAIN);
+        buildIron			= createForm("buildIron", "ironButton", BuildingType.IRON);
 
         add(buildWood);
         add(buildClay);
@@ -161,6 +174,14 @@ public abstract class BasePanel extends Panel {
 	                target.add(buildDestruction);
 	                target.add(buildGrain);
 	                target.add(buildIron);
+	                
+	                checkVisiblityOfLinks();
+	                
+	                add(barracksLink);
+	                add(stableLink);
+	                add(destructionLink);
+	                add(upgradeLink);
+	                add(troopsLink );
 			}
 
 			@Override
@@ -168,8 +189,6 @@ public abstract class BasePanel extends Panel {
 				// TODO Auto-generated method stub
 				
 			}
-       
-			
         };
 
         updateBildingCounter(building, newButton);

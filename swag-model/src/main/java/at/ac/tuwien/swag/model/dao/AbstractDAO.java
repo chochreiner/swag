@@ -11,56 +11,58 @@ import javax.persistence.Query;
 import at.ac.tuwien.swag.model.domain.AbstractEntity;
 
 import com.google.inject.Inject;
-import com.google.inject.persist.Transactional;
 
 public abstract class AbstractDAO<E extends AbstractEntity> {
 
-	public AbstractDAO() {/***/}
-	
+	public AbstractDAO() {
+		/***/
+	}
+
 	public AbstractDAO( EntityManager em ) {
 		this.em = em;
 	}
-	
-	@Transactional
-	public void insert( E e ) {
-		em.persist( e );
+
+	public void delete( final E toDelete ) {
+		this.em.remove( this.em.merge( toDelete ) );
 	}
-	
-	@Transactional
-	public abstract Iterable<E> getAll();
-	
-	@Transactional
+
+	public void insert( final E toPersist ) {
+		if (toPersist.getId() == null) {
+			this.em.persist( toPersist );
+		} else {
+			update( toPersist );
+		}
+	}
+
+	public void update( final E toUpdate ) {
+		this.em.persist( this.em.merge( toUpdate ) );
+	}
+
+	public void refresh( final E toRefresh ) {
+		this.em.refresh( this.em.merge( toRefresh ) );
+	}
+
 	public E findById( long id ) {
 		return em.find( getEntityClass(), id );
 	}
-	
-	@Transactional
+
 	@SuppressWarnings("unchecked")
-    public List<E> findByQuery(String query, Map<String, ?> values) {
-        Query emQuery = em.createQuery(query);
+	public List<E> findByQuery( String query, Map<String, ?> values ) {
+		Query emQuery = em.createQuery( query );
 
-        for (Entry<String, ?> entry : values.entrySet()) {
-            emQuery.setParameter(entry.getKey(), entry.getValue());
-        }
+		for (Entry<String, ?> entry : values.entrySet()) {
+			emQuery.setParameter( entry.getKey(), entry.getValue() );
+		}
 
-        return emQuery.getResultList();
-    }
-	
-	@Transactional
-	public E update( E e ) {
-		return em.merge( e );
+		return emQuery.getResultList();
 	}
-	
-	@Transactional
-	public void delete( E e ) {
-		em.remove( e );
-	}
-	
-	@Transactional
+
+	public abstract Iterable<E> getAll();
+
 	public abstract void deleteAll();
-	
-	//***** TRANSACTIONS
-	
+
+	// ***** TRANSACTIONS
+
 	public EntityTransaction getTransaction() {
 		return getEntityManager().getTransaction();
 	}
@@ -72,19 +74,19 @@ public abstract class AbstractDAO<E extends AbstractEntity> {
 	public void commitTransaction() {
 		getTransaction().commit();
 	}
-	
+
 	public void rollbackTransaction() {
 		getTransaction().rollback();
 	}
-	
-	//***** PRIVATE PARTS
-	
+
+	// ***** PRIVATE PARTS
+
 	protected EntityManager getEntityManager() {
 		return em;
 	}
-	
+
 	protected abstract Class<E> getEntityClass();
-	
+
 	@Inject
 	private EntityManager em;
 }
