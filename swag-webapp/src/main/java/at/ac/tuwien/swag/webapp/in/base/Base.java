@@ -1,6 +1,7 @@
 package at.ac.tuwien.swag.webapp.in.base;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.wicket.markup.html.form.Button;
@@ -11,11 +12,15 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import at.ac.tuwien.swag.model.dao.BuildingDAO;
+import at.ac.tuwien.swag.model.dao.MapUserDAO;
 import at.ac.tuwien.swag.model.dao.SquareDAO;
 import at.ac.tuwien.swag.model.domain.Building;
 import at.ac.tuwien.swag.model.domain.BuildingType;
+import at.ac.tuwien.swag.model.domain.MapUser;
 import at.ac.tuwien.swag.model.domain.Square;
+import at.ac.tuwien.swag.webapp.SwagWebSession;
 import at.ac.tuwien.swag.webapp.in.InPage;
+import at.ac.tuwien.swag.webapp.in.MapPage;
 
 import com.google.inject.Inject;
 
@@ -30,17 +35,20 @@ public class Base extends InPage {
     @Inject
     private SquareDAO squareDAO;
 
+    @Inject
+    private MapUserDAO mapUserDAO;
+
     private Square square;
+    private MapUser mapuser;
 
     public Base(PageParameters parameters) {
         super(parameters);
 
-        String squareId = parameters.get("id").toString();
-
-        squareId = "940";
-        // TODO remove
+        String squareId = parameters.get("square").toString();
 
         square = squareDAO.findById(Long.parseLong(squareId));
+
+        setMapuser();
 
         fetchBuildings();
 
@@ -52,6 +60,34 @@ public class Base extends InPage {
         PageParameters params = new PageParameters();
         params.add("square", squareId);
 
+        setupLinks(params);
+
+    }
+
+    private void setMapuser() {
+        String query =
+            "SELECT m FROM MapUser m LEFT JOIN FETCH m.squares WHERE m.user.username = :username AND m.map.name = :mapname";
+
+        SwagWebSession session = (SwagWebSession) getSession();
+
+        Map<String, String> values = new HashMap<String, String>();
+        values.put("username", session.getUsername());
+        values.put("mapname", session.getMapname());
+
+        List<MapUser> buffer = mapUserDAO.findByQuery(query, values);
+
+        if (!buffer.isEmpty()) {
+            mapuser = buffer.get(0);
+        } else {
+            setResponsePage(MapPage.class);
+        }
+
+        if (!mapuser.getSquares().contains(square)) {
+            setResponsePage(MapPage.class);
+        }
+    }
+
+    private void setupLinks(PageParameters params) {
         BookmarkablePageLink barracksLink = new BookmarkablePageLink("barracksLink", Barracks.class, params);
         if (!buildings.containsKey(BuildingType.BARRACKS)) {
             barracksLink.setVisible(false);
@@ -73,7 +109,6 @@ public class Base extends InPage {
         }
         add(upgradeLink);
         add(new BookmarkablePageLink("troopsLink", Troops.class, params));
-
     }
 
     private void setupForm() {
@@ -145,10 +180,15 @@ public class Base extends InPage {
                 newButton.setEnabled(false);
             }
 
+            if (!checkRessources(500)) {
+                newButton.setEnabled(false);
+            }
+
         } else {
             newButton.setModel(new Model<String>("build"));
-
-            // TODO check ressources for upgrading
+            if (!checkRessources(1000)) {
+                newButton.setEnabled(false);
+            }
         }
 
         newForm.add(newButton);
@@ -166,5 +206,26 @@ public class Base extends InPage {
         for (Building building : buildingsDao.findByQuery(query, values)) {
             buildings.put(building.getType(), building);
         }
+    }
+
+    private boolean checkRessources(Integer res) {
+
+        if (mapuser.getClayRessource().getAmount() < res) {
+            return false;
+        }
+
+        if (mapuser.getGrainRessource().getAmount() < res) {
+            return false;
+        }
+
+        if (mapuser.getIronRessource().getAmount() < res) {
+            return false;
+        }
+
+        if (mapuser.getWoodRessource().getAmount() < res) {
+            return false;
+        }
+
+        return true;
     }
 }

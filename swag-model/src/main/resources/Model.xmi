@@ -5,10 +5,10 @@
   <types xsi:type="metamodel:BuiltinType" name="Double"/>
   <types xsi:type="metamodel:BuiltinType" name="Date"/>
   <types xsi:type="metamodel:BuiltinType" name="Boolean"/>
-  <types xsi:type="metamodel:EnumType" name="SharedRessourceType" values="WOOD, IRON, GOLD, CLAY, WHEAT"/>
+  <types xsi:type="metamodel:EnumType" name="SharedRessourceType" values="WOOD, IRON, GOLD, CLAY, GRAIN"/>
   <types xsi:type="metamodel:EnumType" name="RessourceBuildingType" values="LUMBERJACK, MINE, GOLDWASHER, CLAYPIT, FARMER"/>
   <types xsi:type="metamodel:EnumType" name="BuildingType" values="TOWNHALL, BARRACKS, STABLE, UPGRADE, DESTRUCTION, WOOD, IRON, GOLD, CLAY, GRAIN"/>
-  <types xsi:type="metamodel:EnumType" name="RessourceType" values="WOOD, IRON, GOLD, CLAY, WHEAT"/>
+  <types xsi:type="metamodel:EnumType" name="RessourceType" values="WOOD, IRON, GOLD, CLAY, GRAIN"/>
   <types xsi:type="metamodel:EnumType" name="SoldierType" values="PEASANT, FOOTSOLDIER, HORSEMAN, ELEFANTSOLDIER, ALMIGHTYFABIAN"/>
   <types xsi:type="metamodel:Entity" name="Message">
     <attributes name="timestamp" type="//@types.3"/>
@@ -39,7 +39,10 @@
   <types xsi:type="metamodel:Entity" name="MapUser">
     <associations name="map" type="//@types.12" multiplicity="ManyToOne"/>
     <associations name="user" type="//@types.11" multiplicity="ManyToOne"/>
-    <associations name="storedResources" type="//@types.14" multiplicity="OneToMany"/>
+    <associations name="woodRessource" type="//@types.14"  multiplicity="OneToOne"/>
+    <associations name="clayRessource" type="//@types.14"   multiplicity="OneToOne"/>
+    <associations name="grainRessource" type="//@types.14"   multiplicity="OneToOne"/>
+    <associations name="ironRessource" type="//@types.14"  multiplicity="OneToOne"/>
     <associations name="squares" type="//@types.15" multiplicity="OneToMany"/>
   </types>
   <types xsi:type="metamodel:Entity" name="StoredRessource">
@@ -47,7 +50,7 @@
     <attributes name="ressourceType" type="//@types.5"/>
     <attributes name="lastUpdate" type="//@types.3"/>
     <attributes name="currentRate" type="//@types.2"/>
-    <associations name="mapUser" type="//@types.13" multiplicity="ManyToOne"/>
+     <associations name="mapUser" type="//@types.13" multiplicity="OneToOne" />
   </types>
   <types xsi:type="metamodel:Entity" name="Square">
     <attributes name="coordX" type="//@types.1"/>

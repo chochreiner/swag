@@ -17,6 +17,7 @@
 		import at.ac.tuwien.swag.model.domain.SharedRessourceType;
 		import at.ac.tuwien.swag.model.domain.RessourceType;
 		import at.ac.tuwien.swag.model.domain.SoldierType;
+		import at.ac.tuwien.swag.model.domain.StoredRessource;
 
 		public class «name»DTO extends AbstractDTO {
 			//*** constructors
