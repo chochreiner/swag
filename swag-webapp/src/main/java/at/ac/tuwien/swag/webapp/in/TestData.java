@@ -66,6 +66,15 @@ public class TestData extends InPage {
     private void setupUser() {
     	 System.out.println("####### Register users #######");
 
+    	 User system = new User(
+ 				"system",
+ 				hasher.hash( "aaa" ), 
+ 				"The interblag",
+ 				"swag@swag.com", 
+ 				"System administration account", 
+ 				null ,null, null 
+ 			);
+    	 
          User nero = new User();
          nero.setUsername("nero");
          nero.setFullname("Nero Claudius Caesar Augustus Germanicus");
@@ -83,6 +92,7 @@ public class TestData extends InPage {
          userDao.beginTransaction();
          	userDao.insert(nero);
          	userDao.insert(ariovist);
+         	userDao.insert( system );
          userDao.commitTransaction();
     }
     

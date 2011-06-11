@@ -15,15 +15,16 @@ import at.ac.tuwien.swag.model.dao.MapDAO;
 import at.ac.tuwien.swag.model.dao.MapUserDAO;
 import at.ac.tuwien.swag.model.dao.SquareDAO;
 import at.ac.tuwien.swag.model.dao.UserDAO;
+import at.ac.tuwien.swag.webapp.service.ExecutorService;
 import at.ac.tuwien.swag.webapp.service.LogService;
 import at.ac.tuwien.swag.webapp.service.LoginService;
 import at.ac.tuwien.swag.webapp.service.MessageService;
 import at.ac.tuwien.swag.webapp.service.SetupService;
+import at.ac.tuwien.swag.webapp.service.impl.ExecutorServiceImpl;
 import at.ac.tuwien.swag.webapp.service.impl.LogServiceImpl;
 import at.ac.tuwien.swag.webapp.service.impl.LoginServiceImpl;
 import at.ac.tuwien.swag.webapp.service.impl.MessageServiceImpl;
 import at.ac.tuwien.swag.webapp.service.impl.SetupServiceImpl;
-
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Provides;
@@ -71,15 +72,17 @@ public class WebappModule extends ServletModule {
         bind(MessageService.class).to(MessageServiceImpl.class);
         bind(SetupService.class).to(SetupServiceImpl.class);
         bind(LogService.class).to(LogServiceImpl.class);
-
+        bind( ExecutorService.class ).to( ExecutorServiceImpl.class );
+        
         // /**** JMS ******************************************//
         bindJNDI( Queue.class, "swag.queue.Authentication" );
         bindJNDI( Queue.class, "swag.queue.Notification" );
-        
+        bindJNDI( Queue.class, "swag.queue.Exec" );
+
         // default time to wait for message replies
         bindConstant().annotatedWith( Names.named( "MESSAGE_TIMEOUT" ) ).to( 3000l );
-    }
-
+    } 
+    
     private <T> void bindJNDI(Class<T> c, String jndiName) {
         bind(c).annotatedWith(Names.named(jndiName)).toProvider(new JNDIProvider<T>(jndiName, jndiCtx));
     }

@@ -13,6 +13,7 @@ public class AdminNavigation extends Panel {
 
     public AdminNavigation(String id) {
         super(id);
+
         add(new BookmarkablePageLink<String>("createMap", CreateMap.class));
         add(new BookmarkablePageLink<String>("monitoring", Monitoring.class));
         add(new BookmarkablePageLink<String>("viewDB", ViewDBPage.class));

@@ -10,13 +10,12 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
-import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import at.ac.tuwien.swag.model.domain.MapUser;
 import at.ac.tuwien.swag.model.domain.Square;
 
 public class GameMap extends Panel {
-		
     private static final long serialVersionUID = -2473064801663338918L;
+    
     private ListView<List<Square>> gameMaplistView;
     private IModel<List<List<Square>>> gameMapList;
     private MapUser mapUser;
@@ -65,6 +64,7 @@ public class GameMap extends Panel {
 
                 ListView<Square> rowListView = new ListView<Square>("row", rowList) {
                     private static final long serialVersionUID = 3054181382288233598L;
+                    private MapModalWindow selectModalWindow;
 
                     @Override
                     protected void populateItem(ListItem<Square> squareList) {
@@ -72,10 +72,10 @@ public class GameMap extends Panel {
                         final Square square = squareList.getModelObject();
 
                         Label label = null;
-                        if (mapUser.getSquares().contains(square)) {
+                        if (mapUser != null && mapUser.getSquares().contains(square)) {
 
                             label = new Label("square", "X: " + square.getCoordX() + " AAAAA Y: " + square.getCoordY());
-                            if (checkIfBuildings(square)) {
+                            if (checkIfBaseBuildings(square)) {
                                 label = new Label("square", "BASEOWNEDBYME");
                                 label.add(new SimpleAttributeModifier("class", "baseSquare"));
                             }
@@ -84,7 +84,7 @@ public class GameMap extends Panel {
                                 label.add(new SimpleAttributeModifier("class", "homeBaseSquare"));
                             }
                         } else {
-                            if (checkIfBuildings(square)) {
+                            if (checkIfBaseBuildings(square)) {
                                 label =
                                     new Label("square", "X: " + square.getCoordX() +" Y: " + square.getCoordY());
                                 label.add(new SimpleAttributeModifier("class", "baseSquare"));
@@ -93,7 +93,7 @@ public class GameMap extends Panel {
                             label =
                                 new Label("square", "X: " + square.getCoordX() + " EMPTY  Y: " + square.getCoordY());
                         }
-                        label.setOutputMarkupId(true);
+
                         squareList.add(label);
                         
 /////////////////////////////////////////// TEST MODAL WINDOW ////////////////////////////////////////////////
@@ -108,8 +108,7 @@ public class GameMap extends Panel {
                 			}
                 		};			       
 /////////////////////////////////////////// TEST MODAL WINDOW ////////////////////////////////////////////////
-							
-							
+
 							squareLink.setOutputMarkupId(true);
 							squareList.add(squareLink);
 							 									
@@ -122,7 +121,12 @@ public class GameMap extends Panel {
         };
     }
 
-    private boolean checkIfBuildings(Square sq) {
+    /**
+     * 
+     * @param sq
+     * @return
+     */
+    private boolean checkIfBaseBuildings(Square sq) {
         if (sq.getBuildings() == null || sq.getBuildings().isEmpty()) {
             return false;
         }

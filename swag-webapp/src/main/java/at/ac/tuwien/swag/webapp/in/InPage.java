@@ -15,7 +15,7 @@ public abstract class InPage extends WebPage {
 		SwagWebSession session = (SwagWebSession) getSession();
 		add(new InTopNavigation("topNavigation"));
 		add(new InNavigation("mainNavigation"));
-		
+
 		AdminNavigation adminNav = new AdminNavigation("adminNavigation");
 		adminNav.setVisible(false);
 		if(session.getRoles().hasRole(Roles.ADMIN)) {

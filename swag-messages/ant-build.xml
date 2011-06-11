@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="swag-messages-helpers" basedir="." default="build">
+<project name="swag-messages-helpers" basedir=".">
 	<!-- import our own ant tasks -->
 	<import file="../ant-macros.xml"/>
 	
@@ -14,12 +14,5 @@
 	<target name="deploy"/>
 	<target name="undeploy"/>
 	<target name="setup"/>
-	
-	<target name="build" depends="redeploy">
-		<exec executable="mvn">
-			<arg value="package"/>
-		</exec>
-		<antcall target="deploy"/>
-	</target>
 	
 </project>

@@ -22,133 +22,124 @@ import at.ac.tuwien.swag.webapp.SwagWebSession;
 
 import com.google.inject.Inject;
 
+import static at.ac.tuwien.swag.util.MapMaker.map;
+
 public class RegisterToMapForm extends Form<Void> {
+	private static final long serialVersionUID = 4979391078353931660L;
 
-    private static final long serialVersionUID = 4979391078353931660L;
+	@Inject
+	MapDAO mapDao;
 
-    @Inject
-    MapDAO mapDao;
+	@Inject
+	MapUserDAO mapUserDao;
 
-    @Inject
-    MapUserDAO mapUserDao;
+	@Inject
+	private UserDAO userDao;
 
-    @Inject
-    private UserDAO userDao;
-
-    @Inject
+	@Inject
     private SquareDAO squareDao;
+	private String mapname;
 
-    private String mapname;
+	private DropDownChoice<String> allmaps;
 
-    private DropDownChoice<String> allmaps;
+	public RegisterToMapForm( String id ) {
+		super( id );
 
-    public RegisterToMapForm(String id) {
-        super(id);
+		this.addAllMapSelection();
+	}
 
-        this.addAllMapSelection();
+	private void addAllMapSelection() {
+		LoadableDetachableModel<List<String>> userMapList = new LoadableDetachableModel<List<String>>() {
+			private static final long serialVersionUID = -5466406801708536032L;
+
+			protected List<String> load() {
+				String username = ((SwagWebSession) getSession()).getUsername();
+
+				// TODO replace me with an query
+				List<String> usermap = new ArrayList<String>();
+				for (Map map : mapDao.getAll()) {
+					boolean flag = true;
+					List<MapUser> mus = map.getUsers();
+					for (MapUser mu : mus) {
+						String uname = mu.getUser().getUsername();
+						if (uname.equals( username )) {
+							flag = false;
+						}
+					}
+					if (flag) {
+						usermap.add( map.getName() );
+					}
+				}
+				return usermap;
+			}
+		};
+
+		allmaps = new DropDownChoice<String>( "allmaps", userMapList );
+		allmaps.setDefaultModel( new Model<String>() );
+		add( allmaps );
+
+	}
+
+	@Override
+	protected void onSubmit() {
+		mapUserDao.beginTransaction();
+
+		try {
+			mapname = (String) allmaps.getDefaultModel().getObject();
+			Map playground = mapDao.findByName( mapname );
+
+			String username = ((SwagWebSession) getSession()).getUsername();
+			User user = userDao.findByUsername( username );
+
+			Square startsquare = findFreeSquareForHomeBase( playground );
+			
+			if (startsquare != null) {
+				// Defines the homebase
+				List<Square> usersquares = new ArrayList<Square>();
+				startsquare.setIsHomeBase( true );
+				usersquares.add( startsquare );
+
+				// create MapUSer object
+				MapUser mapUser = new MapUser();
+				mapUser.setMap( playground );
+				mapUser.setUser( user );
+				mapUser.setSquares( usersquares );
+
+				// add mapuser to map
+				playground.getUsers().add( mapUser );
+
+				// persist the stuff
+				mapUserDao.insert( mapUser );
+				mapUserDao.commitTransaction();
+				mapDao.insert( playground );
+				squareDao.insert( startsquare );
+
+				info( "Your was added to the map: " + mapname );
+			} else {
+				info( "New free squares avaibile on map: " + mapname );
+			}
+		} catch ( NoResultException e ) {
+			info( e.getMessage() );
+		} finally {
+			mapUserDao.commitTransaction();			
+		}
+	}
+
+    private Square findFreeSquareForHomeBase( Map map ) {
+    	final String query =
+    		" SELECT " +
+    		"	s " +
+    		" FROM " +
+    		"	Square s " +
+    		" WHERE " +
+    		"	s.user = null AND s.map = :map";
+
+    	List<Square> sq = squareDao.findByQuery( query, map( "map", map ) );
+    	
+    	if ( sq.isEmpty() )
+    		return null;
+    	else 
+    		return sq.get( 0 );
     }
 
-    private void addAllMapSelection() {
-        LoadableDetachableModel<List<String>> userMapList = new LoadableDetachableModel<List<String>>() {
-            private static final long serialVersionUID = -5466406801708536032L;
-
-            @Override
-            protected List<String> load() {
-                String username = ((SwagWebSession) getSession()).getUsername();
-
-                // TODO replace me with an query
-                List<String> usermap = new ArrayList<String>();
-                for (Map map : mapDao.getAll()) {
-                    boolean flag = true;
-                    List<MapUser> mus = map.getUsers();
-                    for (MapUser mu : mus) {
-                        String uname = mu.getUser().getUsername();
-                        if (uname.equals(username)) {
-                            flag = false;
-                        }
-                    }
-                    if (flag) {
-                        usermap.add(map.getName());
-                    }
-                }
-                return usermap;
-            }
-        };
-
-        allmaps = new DropDownChoice<String>("allmaps", userMapList);
-        allmaps.setDefaultModel(new Model<String>());
-        add(allmaps);
-
-    }
-
-    @Override
-    protected void onSubmit() {
-
-        try {
-
-            mapname = (String) allmaps.getDefaultModel().getObject();
-            Map playground = mapDao.findByName(mapname);
-
-            String username = ((SwagWebSession) getSession()).getUsername();
-            User user = userDao.findByUsername(username);
-
-            List<MapUser> mapUsers = playground.getUsers();
-            // if(mapUsers == null) {
-            mapUsers = new ArrayList<MapUser>();
-            // }
-
-            Square startsquare = findFreeSquareForHomeBase(playground.getSquares());
-            if (startsquare != null) {
-
-                // Defines the homebase
-                List<Square> usersquares = new ArrayList<Square>();
-                startsquare.setIsHomeBase(true);
-                usersquares.add(startsquare);
-
-                // create MapUSer object
-                MapUser mapUser = new MapUser();
-                mapUser.setMap(playground);
-                mapUser.setUser(user);
-                mapUser.setSquares(usersquares);
-
-                // add mapuser to map
-                mapUsers.add(mapUser);
-                playground.setUsers(mapUsers);
-
-                // persist the stuff
-                mapUserDao.beginTransaction();
-                userDao.update(user);
-                mapUserDao.insert(mapUser);
-                mapUserDao.commitTransaction();
-                mapDao.insert(playground);
-                squareDao.insert(startsquare);
-                mapUserDao.commitTransaction();
-
-                info("Your was added to the map: " + mapname);
-            } else {
-                info("New free squares avaibile on map: " + mapname);
-            }
-        } catch (NoResultException e) {
-            info(e.getMessage());
-        }
-    }
-
-    /**
-     * TODO optimizing
-     * 
-     * @param squares
-     * @return
-     */
-    private Square findFreeSquareForHomeBase(List<Square> squares) {
-
-        for (Square sq : squares) {
-            if (!sq.getIsHomeBase()) {
-
-                if (sq.getBuildings() == null || sq.getBuildings().isEmpty()) {
-
-                }
-            }
-        }
-        return null;
-    }
 }

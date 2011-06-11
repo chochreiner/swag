@@ -8,13 +8,9 @@
 	<target name="setup" depends="setup-jms"/>
 	
 	<target name="setup-jms">
-		<create-jms-pool/>
-		
 		<create-jms-queue name="swag.queue.Authentication"/>
 	</target>
 	<target name="clean-jms">
-		<delete-jms-pool/>
-
 		<delete-jms-resource name="swag.queue.Authentication"/>
 	</target>
 </project>
