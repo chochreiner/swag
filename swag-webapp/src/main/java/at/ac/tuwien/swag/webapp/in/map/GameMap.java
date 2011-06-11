@@ -5,17 +5,16 @@ import java.util.List;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
-import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
-import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 
 import at.ac.tuwien.swag.model.domain.MapUser;
 import at.ac.tuwien.swag.model.domain.Square;
 
-public class GameMap extends WebMarkupContainer {
+public class GameMap extends Panel {
 
 	
 	private static final long serialVersionUID = -2473064801663338918L;
@@ -78,6 +77,7 @@ public class GameMap extends WebMarkupContainer {
 /////////////////////////////////////////// TEST MODAL WINDOW ////////////////////////////////////////////////
 				        // The ModalWindow, showing some choices for the user to select.
 				        selectModalWindow = new MapModalWindow("modalwindow"){
+							private static final long serialVersionUID = 6244873170722607468L;
 
 							void onSelect(AjaxRequestTarget target, String selection) {
 				                // Handle Select action
