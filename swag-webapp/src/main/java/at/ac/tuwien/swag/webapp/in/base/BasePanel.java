@@ -26,9 +26,9 @@ import at.ac.tuwien.swag.webapp.in.map.MapPage;
 import com.google.inject.Inject;
 
 public abstract class BasePanel extends Panel {
-	private static final long serialVersionUID = -7684943204211861124L;
+    private static final long serialVersionUID = -7684943204211861124L;
 
-	private HashMap<BuildingType, Building> buildings;
+    private HashMap<BuildingType, Building> buildings;
 
     @Inject
     private BuildingDAO buildingsDao;
@@ -41,9 +41,12 @@ public abstract class BasePanel extends Panel {
 
     private Square square;
     private MapUser mapuser;
+    private BaseUtils baseutils;
 
     public BasePanel(String id, long squareId) {
         super(id);
+
+        baseutils = new BaseUtils();
 
         // Retrieves the square
         square = squareDAO.findById(squareId);
@@ -148,6 +151,7 @@ public abstract class BasePanel extends Panel {
 
                     buildingsDao.beginTransaction();
                     buildingsDao.update(building);
+                    mapUserDAO.update(baseutils.reduceRessources(mapuser, 500));
                     buildingsDao.commitTransaction();
 
                     info("upgraded");
@@ -161,12 +165,13 @@ public abstract class BasePanel extends Panel {
 
                     buildingsDao.beginTransaction();
                     buildingsDao.insert(building);
+                    mapUserDAO.update(baseutils.reduceRessources(mapuser, 1500));
                     buildingsDao.commitTransaction();
 
                     info("built");
                 }
 
-                target.addComponent(form);
+                target.add(form);
             }
 
             @Override
@@ -191,13 +196,13 @@ public abstract class BasePanel extends Panel {
                 newButton.setEnabled(false);
             }
 
-            if (!checkRessources(500)) {
+            if (!baseutils.checkRessources(mapuser, 500)) {
                 newButton.setEnabled(false);
             }
 
         } else {
             newButton.setModel(new Model<String>("build"));
-            if (!checkRessources(1000)) {
+            if (!baseutils.checkRessources(mapuser, 1000)) {
                 newButton.setEnabled(false);
             }
         }
@@ -217,27 +222,6 @@ public abstract class BasePanel extends Panel {
         for (Building building : buildingsDao.findByQuery(query, values)) {
             buildings.put(building.getType(), building);
         }
-    }
-
-    private boolean checkRessources(Integer res) {
-
-        if (mapuser.getClayRessource().getAmount() < res) {
-            return false;
-        }
-
-        if (mapuser.getGrainRessource().getAmount() < res) {
-            return false;
-        }
-
-        if (mapuser.getIronRessource().getAmount() < res) {
-            return false;
-        }
-
-        if (mapuser.getWoodRessource().getAmount() < res) {
-            return false;
-        }
-
-        return true;
     }
 
     public abstract void onCancel(AjaxRequestTarget target);

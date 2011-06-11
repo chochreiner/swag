@@ -16,7 +16,7 @@ public class Destruction extends InPage {
         FeedbackPanel feedbackPanel = new FeedbackPanel("feedback");
         add(feedbackPanel);
 
-        add(new DestructionForm("destructionForm"));
+        add(new DestructionForm("destructionForm", parameters.get("square").toLong()));
 
     }
 }
