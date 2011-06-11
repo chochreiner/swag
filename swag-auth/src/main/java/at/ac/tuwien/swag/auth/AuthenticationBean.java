@@ -4,44 +4,29 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.ejb.MessageDriven;
-import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.MessageListener;
-import javax.jms.ObjectMessage;
-import javax.jms.Session;
-import javax.jms.TextMessage;
 import javax.persistence.NoResultException;
+
 import at.ac.tuwien.swag.messages.auth.AuthenticationReply;
 import at.ac.tuwien.swag.messages.auth.AuthenticationRequest;
 import at.ac.tuwien.swag.messages.auth.StoreUserRequest;
 import at.ac.tuwien.swag.messages.auth.UserExistsRequest;
 import at.ac.tuwien.swag.model.dao.UserDAO;
 import at.ac.tuwien.swag.model.domain.User;
+import at.ac.tuwien.swag.util.MessageHandler;
 import at.ac.tuwien.swag.util.PasswordHasher;
+import at.ac.tuwien.swag.util.PersistenceBean;
 
 @MessageDriven( mappedName="swag.queue.Authentication" )
-public class AuthenticationBean extends MessageHandler implements MessageListener {
+public class AuthenticationBean extends MessageHandler {
 
 	@PostConstruct
 	public void initialize() throws JMSException {
 		users  = new UserDAO( persistence.makeEntityManager() );
 		hasher = new PasswordHasher();
-		
-		connection = connectionFactory.createConnection();
-		session    = connection.createSession( false, Session.AUTO_ACKNOWLEDGE );
 
-		connection.start();
-	}
-	
-	@Override
-	public void onMessage( Message msg ) {
-		try {
-			handleMessage( session, msg.getJMSReplyTo(), getPayload( msg ) );
-		} catch ( JMSException e ) {
-			e.printStackTrace();
-		}
+		super.initialize( connectionFactory );
 	}
 	
 	public void handle( String msg ) throws JMSException {
@@ -100,16 +85,6 @@ public class AuthenticationBean extends MessageHandler implements MessageListene
 	
 	//**** PRIVATE PARTS
 	
-	private Object getPayload( Message msg ) throws JMSException {
-		if ( msg instanceof ObjectMessage ) {
-			return ((ObjectMessage) msg).getObject();
-		} else if ( msg instanceof TextMessage ) {
-			return ((TextMessage) msg).getText();
-		} else {
-			return msg;
-		}
-	}
-	
 	@EJB
 	private PersistenceBean persistence;
 	
@@ -118,8 +93,5 @@ public class AuthenticationBean extends MessageHandler implements MessageListene
 	
 	private UserDAO        users;
 	private PasswordHasher hasher;
-	
-	private Connection connection;
-	private Session    session;
-	
+		
 }

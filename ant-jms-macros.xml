@@ -59,6 +59,5 @@
 	
 	<!-- helper targets -->
 	<target name="setup" depends="init-jms">
-		<create-jms-pool/>
 	</target>
 </project>

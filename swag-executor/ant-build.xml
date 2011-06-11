@@ -4,13 +4,19 @@
 	<!-- import our own ant tasks -->
 	<import file="../ant-macros.xml"/>
 	
+	<target name="build" depends="setup,package"/>
+	
+<!--	<target name="deploy"/>
+	<target name="undeploy"/> -->
+	<target name="package"/>	
+	
 	<!-- MANAGE GLASSFISH RESOURCES ******************************************************* -->
 	<target name="setup" depends="setup-jms"/>
 	
 	<target name="setup-jms">
-		<create-jms-queue name="swag.queue.Authentication"/>
+		<create-jms-queue name="swag.queue.Exec"/>
 	</target>
 	<target name="clean-jms">
-		<delete-jms-resource name="swag.queue.Authentication"/>
+		<delete-jms-resource name="swag.queue.Exec"/>
 	</target>
 </project>

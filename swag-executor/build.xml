@@ -6,14 +6,7 @@
 
 <project name="swag-executor" default="package" basedir=".">
 
-	<import file="../ant-macros.xml"/>
-	
-	<target name="setup"/>
-	<target name="deploy"/>
-	<target name="undeploy"/>
-	
-	<target name="build" depends="setup,package">		
-	</target>
+	<import file="ant-build.xml"/>
 	
   <!-- ====================================================================== -->
   <!-- Import maven-build.xml into the current project                        -->

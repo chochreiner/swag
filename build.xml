@@ -2,16 +2,23 @@
 
 <project name="swag" default="build" basedir=".">
 
-	<import file="ant-asadmin-macros.xml"/>
-	<import file="ant-domain-macros.xml"/>
+	<import file="ant-macros.xml"/>
 	
-	<target name="build">
+	<target name="build" depends="generate">
+		<property name="maven.test.skip" value="true"/>
+
+		<create-jms-pool/>
+
 		<call-targets target="build" />
 		
 		<call-targets target="deploy"/>		
 	</target>
 	<target name="clean">
+		<delete-jms-pool/>
+
 		<call-targets target="clean"/>
+		<call-targets target="undeploy"/>
+		<call-targets target="clean-jms"/>
 	</target>
 	<target name="run">
 		<antcall target="start-domain"/>
@@ -32,6 +39,18 @@
 	</target>
 	<target name="redeploy">
 		<call-targets target="redeploy"/>
+	</target>
+
+	<target name="generate">
+		<call-target dir="swag-model" target="generate"/>
+	</target>
+
+	<target name="make-ant-files">
+		<exec executable="mvn">
+			<arg value="-o"/>
+			<arg value="-Dmaven.test.skip=true"/>
+			<arg value="ant:ant"/>
+		</exec>
 	</target>
 
 	<macrodef name="call-targets">
