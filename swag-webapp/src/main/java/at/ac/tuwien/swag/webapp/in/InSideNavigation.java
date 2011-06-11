@@ -20,6 +20,6 @@ public class InSideNavigation extends Panel {
         add(new BookmarkablePageLink<String>("viewDB", ViewDBPage.class));
         add(new BookmarkablePageLink<String>("dropDB", DropDBPage.class));
         add(new BookmarkablePageLink<String>("testData", TestData.class));
+        add(new BookmarkablePageLink<String>("base", Base.class));
     }
-
 }
