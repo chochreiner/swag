@@ -8,6 +8,7 @@ import at.ac.tuwien.swag.webapp.in.admin.CreateMap;
 import at.ac.tuwien.swag.webapp.in.admin.DropDBPage;
 import at.ac.tuwien.swag.webapp.in.admin.ViewDBPage;
 import at.ac.tuwien.swag.webapp.in.admin.monitoring.Monitoring;
+import at.ac.tuwien.swag.webapp.in.base.Base;
 
 @AuthorizeInstantiation("ADMIN")
 public class InSideNavigation extends Panel {

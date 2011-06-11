@@ -1,0 +1,31 @@
+<wicket:extend>
+<h2>Stable</h2>
+
+<table>
+<tr><th>Type</th><th>Wood</th><th>Clay</th><th>Iron</th><th>Grain</th></tr>
+
+</table>
+
+    <div id="stable">
+	   	<form wicket:id="stableForm" class="yform">
+	   		<div class="type-select">
+ 		 	<label for="soldierType">Soldier Type</label>
+ 			 <select wicket:id="soldierType" name="soldierType" id="soldierType" size="1">
+ 			   <option value="0" selected="selected" disabled="disabled">Please choose</option>
+  			   <option value="value #1">Option 1</option>
+      		   <option value="value #2">Option 2</option>
+			 </select>
+			</div>
+			<div class="type-text">
+  				<label for="amount">Amount:</label>
+  				<input wicket:id="amount" type="text" name="amount" id="amount"  size="20" />
+			</div>
+			<div class="type-button">
+		  		<input type="submit" value="create" id="create" name="create" />
+			</div>
+		</form>
+    </div>
+	<span wicket:id="feedback">feed</span>
+
+
+</wicket:extend>
