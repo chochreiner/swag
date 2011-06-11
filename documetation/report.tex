@@ -1,0 +1,75 @@
+\documentclass[a4paper]{article}
+\usepackage[cm]{fullpage}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[english]{babel}
+\usepackage{graphicx}
+%\usepackage{scrpage2}
+%\usepackage{ifthen}
+%\usepackage[ruled,lined]{algorithm2e}
+%\usepackage{amsmath}
+%\usepackage{amsthm}
+%\usepackage{amssymb}
+%\usepackage{units}
+\usepackage{enumerate}
+\usepackage{multirow}
+\usepackage{fancyhdr}
+\usepackage{rotating}
+\usepackage{pdfpages}
+\usepackage{lscape}
+
+\begin{document}
+\pagestyle{fancy}
+\fancyfoot{}
+\fancyhead{}
+\fancyfoot[L]{SWA2011}
+\fancyfoot[C]{\thepage}
+\fancyfoot[R] {Group 30}
+\renewcommand{\headrulewidth}{0.0pt}
+
+\begin{center}
+\includegraphics[width=1.0\textwidth]{logo}
+
+\vspace{3cm}
+
+\huge \textsf{\textbf{Assignment 3\\Implementation and Documentation}}
+
+\vspace{1ex}
+
+\Large \rm{Software Architectures}
+
+\vspace{1ex}
+
+\Large \rm{Summer Term 2011}
+
+\vspace{1ex}
+
+\normalsize Christoph Hochreiner, 0726292
+
+\normalsize Fabian Gruber, 0726905
+
+\normalsize Felix Rinker, 0726724
+
+\normalsize Tobias Hochwallner, 0557189
+
+\tableofcontents
+
+\end{center}
+\pagebreak
+
+\section{Deployment Guide}
+
+The system uses glassfish there for GLASSFISH_HOME must be set and uses PostgreSQL 8.4 with user swa and password swa11.
+
+To build and deploy the system run the following commands:
+\begin{itemize}
+	\item ant build
+    \item ant run
+\end{itemize}
+
+\section{Final Architecture}
+
+\section{Possible Improvements}
+
+\end{document}
