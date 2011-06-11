@@ -109,9 +109,13 @@ public class Base extends InPage {
                     Integer newLevel = building.getLevel() + 1;
                     building.setLevel(newLevel);
 
-                    buildingsDao.beginTransaction();
-                    buildingsDao.update(building);
-                    buildingsDao.commitTransaction();
+                    try {
+                    	buildingsDao.beginTransaction();
+                    		buildingsDao.update(building);                    	
+                    } finally {
+                    	buildingsDao.commitTransaction();                    	
+                    }
+                    
 
                     info("upgraded");
                 } else {

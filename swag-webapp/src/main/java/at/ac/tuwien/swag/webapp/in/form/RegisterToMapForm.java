@@ -7,7 +7,6 @@ import javax.persistence.NoResultException;
 
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
-import org.apache.wicket.model.LoadableDetachableModel;
 import org.apache.wicket.model.Model;
 
 import at.ac.tuwien.swag.model.dao.MapDAO;
@@ -49,35 +48,62 @@ public class RegisterToMapForm extends Form<Void> {
 	}
 
 	private void addAllMapSelection() {
-		LoadableDetachableModel<List<String>> userMapList = new LoadableDetachableModel<List<String>>() {
-			private static final long serialVersionUID = -5466406801708536032L;
+		String username = ((SwagWebSession) getSession()).getUsername();
+		
+		List<String> maps = new ArrayList<String>();
 
-			protected List<String> load() {
-				String username = ((SwagWebSession) getSession()).getUsername();
-
-				// TODO replace me with an query
-				List<String> usermap = new ArrayList<String>();
-				for (Map map : mapDao.getAll()) {
-					boolean flag = true;
-					List<MapUser> mus = map.getUsers();
-					for (MapUser mu : mus) {
-						String uname = mu.getUser().getUsername();
-						if (uname.equals( username )) {
-							flag = false;
-						}
-					}
-					if (flag) {
-						usermap.add( map.getName() );
-					}
-				}
-				return usermap;
+		for (Map map : mapDao.getAll()) {
+			List<MapUser> users = map.getUsers();
+			
+			if ( users.size() >= map.getMaxNumUsers() ) {
+				// map is full, ignore it
+				continue;
 			}
-		};
+			
+			boolean hasMap = false;
+			for ( MapUser mu : users ) {
+				if ( mu.getUser().getUsername().equals( username ) ) {
+					hasMap = true;
+					break;
+				}
+			}
 
-		allmaps = new DropDownChoice<String>( "allmaps", userMapList );
+			if ( !hasMap ) maps.add( map.getName() );
+		}
+		
+//		LoadableDetachableModel<List<String>> userMapList = new LoadableDetachableModel<List<String>>() {
+//			private static final long serialVersionUID = -5466406801708536032L;
+//
+//			protected List<String> load() {
+//				String username = ((SwagWebSession) getSession()).getUsername();
+//
+//				mapDao.beginTransaction();
+//				
+//				// TODO replace me with an query
+//				List<String> usermap = new ArrayList<String>();
+//				for (Map map : mapDao.getAll()) {
+//					boolean flag = true;
+//					List<MapUser> mus = map.getUsers();
+//					for (MapUser mu : mus) {
+//						String uname = mu.getUser().getUsername();
+//						if (uname.equals( username )) {
+//							flag = false;
+//						}
+//					}
+//					if (flag) {
+//						usermap.add( map.getName() );
+//					}
+//				}
+//				
+//				mapDao.commitTransaction();
+//				
+//				return usermap;
+//			}
+//		};
+
+		allmaps = new DropDownChoice<String>( "allmaps", maps );
 		allmaps.setDefaultModel( new Model<String>() );
 		add( allmaps );
-
 	}
 
 	@Override
@@ -109,17 +135,19 @@ public class RegisterToMapForm extends Form<Void> {
 				playground.getUsers().add( mapUser );
 
 				// persist the stuff
-				mapUserDao.insert( mapUser );
-				mapUserDao.commitTransaction();
-				mapDao.insert( playground );
-				squareDao.insert( startsquare );
+				mapDao.update( playground );
+//				mapUserDao.update( mapUser );
+//				squareDao.update( startsquare );
 
 				info( "Your was added to the map: " + mapname );
 			} else {
 				info( "New free squares avaibile on map: " + mapname );
 			}
 		} catch ( NoResultException e ) {
-			info( e.getMessage() );
+			info( "" + e.getMessage() );
+		} catch ( RuntimeException e ) {
+			info( "" + e.getMessage() );
+			throw e;
 		} finally {
 			mapUserDao.commitTransaction();			
 		}

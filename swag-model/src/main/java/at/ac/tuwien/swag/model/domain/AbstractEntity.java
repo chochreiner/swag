@@ -13,8 +13,8 @@ public abstract class AbstractEntity implements Serializable {
 
 	@Id
 	@GeneratedValue
-	public long getId()          { return id;    }
-	public void setId( long id ) { this.id = id; }
+	public Long getId()          { return id;    }
+	public void setId( Long id ) { this.id = id; }
 	
 	public String toString() {
 		return "<" + getClass().getSimpleName() + ":" + id + ">";
@@ -22,7 +22,7 @@ public abstract class AbstractEntity implements Serializable {
 	
 	//*** PRIVATE PARTS 
 	
-	private long id;
+	private Long id;
 
 	//*** TO STRING HELPERS FOR SUBCLASSES
 	

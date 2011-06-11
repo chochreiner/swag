@@ -7,7 +7,6 @@ import at.ac.tuwien.swag.webapp.in.admin.CreateMap;
 import at.ac.tuwien.swag.webapp.in.admin.DropDBPage;
 import at.ac.tuwien.swag.webapp.in.admin.ViewDBPage;
 import at.ac.tuwien.swag.webapp.in.admin.monitoring.Monitoring;
-import at.ac.tuwien.swag.webapp.in.base.Base;
 
 public class AdminNavigation extends Panel {
     private static final long serialVersionUID = 6811737388664263612L;
@@ -20,6 +19,6 @@ public class AdminNavigation extends Panel {
         add(new BookmarkablePageLink<String>("viewDB", ViewDBPage.class));
         add(new BookmarkablePageLink<String>("dropDB", DropDBPage.class));
         add(new BookmarkablePageLink<String>("testData", TestData.class));
-        add(new BookmarkablePageLink<String>("base", Base.class));
+//        add(new BookmarkablePageLink<String>("base", Base.class));
     }
 }

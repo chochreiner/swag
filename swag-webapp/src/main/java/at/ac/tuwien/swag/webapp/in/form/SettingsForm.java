@@ -27,7 +27,7 @@ public class SettingsForm extends Form<Void> {
         String username = ((SwagWebSession) getSession()).getUsername();
 
         User user = users.findByUsername(username);
-
+        	
         fullname = new RequiredTextField<String>("fullname", new Model<String>( user.getFullname() ) );
         email    = new RequiredTextField<String>("email", new Model<String>( user.getEmail() ) );
         address  = new TextArea<String>("address", new Model<String>( user.getAddress() ) );
@@ -42,14 +42,17 @@ public class SettingsForm extends Form<Void> {
     protected void onSubmit() {
         String username = ((SwagWebSession) getSession()).getUsername();
 
-        users.beginTransaction();
-        	User user = users.findByUsername(username);
-        	user.setFullname(fullname.getModel().getObject());
-        	user.setEmail(email.getModel().getObject());
-        	user.setAddress(address.getModel().getObject());
-
-        	users.update(user);
-        users.commitTransaction();
+        try {
+        	users.beginTransaction();
+        		User user = users.findByUsername(username);
+        		user.setFullname(fullname.getModel().getObject());
+        		user.setEmail(email.getModel().getObject());
+        		user.setAddress(address.getModel().getObject());
+        	
+        		users.update(user);
+        } finally {
+        	users.commitTransaction();        	
+        }
         	
         info("The user settings were updated");
     }

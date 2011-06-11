@@ -53,7 +53,6 @@ public class AuthenticationBean extends MessageHandler {
 				reply.token = token;
 			}
 		} catch ( NoResultException e ) {
-		} catch ( Throwable t ) {
 		}
 		
 		reply( reply );
@@ -93,7 +92,7 @@ public class AuthenticationBean extends MessageHandler {
 		} catch ( NoResultException e ) {
 			User system = new User(
 				"system",
-				"aaa", 
+				hasher.hash( "aaa" ), 
 				"The interblag",
 				"swag@swag.com", 
 				"System administration account", 

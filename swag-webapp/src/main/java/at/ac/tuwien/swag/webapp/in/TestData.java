@@ -43,24 +43,21 @@ public class TestData extends InPage {
     public TestData(PageParameters parameters) {
     	super(parameters);
     	
-    	add( new AjaxLazyLoadPanel( "testDataLabel", new Model<String>() ) {
-			private static final long serialVersionUID = -5330241761878870869L;
+    	squareDao.beginTransaction();
+    	try {
+    		squareDao.deleteAll();
+    		mapUserDao.deleteAll();
+    		mapDao.deleteAll();
+    		userDao.deleteAll();					
+    	} finally {
+    		squareDao.commitTransaction();					
+    	}
+					
+    	setupUser();
+    	setupMap();
+    	assignPlayerToMap();
 
-			@Override
-			public Component getLazyLoadComponent( String markupId ) {
-				squareDao.deleteAll();
-				mapUserDao.deleteAll();
-				mapDao.deleteAll();
-				userDao.deleteAll();
-				
-				setupUser();
-				setupMap();
-				assignPlayerToMap();
-				
-				return new Label( markupId, "TEST DATA CREATED" );  
-			}
-		});
-    	
+    	add( new Label( "testDataLabel", "TEST DATA CREATED" ) );  
     }
     
     private void setupUser() {
@@ -130,29 +127,31 @@ public class TestData extends InPage {
         Integer xAxis = 1;
 
         List<Square> squares = new ArrayList<Square>();
-       
-        for (int y = startY; y <= endY; y++) {
-            
+        synchronized ( squares ) {
+            for (int y = startY; y <= endY; y++) {
+            	for (int x = startX; x <= endX; x++) {
+            		Square square = new Square();
+            		square.setCoordX(x);
+            		square.setCoordY(y);
+            		square.setMap(map);
+            		square.setIsHomeBase(false);
+            		squares.add(square);
+            		xAxis++;
+                }
+            }
 
-        	for (int x = startX; x <= endX; x++) {
+            map.setSquares(squares);
 
-            Square square = new Square();
-            square.setCoordX(x);
-            square.setCoordY(y);
-            square.setMap(map);
-            square.setIsHomeBase(false);
-            squares.add(square);
-            xAxis++;}
-        }
-
-        map.setSquares(squares);
-
-        mapDao.beginTransaction();
-        	this.mapDao.insert(map);
-        	for (Square sq : squares) {
-        		squareDao.insert(sq);
-        	}
-        mapDao.commitTransaction();
+            mapDao.beginTransaction();
+            try {
+            	this.mapDao.insert(map);
+            	for (Square sq : squares.toArray( new Square[0] ) ) {
+            		squareDao.insert(sq);
+            	}
+            } finally {
+            	mapDao.commitTransaction();            	
+            }
+        }       
     }
     
    private void assignPlayerToMap() {
