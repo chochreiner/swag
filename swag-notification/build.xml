@@ -6,7 +6,10 @@
 
 <project name="swag-notification" default="package" basedir=".">
 
-	<import file="ant-build.xml"/>
+  <import file="ant-build.xml"/>
+	
+	<target name="build" depends="setup,package">		
+	</target>
 	
   <!-- ====================================================================== -->
   <!-- Import maven-build.xml into the current project                        -->
@@ -21,5 +24,8 @@
   <target name="help">
     <echo message="Please run: $ant -projecthelp"/>
   </target>
+  
+  <!-- import our own ant tasks -->
+  <import file="ant-build.xml"/>
 
 </project>

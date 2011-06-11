@@ -1,0 +1,24 @@
+<project name="asadmin-macros">
+	
+	<property environment="env"/>
+	<property name="glassfish.home" value="${env.GLASSFISH_HOME}"/>
+	<property name="admin.cli.jar"  value="${glassfish.home}/modules/admin-cli.jar"/>
+
+	<!-- set property defaults -->
+	<target name="init-asadmin">
+		
+		<fail unless="env.GLASSFISH_HOME">
+            #### You must install GlassFish V3 and set the GLASSFISH_HOME variable
+        </fail>	
+	</target>
+		
+	<macrodef name="asadmin">
+		<attribute name="command"/>
+		<attribute name="parameters"/>
+		<sequential>
+			<java jar="${admin.cli.jar}" fork="true" spawn="false">
+				<arg line="@{command} @{parameters}"/>
+			</java>
+		</sequential>
+	</macrodef>
+</project>

@@ -69,7 +69,7 @@ public class GameMap extends WebMarkupContainer {
                             }
 
                             label =
-                                new Label("square", "X: " + square.getCoordX() + " EMPTY  Y: " + square.getCoordY());
+                                new Label("square", "X: " + square.getCoordX() + " EMPTY Y: " + square.getCoordY());
                         }
                         label.setOutputMarkupId(true);
                         squareList.add(label);

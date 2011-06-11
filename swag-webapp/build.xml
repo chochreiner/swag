@@ -8,6 +8,9 @@
 
 	<import file="ant-build.xml"/>
 	
+	<target name="build" depends="setup,package">		
+	</target>
+	
   <!-- ====================================================================== -->
   <!-- Import maven-build.xml into the current project                        -->
   <!-- ====================================================================== -->

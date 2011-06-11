@@ -1,0 +1,63 @@
+<project name="jms-macros">
+
+	<import file="ant-asadmin-macros.xml"/>
+	
+	<!-- set property defaults -->
+	<target name="init-jms" depends="init-asadmin">
+	</target>
+	
+	<!-- MANAGE TOPICS AND QUEUES ********************************************************* -->
+	<macrodef name="create-jms-queue">
+		<attribute name="name"/>
+		<sequential>
+			<create-jms-resource name="@{name}" type="javax.jms.Queue"/>
+		</sequential>
+	</macrodef>
+	<macrodef name="create-jms-topic">
+		<attribute name="name"/>
+		<sequential>
+			<create-jms-resource name="@{name}" type="javax.jms.Topic"/>
+		</sequential>
+	</macrodef>
+
+	<!-- MANAGE JMS POOLS & CONNECTORS ***************************************************************** -->
+	<macrodef name="create-jms-pool">
+		<sequential>
+			<asadmin command="create-connector-connection-pool"
+		         parameters="--raname jmsra 
+		                     --connectiondefinition javax.jms.ConnectionFactory
+		                     swag.JMSPool"/>
+			<asadmin command="create-connector-resource"
+		         parameters="--poolname swag.JMSPool swag.JMS"/>
+		</sequential>
+	</macrodef>		
+	<macrodef name="delete-jms-pool">
+		<sequential>
+			<asadmin command="delete-connector-connection-pool" parameters="--cascade swag.JMSPool"/>
+			<asadmin command="delete-connector-resource"        parameters="swag.JMS"/>
+		</sequential>
+	</macrodef>		
+
+	<!-- HELPER MACROS ******************************************************************** -->
+	<macrodef name="create-jms-resource">
+		<attribute name="name"/>
+		<attribute name="type"/>	
+		<attribute name="enabled" default="true"/>	
+		<sequential>
+			<asadmin command="create-jms-resource"
+			         parameters="--restype=@{type}
+			                     --enabled=@{enabled}
+			                     @{name}"/>
+		</sequential>
+	</macrodef>
+	<macrodef name="delete-jms-resource">
+		<attribute name="name"/>
+		<sequential>
+			<asadmin command="delete-jms-resource" parameters="@{name}"/>
+		</sequential>
+	</macrodef>
+	
+	<!-- helper targets -->
+	<target name="setup" depends="init-jms">
+	</target>
+</project>

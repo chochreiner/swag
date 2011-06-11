@@ -1,28 +1,80 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
- <parent>
-  <artifactId>swag</artifactId>
-  <groupId>at.ac.tuwien</groupId>
-  <version>1.0-SNAPSHOT</version>
- </parent>
- <modelVersion>4.0.0</modelVersion>
- <groupId>at.ac.tuwien</groupId>
- <artifactId>swag-executor</artifactId>
- <packaging>jar</packaging>
- <version>1.0-SNAPSHOT</version>
- <name>swag-executor</name>
- <url>http://maven.apache.org</url>
- <dependencies>
-  <!-- JUNIT DEPENDENCY FOR TESTING -->
-  <dependency>
-   <groupId>junit</groupId>
-   <artifactId>junit</artifactId>
-   <scope>test</scope>
-  </dependency>
-  <!-- JMS DEPENDENCY -->
-  <dependency>
-     <groupId>javax.jms</groupId>
-     <artifactId>jms</artifactId>
-  </dependency>
- </dependencies>
+	<parent>
+		<artifactId>swag</artifactId>
+		<groupId>at.ac.tuwien</groupId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>at.ac.tuwien</groupId>
+	<artifactId>swag-executor</artifactId>
+	<packaging>war</packaging>
+	<version>1.0-SNAPSHOT</version>
+	<name>swag-executor</name>
+	<url>http://maven.apache.org</url>
+
+ 	<dependencies>
+		<dependency>
+			<groupId>at.ac.tuwien</groupId>
+			<artifactId>swag-messages</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>at.ac.tuwien</groupId>
+			<artifactId>swag-model</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>at.ac.tuwien</groupId>
+			<artifactId>swag-util</artifactId>
+		</dependency>
+		<!-- JUNIT DEPENDENCY FOR TESTING -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.jms</groupId>
+			<artifactId>jms</artifactId>
+		</dependency>
+		<!-- POSTGRESQL DEPENDENCY -->
+		<dependency>
+			<groupId>postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+		</dependency>
+		<!-- JAVA EE DEPENDENCY (JPA, EJB, ...) -->
+		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>javaee-api</artifactId>
+		</dependency>
+  		<!-- QUARTZ JOB SCHEDULER -->
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+		</dependency>
+	</dependencies>
+	
+	<build>
+		<plugins>
+			<!-- RUN ANT TASKS -->
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>redeploy to glassfish</id>
+						<phase>package</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<tasks>
+								<ant antfile="${basedir}/build.xml" target="redeploy" />
+							</tasks>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ====================================================================== -->
+<!-- Ant build file (http://ant.apache.org/) for Ant 1.6.2 or above.        -->
+<!-- ====================================================================== -->
+
+<project name="swag-model" default="package" basedir=".">
+
+	<import file="../ant-macros.xml" />
+
+	<target name="setup" depends="generate"/>
+	<target name="deploy"/>
+	<target name="undeploy"/>
+	
+	<target name="build" depends="setup,package"/>
+	
+	<target name="generate">
+		<property name="src.dir" value="src/main/resources" />
+		<property name="lib.dir" value="emf-lib" />
+		<path id="project.classpath">
+			<fileset dir="${lib.dir}">
+				<include name="**/*.jar" />
+			</fileset>
+			<pathelement path="${src.dir}" />
+		</path>
+		<java classname="org.eclipse.emf.mwe.core.WorkflowRunner" fork="true" classpathref="project.classpath">
+			<arg value="${src.dir}/workflow/generator.mwe" />
+		</java>
+	</target>
+
+	<!-- ====================================================================== -->
+	<!-- Import maven-build.xml into the current project                        -->
+	<!-- ====================================================================== -->
+
+	<import file="maven-build.xml" />
+
+	<!-- ====================================================================== -->
+	<!-- Help target                                                            -->
+	<!-- ====================================================================== -->
+
+	<target name="help">
+		<echo message="Please run: $ant -projecthelp" />
+	</target>
+
+</project>

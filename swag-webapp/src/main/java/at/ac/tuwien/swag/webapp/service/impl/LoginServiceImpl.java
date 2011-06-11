@@ -1,22 +1,16 @@
 package at.ac.tuwien.swag.webapp.service.impl;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.jms.JMSException;
 import javax.jms.Queue;
-import javax.persistence.NoResultException;
-
-import org.apache.wicket.authroles.authorization.strategies.role.Roles;
-
-import at.ac.tuwien.swag.messages.AuthenticationReply;
-import at.ac.tuwien.swag.messages.AuthenticationRequest;
 import at.ac.tuwien.swag.messages.JMSHelper;
-import at.ac.tuwien.swag.model.dao.UserDAO;
+import at.ac.tuwien.swag.messages.TimeoutExpiredException;
+import at.ac.tuwien.swag.messages.auth.AuthenticationReply;
+import at.ac.tuwien.swag.messages.auth.AuthenticationRequest;
+import at.ac.tuwien.swag.messages.auth.StoreUserRequest;
+import at.ac.tuwien.swag.messages.auth.UserExistsRequest;
 import at.ac.tuwien.swag.model.domain.User;
-import at.ac.tuwien.swag.util.PasswordHasher;
-import at.ac.tuwien.swag.webapp.service.LogService;
+import at.ac.tuwien.swag.model.dto.UserDTO;
+import at.ac.tuwien.swag.webapp.service.AuthenticationException;
 import at.ac.tuwien.swag.webapp.service.LoginService;
 
 import com.google.inject.Inject;
@@ -24,50 +18,51 @@ import com.google.inject.name.Named;
 
 public class LoginServiceImpl implements LoginService {
 
-    @Inject
-    private UserDAO users;
-
-    @Inject
-    private JMSHelper jms;
-    @Inject
-    @Named("swag.queue.Authentication")
-    private Queue authentication;
-
-    @Inject
-    private PasswordHasher hasher;
-
-    @Inject
-    private LogService logger;
-
-    public LoginServiceImpl() {
-
-    }
-
+	@Inject
+	@Named("MESSAGE_TIMEOUT")
+	private long      timeout;
+	@Inject
+	private JMSHelper jms;
+	@Inject
+	@Named("swag.queue.Authentication")
+	private Queue     authentication;
+	
     @Override
-    public boolean authenticate(String username, String password) {
-        try {
-            AuthenticationReply auth = jms.request(authentication, new AuthenticationRequest(username, password));
-
-            System.err.println(auth);
-        } catch (JMSException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            User user = users.findByUsername(username);
-
-            logger.logUserAction("Login", "User [" + username + "] logged in.");
-
-            return hasher.checkPassword(password, user.getPassword());
-            // return true;
-        } catch (NoResultException e) {
-            return false;
-        }
+    public AuthenticationReply authenticate(String username, String password) throws AuthenticationException,
+                                                                                     TimeoutExpiredException,
+                                                                                     JMSException            {
+    	AuthenticationReply auth = jms.request( authentication, 
+   		                                        AuthenticationReply.class,
+   		                                        new AuthenticationRequest( username, password ),
+   		                                        timeout );
+    		
+   		
+   		// request denied
+   		if ( auth.token == null || auth.roles == null || auth.roles.length == 0 ) 
+   			throw new AuthenticationException("Username or password are incorrect" );	
+    		
+   		return auth;
     }
 
+    public boolean userExists( String username ) throws JMSException, TimeoutExpiredException {
+		return jms.request( authentication, Boolean.class, new UserExistsRequest( username ), timeout );
+    }
+    
     @Override
-    public Set<String> getRoles(String username) {
-        return new HashSet<String>(Arrays.asList(Roles.ADMIN, Roles.USER));
-    }
+	public void storeUser( User user ) throws JMSException, TimeoutExpiredException {
+		UserDTO dto = new UserDTO( 
+				user.getUsername(), 
+				user.getPassword(), 
+				user.getAddress(),
+				user.getEmail(), 
+				user.getFullname(), 
+				null, null, null ); 
 
+		storeUser( dto );
+    }
+    
+	@Override
+	public void storeUser( UserDTO dto ) throws JMSException, TimeoutExpiredException {
+		jms.request( authentication, Boolean.class, new StoreUserRequest( dto ), timeout );
+	}
 }

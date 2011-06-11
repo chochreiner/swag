@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="swag-ant-helpers" basedir=".">
+	<target name="init-macros" depends="init-jms,init-deploy,init-domain"/>
+
+	<import file="ant-deploy-macros.xml"/>
+	<import file="ant-domain-macros.xml"/>
+	<import file="ant-jms-macros.xml"/>
+	<import file="ant-jdbc-macros.xml"/>
+	
+	<!-- default targets -->
+	<target name="init" depends="init-deploy,init-domain,init-jms"/>
+</project>

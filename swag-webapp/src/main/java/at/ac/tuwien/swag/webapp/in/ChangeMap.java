@@ -11,6 +11,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import at.ac.tuwien.swag.model.dao.MapDAO;
 import at.ac.tuwien.swag.model.domain.Map;
 import at.ac.tuwien.swag.webapp.SwagWebSession;
+import at.ac.tuwien.swag.webapp.in.map.MapPage;
 import at.ac.tuwien.swag.webapp.service.LogService;
 
 import com.google.inject.Inject;
