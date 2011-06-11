@@ -81,7 +81,7 @@ public class GameMap extends WebMarkupContainer {
     }
 
     private boolean checkIfBuildings(Square sq) {
-        if (sq.getBaseBuildings() == null || sq.getBaseBuildings().isEmpty()) {
+        if (sq.getBuildings() == null || sq.getBuildings().isEmpty()) {
             return false;
         }
         return true;

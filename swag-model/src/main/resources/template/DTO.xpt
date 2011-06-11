@@ -12,7 +12,7 @@
 
 		import java.util.*;
 		
-		import at.ac.tuwien.swag.model.domain.BaseBuildingType;
+		import at.ac.tuwien.swag.model.domain.BuildingType;
 		import at.ac.tuwien.swag.model.domain.RessourceBuildingType;
 		import at.ac.tuwien.swag.model.domain.SharedRessourceType;
 		import at.ac.tuwien.swag.model.domain.RessourceType;

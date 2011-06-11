@@ -7,7 +7,7 @@
   <types xsi:type="metamodel:BuiltinType" name="Boolean"/>
   <types xsi:type="metamodel:EnumType" name="SharedRessourceType" values="WOOD, IRON, GOLD, CLAY, WHEAT"/>
   <types xsi:type="metamodel:EnumType" name="RessourceBuildingType" values="LUMBERJACK, MINE, GOLDWASHER, CLAYPIT, FARMER"/>
-  <types xsi:type="metamodel:EnumType" name="BaseBuildingType" values="TOWNHALL, BARRACKS, STABLE, BLACKSMITH, MILL"/>
+  <types xsi:type="metamodel:EnumType" name="BuildingType" values="TOWNHALL, BARRACKS, STABLE, UPGRADE, DESTRUCTION, WOOD, IRON, GOLD, CLAY, GRAIN"/>
   <types xsi:type="metamodel:EnumType" name="RessourceType" values="WOOD, IRON, GOLD, CLAY, WHEAT"/>
   <types xsi:type="metamodel:EnumType" name="SoldierType" values="PEASANT, FOOTSOLDIER, HORSEMAN, ELEFANTSOLDIER, ALMIGHTYFABIAN"/>
   <types xsi:type="metamodel:Entity" name="Message">
@@ -58,17 +58,18 @@
     <associations name="user" nullable="true" type="//@types.13" multiplicity="ManyToOne"/>
     <associations name="resourceBuildings" nullable="true" type="//@types.16" multiplicity="OneToMany" isMapped="true"/>
     <associations name="troops" nullable="true" type="//@types.19" multiplicity="OneToMany" isMapped="true"/>
-    <associations name="baseBuildings" nullable="true" type="//@types.17" multiplicity="OneToMany" isMapped="true"/>
+    <associations name="buildings" nullable="true" type="//@types.17" multiplicity="OneToMany" isMapped="true"/>
   </types>
   <types xsi:type="metamodel:Entity" name="RessourceBuilding">
     <attributes name="level" type="//@types.1"/>
     <attributes name="type" type="//@types.6"/>
     <associations name="square" type="//@types.15" multiplicity="ManyToOne"/>
   </types>
-  <types xsi:type="metamodel:Entity" name="BaseBuilding">
+  <types xsi:type="metamodel:Entity" name="Building">
     <attributes name="level" type="//@types.1"/>
     <attributes name="type" type="//@types.7"/>
     <associations name="square" type="//@types.15" multiplicity="ManyToOne"/>
+    <attributes name="upgrading" type="//@types.4"/>
   </types>
   <types xsi:type="metamodel:Entity" name="Boost">
     <attributes name="type" type="//@types.8"/>

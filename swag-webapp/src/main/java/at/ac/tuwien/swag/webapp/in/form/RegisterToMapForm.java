@@ -22,8 +22,9 @@ import at.ac.tuwien.swag.webapp.SwagWebSession;
 
 import com.google.inject.Inject;
 
-public class RegisterToMapForm extends Form<Void> {
+import static at.ac.tuwien.swag.util.MapMaker.map;
 
+public class RegisterToMapForm extends Form<Void> {
 	private static final long serialVersionUID = 4979391078353931660L;
 
 	@Inject
@@ -36,8 +37,7 @@ public class RegisterToMapForm extends Form<Void> {
 	private UserDAO userDao;
 
 	@Inject
-	private SquareDAO squareDao;
-
+    private SquareDAO squareDao;
 	private String mapname;
 
 	private DropDownChoice<String> allmaps;
@@ -91,7 +91,7 @@ public class RegisterToMapForm extends Form<Void> {
 			String username = ((SwagWebSession) getSession()).getUsername();
 			User user = userDao.findByUsername( username );
 
-			Square startsquare = findFreeSquareForHomeBase( playground.getSquares() );
+			Square startsquare = findFreeSquareForHomeBase( playground );
 			
 			if (startsquare != null) {
 				// Defines the homebase
@@ -125,18 +125,21 @@ public class RegisterToMapForm extends Form<Void> {
 		}
 	}
 
-	/**
-	 * TODO optimizing
-	 * 
-	 * @param squares
-	 * @return
-	 */
-	private Square findFreeSquareForHomeBase( List<Square> squares ) {
-		for (Square sq : squares) {
-			if (!sq.getIsHomeBase() && sq.getBaseBuildings().isEmpty() && sq.getResourceBuildings().isEmpty() ) {
-				return sq;
-			}
-		}
-		return null;
-	}
+    private Square findFreeSquareForHomeBase( Map map ) {
+    	final String query =
+    		" SELECT " +
+    		"	s " +
+    		" FROM " +
+    		"	Square s " +
+    		" WHERE " +
+    		"	s.user = null AND s.map = :map";
+
+    	List<Square> sq = squareDao.findByQuery( query, map( "map", map ) );
+    	
+    	if ( sq.isEmpty() )
+    		return null;
+    	else 
+    		return sq.get( 0 );
+    }
+
 }
