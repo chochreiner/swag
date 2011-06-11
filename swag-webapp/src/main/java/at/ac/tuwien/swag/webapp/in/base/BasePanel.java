@@ -32,10 +32,30 @@ public abstract class BasePanel extends Panel {
     private SquareDAO squareDAO;
 
     private Square square;
+
+	private long squareId;
+
+	private Form<?> buildWood;
+
+	private Form<?> buildClay;
+
+	private Form<?> buildStable;
+
+	private Form<?> buildBarracks;
+
+	private Form<?> buildUpgrades;
+
+	private Form<?> buildGrain;
+
+	private Form<?> buildDestruction;
+
+	private Form<?> buildIron;
     
     public BasePanel(String id, long squareId) {
         super(id);
         
+        
+        this.squareId = squareId;
         // Retrieves the square
         square = squareDAO.findById(squareId);
 
@@ -74,14 +94,14 @@ public abstract class BasePanel extends Panel {
     }
 
     private void setupForm() {
-        Form<?> buildWood = createForm("buildWood", "woodButton", BuildingType.WOOD);
-        Form<?> buildClay = createForm("buildClay", "clayButton", BuildingType.CLAY);
-        Form<?> buildStable = createForm("buildStable", "stableButton", BuildingType.STABLE);
-        Form<?> buildBarracks = createForm("buildBarracks", "barracksButton", BuildingType.BARRACKS);
-        Form<?> buildUpgrades = createForm("buildUpgrades", "upgradesButton", BuildingType.UPGRADE);
-        Form<?> buildDestruction = createForm("buildDestruction", "destructionButton", BuildingType.DESTRUCTION);
-        Form<?> buildGrain = createForm("buildGrain", "grainButton", BuildingType.GRAIN);
-        Form<?> buildIron = createForm("buildIron", "ironButton", BuildingType.IRON);
+        buildWood = createForm("buildWood", "woodButton", BuildingType.WOOD);
+        buildClay = createForm("buildClay", "clayButton", BuildingType.CLAY);
+        buildStable = createForm("buildStable", "stableButton", BuildingType.STABLE);
+        buildBarracks = createForm("buildBarracks", "barracksButton", BuildingType.BARRACKS);
+        buildUpgrades = createForm("buildUpgrades", "upgradesButton", BuildingType.UPGRADE);
+        buildDestruction = createForm("buildDestruction", "destructionButton", BuildingType.DESTRUCTION);
+        buildGrain = createForm("buildGrain", "grainButton", BuildingType.GRAIN);
+        buildIron = createForm("buildIron", "ironButton", BuildingType.IRON);
 
         add(buildWood);
         add(buildClay);
@@ -102,6 +122,7 @@ public abstract class BasePanel extends Panel {
 
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+				Building building = buildings.get(type);
 				
 	                if (building != null) {
 
@@ -111,11 +132,12 @@ public abstract class BasePanel extends Panel {
 	                    buildingsDao.beginTransaction();
 	                    buildingsDao.update(building);
 	                    buildingsDao.commitTransaction();
+	                    updateBildingCounter(building, this) ;
 
 	                    info("upgraded");
 	                } else {
 
-	                    Building building = new Building();
+	                    building = new Building();
 	                    building.setLevel(1);
 	                    building.setType(type);
 	                    building.setUpgrading(false); // TODO --> sanitize
@@ -124,11 +146,17 @@ public abstract class BasePanel extends Panel {
 	                    buildingsDao.beginTransaction();
 	                    buildingsDao.insert(building);
 	                    buildingsDao.commitTransaction();
-
-	                    info("built");
+	                    updateBildingCounter(building, this) ;
 	                }
-	                
-	                target.addComponent(form);
+	                 
+	                target.add(buildWood);
+	                target.add(buildClay);
+	                target.add(buildStable);
+	                target.add(buildBarracks);
+	                target.add(buildUpgrades);
+	                target.add(buildDestruction);
+	                target.add(buildGrain);
+	                target.add(buildIron);
 			}
 
 			@Override
@@ -140,30 +168,35 @@ public abstract class BasePanel extends Panel {
 			
         };
 
-        if (building != null) {
-
-            if (building.getLevel() > 9) {
-                newButton.setModel(new Model<String>("maxed"));
-                newButton.setEnabled(false);
-            } else {
-                Integer newLevel = building.getLevel() + 1;
-                newButton.setModel(new Model<String>("upgrade to " + newLevel));
-            }
-
-            if (building.getUpgrading()) {
-                newButton.setEnabled(false);
-            }
-
-        } else {
-            newButton.setModel(new Model<String>("build"));
-
-            // TODO check ressources for upgrading
-        }
-
+        updateBildingCounter(building, newButton);
         newForm.add(newButton);
         return newForm;
     }
 
+  
+    private void updateBildingCounter(Building building, AjaxButton newButton) {
+        	
+        	if (building != null) {
+
+                if (building.getLevel() > 9) {
+                    newButton.setModel(new Model<String>("maxed"));
+                    newButton.setEnabled(false);
+                } else {
+                    Integer newLevel = building.getLevel() + 1;
+                    newButton.setModel(new Model<String>("upgrade to " + newLevel));
+                }
+
+                if (building.getUpgrading()) {
+                    newButton.setEnabled(false);
+                }
+
+            } else {
+                newButton.setModel(new Model<String>("build"));
+
+                // TODO check ressources for upgrading
+            }
+    }
+    
     private void fetchBuildings() {
         buildings = new HashMap<BuildingType, Building>();
 
@@ -178,6 +211,7 @@ public abstract class BasePanel extends Panel {
     }
     
    public abstract void onCancel(AjaxRequestTarget target);
+   public abstract void onSubmitButton(AjaxRequestTarget target, long squareId);
 
    public abstract void onSelect(AjaxRequestTarget target, String selection);
 }
