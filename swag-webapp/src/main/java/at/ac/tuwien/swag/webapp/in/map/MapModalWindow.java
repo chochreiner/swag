@@ -30,19 +30,20 @@ public abstract class MapModalWindow extends ModalWindow {
 
 			void onCancel(AjaxRequestTarget target) {
 				
-				setTitle("BLAAA");
+				
                 MapModalWindow.this.onCancel(target);
             }
 
             void onSelect(AjaxRequestTarget target, String selection) {
                 
-            	setTitle("BLAAA");
+            	
             	MapModalWindow.this.onSelect(target, selection);
             }
         });
     }
 	
 	public void loadBasePanel(long squareId) {
+		 setTitle("Base on sqaure "+squareId);
 		setContent(new BasePanel(this.getContentId(), squareId){
 
 			@Override
