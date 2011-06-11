@@ -26,8 +26,9 @@ import at.ac.tuwien.swag.webapp.in.map.MapPage;
 import com.google.inject.Inject;
 
 public abstract class BasePanel extends Panel {
+	private static final long serialVersionUID = -7684943204211861124L;
 
-    private HashMap<BuildingType, Building> buildings;
+	private HashMap<BuildingType, Building> buildings;
 
     @Inject
     private BuildingDAO buildingsDao;
