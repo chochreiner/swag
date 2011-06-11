@@ -1,0 +1,33 @@
+<project name="ant-jdbc-macros">
+
+	<import file="ant-asadmin-macros.xml"/>
+	
+	<target name="init-jdbc" depends="init-asadmin">
+	</target>
+
+	<target name="setup-jdbc">
+		<create-jdbc-pool name="PostgresqlPool"/>
+	</target>
+	<target name="clean-jdbc">
+		<delete-jdbc-pool name="PostgresqlPool"/>
+	</target>
+	
+	<macrodef name="create-jdbc-pool">
+		<attribute name="name"/>
+		<sequential>
+			<asadmin command="create-jdbc-connection-pool"
+			         parameters="--restype=javax.sql.ConnectionPoolDataSource
+					             --datasourceclassname=org.postgresql.ds.PGConnectionPoolDataSource
+					             @{name}"/>
+			<asadmin command="create-jdbc-resource"
+			         parameters="--connectionpoolid @{name} jdbc/@{name}"/>
+		</sequential>
+	</macrodef>
+	<macrodef name="delete-jdbc-pool">
+		<attribute name="name"/>
+		<sequential>
+			<asadmin command="delete-jdbc-connection-pool"
+			         parameters="--cascade=true @{name}"/>
+		</sequential>
+	</macrodef>
+</project>

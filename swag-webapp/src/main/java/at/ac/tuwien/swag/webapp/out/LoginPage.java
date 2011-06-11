@@ -1,11 +1,11 @@
 package at.ac.tuwien.swag.webapp.out;
 
 import javax.jms.JMSException;
+
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import at.ac.tuwien.swag.messages.TimeoutExpiredException;
-import at.ac.tuwien.swag.model.domain.User;
 import at.ac.tuwien.swag.model.dto.UserDTO;
 import at.ac.tuwien.swag.webapp.out.form.LoginForm;
 import at.ac.tuwien.swag.webapp.service.LoginService;

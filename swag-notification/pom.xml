@@ -26,6 +26,10 @@
       <artifactId>swag-model</artifactId>
     </dependency>
     <dependency>
+      <groupId>at.ac.tuwien</groupId>
+      <artifactId>swag-util</artifactId>
+    </dependency>
+    <dependency>
       <groupId>javax</groupId>
       <artifactId>javaee-api</artifactId>
       <scope>provided</scope>

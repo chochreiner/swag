@@ -42,9 +42,9 @@ public abstract class MessageHandler implements MessageListener {
 			e.printStackTrace();
 		} catch ( IllegalAccessException e ) {
 			e.printStackTrace();
-		} catch ( InvocationTargetException e ) {
-			e.printStackTrace();
 		} catch ( JMSException e ) {
+			e.printStackTrace();
+		} catch ( InvocationTargetException e ) {
 			e.printStackTrace();
 		}
 	}

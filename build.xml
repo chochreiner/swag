@@ -7,14 +7,20 @@
 	<target name="build" depends="generate">
 		<property name="maven.test.skip" value="true"/>
 
+		<antcall target="create-domain"/>
+
 		<create-jms-pool/>
+		<create-jdbc-pool name="PostgresqlPool"/>
 
 		<call-targets target="build" />
 		
-		<call-targets target="deploy"/>		
+		<call-targets target="deploy"/>
 	</target>
 	<target name="clean">
+		<antcall target="delete-domain"/>
+
 		<delete-jms-pool/>
+		<delete-jdbc-pool name="PostgresqlPool"/>
 
 		<call-targets target="clean"/>
 		<call-targets target="undeploy"/>
@@ -24,6 +30,14 @@
 		<antcall target="start-domain"/>
 		
 		<call-targets target="run"/>
+	</target>
+
+	<target name="stop">
+		<antcall target="stop-domain"/>
+	</target>
+	<target name="rebuild">
+		<antcall target="clean"/>
+		<antcall target="build"/>
 	</target>
 
 	<target name="compile">

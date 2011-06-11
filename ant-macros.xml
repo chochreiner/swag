@@ -6,7 +6,8 @@
 	<import file="ant-deploy-macros.xml"/>
 	<import file="ant-domain-macros.xml"/>
 	<import file="ant-jms-macros.xml"/>
-
+	<import file="ant-jdbc-macros.xml"/>
+	
 	<!-- default targets -->
 	<target name="init" depends="init-deploy,init-domain,init-jms"/>
 </project>
