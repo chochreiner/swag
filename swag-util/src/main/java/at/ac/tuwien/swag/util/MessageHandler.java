@@ -27,11 +27,11 @@ public abstract class MessageHandler implements MessageListener {
 	@Override
 	public final void onMessage( Message msg ) {
 		try {
-			Method handler = getClass().getMethod( "handle", msg.getClass() );
+			Object payload = getPayload( msg );
+			
+			Method handler = getClass().getMethod( "handle", payload.getClass() );
 			
 			this.replyTo = msg.getJMSReplyTo();
-			
-			Object payload = getPayload( msg );
 
 			handler.invoke( this, payload );
 		} catch ( SecurityException e ) {
