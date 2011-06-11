@@ -2,7 +2,11 @@ package at.ac.tuwien.swag.webapp.in.provider;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+
+import org.apache.wicket.extensions.markup.html.repeater.util.SortableDataProvider;
+import org.apache.wicket.model.IModel;
 
 import at.ac.tuwien.swag.model.dao.MapDAO;
 import at.ac.tuwien.swag.model.dao.SquareDAO;
@@ -10,10 +14,9 @@ import at.ac.tuwien.swag.model.domain.Map;
 import at.ac.tuwien.swag.model.domain.Square;
 
 
-public class GameMapDataProvider{
+public class GameMapDataProvider extends SortableDataProvider<Object>{
 	
-	
-	
+	private static final long serialVersionUID = -4016834717679940350L;
 	private MapDAO mapDao;
 	private SquareDAO squareDao;
 	private HashMap<Integer, HashMap<Integer,Square>> fullMap;
@@ -116,5 +119,23 @@ public class GameMapDataProvider{
 
 	public Integer getMapYSize() {
 		return mapYSize;
+	}
+
+	@Override
+	public Iterator<? extends Object> iterator(int first, int count) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int size() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public IModel<Object> model(Object object) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

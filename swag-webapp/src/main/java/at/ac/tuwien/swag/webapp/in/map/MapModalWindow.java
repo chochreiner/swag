@@ -56,6 +56,11 @@ public abstract class MapModalWindow extends ModalWindow {
 				// TODO Auto-generated method stub
 				
 			}
+
+			@Override
+			public void onSubmitButton(AjaxRequestTarget target, long squareId) {
+				setTitle("BLAAA");
+			}
 		});
 	}
 

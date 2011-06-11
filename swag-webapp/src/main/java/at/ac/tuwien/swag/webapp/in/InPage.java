@@ -6,7 +6,6 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import at.ac.tuwien.swag.webapp.SwagWebSession;
-import at.ac.tuwien.swag.webapp.out.OutSideNavigation;
 
 @AuthorizeInstantiation({ Roles.ADMIN, Roles.USER })
 public abstract class InPage extends WebPage {
@@ -16,8 +15,7 @@ public abstract class InPage extends WebPage {
 		SwagWebSession session = (SwagWebSession) getSession();
 		add(new InTopNavigation("topNavigation"));
 		add(new InNavigation("mainNavigation"));
-		add(new OutSideNavigation("resourcenSidePanel"));
-		
+		add(new ResourcenSidePanel("resourcenSidePanel"));
 		AdminNavigation adminNav = new AdminNavigation("adminNavigation");
 		adminNav.setVisible(false);
 		if(session.getRoles().hasRole(Roles.ADMIN)) {
