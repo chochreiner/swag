@@ -49,10 +49,11 @@ private HashMap<BuildingType, Building> buildings;
 	private BookmarkablePageLink<?> destructionLink;
 	private BookmarkablePageLink<?> upgradeLink;
 	private BookmarkablePageLink<?> troopsLink;
+
+	private FeedbackPanel feedbackPanel;
     
     public BasePanel(String id, long squareId) {
         super(id);
-        
         
         this.squareId = squareId;
         // Retrieves the square
@@ -60,7 +61,7 @@ private HashMap<BuildingType, Building> buildings;
 
         fetchBuildings();
 
-        FeedbackPanel feedbackPanel = new FeedbackPanel("feedback");
+        feedbackPanel = new FeedbackPanel("feedback");
         add(feedbackPanel);
 
         PageParameters params = new PageParameters();
@@ -164,6 +165,7 @@ private HashMap<BuildingType, Building> buildings;
 	                    updateBildingCounter(building, this) ;
 	                    
 	                    buildings.put(type, building);
+	                    info("created");
 	                }
 	                 
 	                target.add(buildWood);
@@ -182,6 +184,8 @@ private HashMap<BuildingType, Building> buildings;
 	                add(destructionLink);
 	                add(upgradeLink);
 	                add(troopsLink );
+	                
+	                add(feedbackPanel);
 			}
 
 			@Override
