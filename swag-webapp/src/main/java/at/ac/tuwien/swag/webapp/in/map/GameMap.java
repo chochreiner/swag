@@ -19,7 +19,7 @@ public class GameMap extends Panel {
     private ListView<List<Square>> gameMaplistView;
     private IModel<List<List<Square>>> gameMapList;
     private MapUser mapUser;
-	private MapModalWindow selectModalWindow;
+	private MapModalWindow mapModalWindow;
 
     public GameMap(String id, MapUser mapUser, IModel<List<List<Square>>> gameMapList) {
         super(id);
@@ -33,12 +33,12 @@ public class GameMap extends Panel {
         this.add(gameMaplistView);
         
         this.setupMapModalWindow();
-        this.add(selectModalWindow);
+        this.add(mapModalWindow);
     }
 
     private void setupMapModalWindow() {
     	 // The ModalWindow, showing some choices for the user to select.
-        selectModalWindow = new MapModalWindow("modalwindow"){
+        mapModalWindow = new MapModalWindow("modalwindow"){
         	private static final long serialVersionUID = 6244873170722607468L;
 
 			void onSelect(AjaxRequestTarget target, String selection) {
