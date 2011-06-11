@@ -13,9 +13,11 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import at.ac.tuwien.swag.model.dao.BuildingDAO;
+import at.ac.tuwien.swag.model.dao.MapUserDAO;
 import at.ac.tuwien.swag.model.dao.SquareDAO;
 import at.ac.tuwien.swag.model.domain.Building;
 import at.ac.tuwien.swag.model.domain.BuildingType;
+import at.ac.tuwien.swag.model.domain.MapUser;
 import at.ac.tuwien.swag.model.domain.Square;
 
 import com.google.inject.Inject;
@@ -31,6 +33,9 @@ private HashMap<BuildingType, Building> buildings;
     @Inject
     private SquareDAO squareDAO;
 
+    @Inject
+    private MapUserDAO mapUserDao;
+    
     private Square square;
 
 	private long squareId;
@@ -51,11 +56,14 @@ private HashMap<BuildingType, Building> buildings;
 	private BookmarkablePageLink<?> troopsLink;
 
 	private FeedbackPanel feedbackPanel;
+
+	private MapUser mapUser;
     
-    public BasePanel(String id, long squareId) {
+    public BasePanel(String id, MapUser mapUser, long squareId) {
         super(id);
         
         this.squareId = squareId;
+        this.mapUser = mapUser;
         // Retrieves the square
         square = squareDAO.findById(squareId);
 
@@ -145,8 +153,8 @@ private HashMap<BuildingType, Building> buildings;
 	                    building.setLevel(newLevel);
 
 	                    buildingsDao.beginTransaction();
-	                    buildingsDao.update(building);
-	                    buildingsDao.commitTransaction();
+	                    	buildingsDao.update(building);
+	                    	buildingsDao.commitTransaction();
 	                    updateBildingCounter(building, this) ;
 
 	                    info("upgraded");
@@ -157,9 +165,13 @@ private HashMap<BuildingType, Building> buildings;
 	                    building.setType(type);
 	                    building.setUpgrading(false); // TODO --> sanitize
 	                    building.setSquare(square);
-
+	                    square.getBuildings().add(building);  
+	                    mapUser.getSquares().add(square);
+	                    
 	                    buildingsDao.beginTransaction();
-	                    buildingsDao.insert(building);
+	                    	buildingsDao.insert(building);
+	                    	squareDAO.insert(square);
+	                    	mapUserDao.insert(mapUser);
 	                    buildingsDao.commitTransaction();
 	                    
 	                    updateBildingCounter(building, this) ;

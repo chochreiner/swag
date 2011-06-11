@@ -71,7 +71,7 @@ public class GameMap extends Panel {
                         final Square square = squareList.getModelObject();
 
                         Label label = null;
-                        if (mapUser != null && mapUser.getSquares().contains(square)) {
+                        if(checkIfMySquare(square)) {
 
                             label = new Label("square", "X: " + square.getCoordX() + " AAAAA Y: " + square.getCoordY());
                             if (checkIfBaseBuildings(square)) {
@@ -84,27 +84,32 @@ public class GameMap extends Panel {
                             }
                         } else {
                             if (checkIfBaseBuildings(square)) {
-                                label = new Label("square", "X: " + square.getCoordX() +" Y: " + square.getCoordY());
+                                label = new Label("square", "X: " + square.getCoordX() +" Y: lalala" + square.getCoordY());
                                 label.add(new SimpleAttributeModifier("class", "baseSquare"));
+                            }else {
+                            	label =new Label("square", "X: " + square.getCoordX() + " EMPTY  Y: " + square.getCoordY());
                             }
-
-                            label =new Label("square", "X: " + square.getCoordX() + " EMPTY  Y: " + square.getCoordY());
                         }
 
                         squareList.add(label);
                         
-/////////////////////////////////////////// TEST MODAL WINDOW ////////////////////////////////////////////////
+/////////////////////////////////////////// MODAL WINDOW ////////////////////////////////////////////////
                         AjaxFallbackLink<String> squareLink = new AjaxFallbackLink<String>("squareLink") {
                 			private static final long serialVersionUID = -2641432580203719830L;
                 			@Override
                 			public void onClick(AjaxRequestTarget target) {
-                				//selectModalWindow.setSquareId(square.getId());
-                				mapModalWindow.loadBasePanel(square.getId());
-                				mapModalWindow.show(target);
-                				 
+                				
+                				if(checkIfMySquare(square)) {
+                					mapModalWindow.loadBasePanel(mapUser, square.getId());
+                				}else{
+                					if(checkIfBaseBuildings(square)){
+                						
+                					}else { mapModalWindow.loadEmptySquareModalPanel(); }
+                				}
+                				mapModalWindow.show(target); 
                 			}
                 		};			       
-/////////////////////////////////////////// TEST MODAL WINDOW ////////////////////////////////////////////////
+/////////////////////////////////////////// MODAL WINDOW ////////////////////////////////////////////////
 
 							squareLink.setOutputMarkupId(true);
 							squareList.add(squareLink);
@@ -128,5 +133,17 @@ public class GameMap extends Panel {
             return false;
         }
         return true;
+    }
+    
+    /**
+     * 
+     * @param sq
+     * @return
+     */
+    private boolean checkIfMySquare(Square sq) {
+        if (mapUser != null && mapUser.getSquares().contains(sq)) {
+            return true;
+        }
+        return false;
     }
 }
