@@ -35,7 +35,7 @@ public class Notifications extends Panel {
         final Format formatter = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
 
         DataView<MessageDTO> dataView =
-            new DataView<MessageDTO>("notificationList", new MessageSortableDataProvider(notificationList)) {
+            new DataView<MessageDTO>("notificationsList", new MessageSortableDataProvider(notificationList)) {
                 private static final long serialVersionUID = -7500357470052232668L;
 
                 @Override
