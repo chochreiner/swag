@@ -44,20 +44,19 @@ public abstract class MapModalWindow extends ModalWindow {
 	
 	public void loadBasePanel(long squareId) {
 		setContent(new BasePanel(this.getContentId(), squareId){
-			private static final long serialVersionUID = -1675999722693245461L;
 
-			void onCancel(AjaxRequestTarget target) {
+			@Override
+			public void onCancel(AjaxRequestTarget target) {
+				// TODO Auto-generated method stub
 				
-				setTitle("BLAAA");
-                MapModalWindow.this.onCancel(target);
-            }
+			}
 
-            void onSelect(AjaxRequestTarget target, String selection) {
-                
-            	setTitle("BLAAA");
-            	MapModalWindow.this.onSelect(target, selection);
-            }
-        });
+			@Override
+			public void onSelect(AjaxRequestTarget target, String selection) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 	}
 
     public long getSquareId() {
