@@ -1,6 +1,7 @@
 package at.ac.tuwien.swag.webapp.in.base;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -13,10 +14,14 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 import at.ac.tuwien.swag.model.dao.BuildingDAO;
+import at.ac.tuwien.swag.model.dao.MapUserDAO;
 import at.ac.tuwien.swag.model.dao.SquareDAO;
 import at.ac.tuwien.swag.model.domain.Building;
 import at.ac.tuwien.swag.model.domain.BuildingType;
+import at.ac.tuwien.swag.model.domain.MapUser;
 import at.ac.tuwien.swag.model.domain.Square;
+import at.ac.tuwien.swag.webapp.SwagWebSession;
+import at.ac.tuwien.swag.webapp.in.map.MapPage;
 
 import com.google.inject.Inject;
 
@@ -31,13 +36,19 @@ public abstract class BasePanel extends Panel {
     @Inject
     private SquareDAO squareDAO;
 
+    @Inject
+    private MapUserDAO mapUserDAO;
+
     private Square square;
+    private MapUser mapuser;
 
     public BasePanel(String id, long squareId) {
         super(id);
-        
+
         // Retrieves the square
         square = squareDAO.findById(squareId);
+
+        setMapuser();
 
         fetchBuildings();
 
@@ -49,6 +60,34 @@ public abstract class BasePanel extends Panel {
         PageParameters params = new PageParameters();
         params.add("square", squareId);
 
+        setupLinks(params);
+
+    }
+
+    private void setMapuser() {
+        String query =
+            "SELECT m FROM MapUser m LEFT JOIN FETCH m.squares WHERE m.user.username = :username AND m.map.name = :mapname";
+
+        SwagWebSession session = (SwagWebSession) getSession();
+
+        Map<String, String> values = new HashMap<String, String>();
+        values.put("username", session.getUsername());
+        values.put("mapname", session.getMapname());
+
+        List<MapUser> buffer = mapUserDAO.findByQuery(query, values);
+
+        if (!buffer.isEmpty()) {
+            mapuser = buffer.get(0);
+        } else {
+            setResponsePage(MapPage.class);
+        }
+
+        if (!mapuser.getSquares().contains(square)) {
+            setResponsePage(MapPage.class);
+        }
+    }
+
+    private void setupLinks(PageParameters params) {
         BookmarkablePageLink barracksLink = new BookmarkablePageLink("barracksLink", Barracks.class, params);
         if (!buildings.containsKey(BuildingType.BARRACKS)) {
             barracksLink.setVisible(false);
@@ -70,7 +109,6 @@ public abstract class BasePanel extends Panel {
         }
         add(upgradeLink);
         add(new BookmarkablePageLink("troopsLink", Troops.class, params));
-
     }
 
     private void setupForm() {
@@ -100,44 +138,43 @@ public abstract class BasePanel extends Panel {
 
         AjaxButton newButton = new AjaxButton(button) {
 
-			@Override
-			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-				
-	                if (building != null) {
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 
-	                    Integer newLevel = building.getLevel() + 1;
-	                    building.setLevel(newLevel);
+                if (building != null) {
 
-	                    buildingsDao.beginTransaction();
-	                    buildingsDao.update(building);
-	                    buildingsDao.commitTransaction();
+                    Integer newLevel = building.getLevel() + 1;
+                    building.setLevel(newLevel);
 
-	                    info("upgraded");
-	                } else {
+                    buildingsDao.beginTransaction();
+                    buildingsDao.update(building);
+                    buildingsDao.commitTransaction();
 
-	                    Building building = new Building();
-	                    building.setLevel(1);
-	                    building.setType(type);
-	                    building.setUpgrading(false); // TODO --> sanitize
-	                    building.setSquare(square);
+                    info("upgraded");
+                } else {
 
-	                    buildingsDao.beginTransaction();
-	                    buildingsDao.insert(building);
-	                    buildingsDao.commitTransaction();
+                    Building building = new Building();
+                    building.setLevel(1);
+                    building.setType(type);
+                    building.setUpgrading(false); // TODO --> sanitize
+                    building.setSquare(square);
 
-	                    info("built");
-	                }
-	                
-	                target.addComponent(form);
-			}
+                    buildingsDao.beginTransaction();
+                    buildingsDao.insert(building);
+                    buildingsDao.commitTransaction();
 
-			@Override
-			protected void onError(AjaxRequestTarget target, Form<?> form) {
-				// TODO Auto-generated method stub
-				
-			}
-       
-			
+                    info("built");
+                }
+
+                target.addComponent(form);
+            }
+
+            @Override
+            protected void onError(AjaxRequestTarget target, Form<?> form) {
+                // TODO Auto-generated method stub
+
+            }
+
         };
 
         if (building != null) {
@@ -154,10 +191,15 @@ public abstract class BasePanel extends Panel {
                 newButton.setEnabled(false);
             }
 
+            if (!checkRessources(500)) {
+                newButton.setEnabled(false);
+            }
+
         } else {
             newButton.setModel(new Model<String>("build"));
-
-            // TODO check ressources for upgrading
+            if (!checkRessources(1000)) {
+                newButton.setEnabled(false);
+            }
         }
 
         newForm.add(newButton);
@@ -176,6 +218,25 @@ public abstract class BasePanel extends Panel {
             buildings.put(building.getType(), building);
         }
     }
-    
-   
+
+    private boolean checkRessources(Integer res) {
+
+        if (mapuser.getClayRessource().getAmount() < res) {
+            return false;
+        }
+
+        if (mapuser.getGrainRessource().getAmount() < res) {
+            return false;
+        }
+
+        if (mapuser.getIronRessource().getAmount() < res) {
+            return false;
+        }
+
+        if (mapuser.getWoodRessource().getAmount() < res) {
+            return false;
+        }
+
+        return true;
+    }
 }
