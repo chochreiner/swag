@@ -165,10 +165,10 @@ public class TestData extends InPage {
         neroMap.setMap(playground);
         neroMap.setUser(nero);
         neroMap.setSquares(nerosquares);
-        neroMap.setClayRessource(new StoredRessource(0, SharedRessourceType.CLAY, new Date(), 1.0, neroMap));
-        neroMap.setWoodRessource(new StoredRessource(0, SharedRessourceType.WOOD, new Date(), 1.0, neroMap));
-        neroMap.setGrainRessource(new StoredRessource(0, SharedRessourceType.GRAIN, new Date(), 1.0, neroMap));
-        neroMap.setIronRessource(new StoredRessource(0, SharedRessourceType.IRON, new Date(), 1.0, neroMap));
+        neroMap.setClayRessource(new StoredRessource(1500, SharedRessourceType.CLAY, new Date(), 1.0, neroMap));
+        neroMap.setWoodRessource(new StoredRessource(1500, SharedRessourceType.WOOD, new Date(), 1.0, neroMap));
+        neroMap.setGrainRessource(new StoredRessource(1500, SharedRessourceType.GRAIN, new Date(), 1.0, neroMap));
+        neroMap.setIronRessource(new StoredRessource(1500, SharedRessourceType.IRON, new Date(), 1.0, neroMap));
 
         users.add(neroMap);
 
@@ -183,10 +183,11 @@ public class TestData extends InPage {
         ariovistMap.setUser(ariovist);
         ariovistMap.setSquares(ariovistsquares);
 
-        ariovistMap.setClayRessource(new StoredRessource(0, SharedRessourceType.CLAY, new Date(), 1.0, ariovistMap));
-        ariovistMap.setWoodRessource(new StoredRessource(0, SharedRessourceType.WOOD, new Date(), 1.0, ariovistMap));
-        ariovistMap.setGrainRessource(new StoredRessource(0, SharedRessourceType.GRAIN, new Date(), 1.0, ariovistMap));
-        ariovistMap.setIronRessource(new StoredRessource(0, SharedRessourceType.IRON, new Date(), 1.0, ariovistMap));
+        ariovistMap.setClayRessource(new StoredRessource(1500, SharedRessourceType.CLAY, new Date(), 1.0, ariovistMap));
+        ariovistMap.setWoodRessource(new StoredRessource(1500, SharedRessourceType.WOOD, new Date(), 1.0, ariovistMap));
+        ariovistMap
+            .setGrainRessource(new StoredRessource(1500, SharedRessourceType.GRAIN, new Date(), 1.0, ariovistMap));
+        ariovistMap.setIronRessource(new StoredRessource(1500, SharedRessourceType.IRON, new Date(), 1.0, ariovistMap));
 
         users.add(ariovistMap);
 

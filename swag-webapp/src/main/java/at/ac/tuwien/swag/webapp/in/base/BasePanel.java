@@ -26,7 +26,6 @@ import at.ac.tuwien.swag.webapp.in.map.MapPage;
 import com.google.inject.Inject;
 
 public abstract class BasePanel extends Panel {
-    private static final long serialVersionUID = 1453724836631121134L;
 
     private HashMap<BuildingType, Building> buildings;
 
@@ -239,4 +238,8 @@ public abstract class BasePanel extends Panel {
 
         return true;
     }
+
+    public abstract void onCancel(AjaxRequestTarget target);
+
+    public abstract void onSelect(AjaxRequestTarget target, String selection);
 }

@@ -19,7 +19,7 @@ public class GameMap extends Panel {
     private ListView<List<Square>> gameMaplistView;
     private IModel<List<List<Square>>> gameMapList;
     private MapUser mapUser;
-	private MapModalWindow selectModalWindow;
+	private MapModalWindow mapModalWindow;
 
     public GameMap(String id, MapUser mapUser, IModel<List<List<Square>>> gameMapList) {
         super(id);
@@ -33,12 +33,12 @@ public class GameMap extends Panel {
         this.add(gameMaplistView);
         
         this.setupMapModalWindow();
-        this.add(selectModalWindow);
+        this.add(mapModalWindow);
     }
 
     private void setupMapModalWindow() {
     	 // The ModalWindow, showing some choices for the user to select.
-        selectModalWindow = new MapModalWindow("modalwindow"){
+        mapModalWindow = new MapModalWindow("modalwindow"){
         	private static final long serialVersionUID = 6244873170722607468L;
 
 			void onSelect(AjaxRequestTarget target, String selection) {
@@ -64,7 +64,6 @@ public class GameMap extends Panel {
 
                 ListView<Square> rowListView = new ListView<Square>("row", rowList) {
                     private static final long serialVersionUID = 3054181382288233598L;
-                    private MapModalWindow selectModalWindow;
 
                     @Override
                     protected void populateItem(ListItem<Square> squareList) {
@@ -85,13 +84,11 @@ public class GameMap extends Panel {
                             }
                         } else {
                             if (checkIfBaseBuildings(square)) {
-                                label =
-                                    new Label("square", "X: " + square.getCoordX() +" Y: " + square.getCoordY());
+                                label = new Label("square", "X: " + square.getCoordX() +" Y: " + square.getCoordY());
                                 label.add(new SimpleAttributeModifier("class", "baseSquare"));
                             }
 
-                            label =
-                                new Label("square", "X: " + square.getCoordX() + " EMPTY  Y: " + square.getCoordY());
+                            label =new Label("square", "X: " + square.getCoordX() + " EMPTY  Y: " + square.getCoordY());
                         }
 
                         squareList.add(label);
@@ -102,8 +99,8 @@ public class GameMap extends Panel {
                 			@Override
                 			public void onClick(AjaxRequestTarget target) {
                 				//selectModalWindow.setSquareId(square.getId());
-                				selectModalWindow.loadBasePanel(square.getId());
-                				selectModalWindow.show(target);
+                				mapModalWindow.loadBasePanel(square.getId());
+                				mapModalWindow.show(target);
                 				 
                 			}
                 		};			       
