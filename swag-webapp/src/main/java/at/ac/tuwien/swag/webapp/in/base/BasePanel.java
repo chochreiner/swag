@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
-import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
@@ -22,8 +21,9 @@ import at.ac.tuwien.swag.model.domain.Square;
 import com.google.inject.Inject;
 
 public abstract class BasePanel extends Panel {
+	private static final long serialVersionUID = -7684943204211861124L;
 
-    private HashMap<BuildingType, Building> buildings;
+	private HashMap<BuildingType, Building> buildings;
 
     @Inject
     private BuildingDAO buildingsDao;
