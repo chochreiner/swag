@@ -10,16 +10,16 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
-
 import at.ac.tuwien.swag.model.domain.MapUser;
 import at.ac.tuwien.swag.model.domain.Square;
 
 public class GameMap extends Panel {
-
     private static final long serialVersionUID = -2473064801663338918L;
+    
     private ListView<List<Square>> gameMaplistView;
     private IModel<List<List<Square>>> gameMapList;
     private MapUser mapUser;
+	private MapModalWindow selectModalWindow;
 
     public GameMap(String id, MapUser mapUser, IModel<List<List<Square>>> gameMapList) {
         super(id);
@@ -31,8 +31,28 @@ public class GameMap extends Panel {
 
         this.setupGameMapView();
         this.add(gameMaplistView);
+        
+        this.setupMapModalWindow();
+        this.add(selectModalWindow);
     }
 
+    private void setupMapModalWindow() {
+    	 // The ModalWindow, showing some choices for the user to select.
+        selectModalWindow = new MapModalWindow("modalwindow"){
+        	private static final long serialVersionUID = 6244873170722607468L;
+
+			void onSelect(AjaxRequestTarget target, String selection) {
+            // Handle Select action
+           //     close(target);
+			}
+
+			void onCancel(AjaxRequestTarget target) {
+                // Handle Cancel action
+              //  close(target);
+            }
+        };
+    }
+    
     private void setupGameMapView() {
         gameMaplistView = new ListView<List<Square>>("gameMap", gameMapList) {
             private static final long serialVersionUID = 7083713778515545799L;
@@ -49,7 +69,7 @@ public class GameMap extends Panel {
                     @Override
                     protected void populateItem(ListItem<Square> squareList) {
 
-                        Square square = squareList.getModelObject();
+                        final Square square = squareList.getModelObject();
 
                         Label label = null;
                         if (mapUser != null && mapUser.getSquares().contains(square)) {
@@ -66,8 +86,7 @@ public class GameMap extends Panel {
                         } else {
                             if (checkIfBaseBuildings(square)) {
                                 label =
-                                    new Label("square", "X: " + square.getCoordX() + " "
-                                            + square.getUser().getUser().getUsername() + " Y: " + square.getCoordY());
+                                    new Label("square", "X: " + square.getCoordX() +" Y: " + square.getCoordY());
                                 label.add(new SimpleAttributeModifier("class", "baseSquare"));
                             }
 
@@ -75,43 +94,26 @@ public class GameMap extends Panel {
                                 new Label("square", "X: " + square.getCoordX() + " EMPTY  Y: " + square.getCoordY());
                         }
 
-                        // ///////////////////////////////////////// TEST MODAL WINDOW
-                        // ////////////////////////////////////////////////
-                        // The ModalWindow, showing some choices for the user to select.
-                        selectModalWindow = new MapModalWindow("modalwindow") {
-                            private static final long serialVersionUID = 6244873170722607468L;
-
-                            @Override
-                            void onSelect(AjaxRequestTarget target, String selection) {
-                                // Handle Select action
-                                close(target);
-                            }
-
-                            @Override
-                            void onCancel(AjaxRequestTarget target) {
-                                // Handle Cancel action
-                                close(target);
-                            }
-
-                        };
-
+                        squareList.add(label);
+                        
+/////////////////////////////////////////// TEST MODAL WINDOW ////////////////////////////////////////////////
                         AjaxFallbackLink<String> squareLink = new AjaxFallbackLink<String>("squareLink") {
-                            private static final long serialVersionUID = -2641432580203719830L;
+                			private static final long serialVersionUID = -2641432580203719830L;
+                			@Override
+                			public void onClick(AjaxRequestTarget target) {
+                				//selectModalWindow.setSquareId(square.getId());
+                				selectModalWindow.loadBasePanel(square.getId());
+                				selectModalWindow.show(target);
+                				 
+                			}
+                		};			       
+/////////////////////////////////////////// TEST MODAL WINDOW ////////////////////////////////////////////////
 
-                            @Override
-                            public void onClick(AjaxRequestTarget target) {
-                                selectModalWindow.show(target);
-                            }
-                            // ///////////////////////////////////////// TEST MODAL WINDOW
-                            // ////////////////////////////////////////////////
-                        };
-
-                        squareList.add(selectModalWindow);
-                        squareLink.setOutputMarkupId(true);
-                        squareList.add(squareLink);
-
-                        label.setOutputMarkupId(true);
-                        squareLink.add(label);
+							squareLink.setOutputMarkupId(true);
+							squareList.add(squareLink);
+							 									
+							label.setOutputMarkupId(true);
+							squareLink.add(label);
                     }
                 };
                 row.add(rowListView);
