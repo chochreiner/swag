@@ -64,7 +64,6 @@ public class GameMap extends Panel {
 
                 ListView<Square> rowListView = new ListView<Square>("row", rowList) {
                     private static final long serialVersionUID = 3054181382288233598L;
-                    private MapModalWindow selectModalWindow;
 
                     @Override
                     protected void populateItem(ListItem<Square> squareList) {
@@ -85,13 +84,11 @@ public class GameMap extends Panel {
                             }
                         } else {
                             if (checkIfBaseBuildings(square)) {
-                                label =
-                                    new Label("square", "X: " + square.getCoordX() +" Y: " + square.getCoordY());
+                                label = new Label("square", "X: " + square.getCoordX() +" Y: " + square.getCoordY());
                                 label.add(new SimpleAttributeModifier("class", "baseSquare"));
                             }
 
-                            label =
-                                new Label("square", "X: " + square.getCoordX() + " EMPTY  Y: " + square.getCoordY());
+                            label =new Label("square", "X: " + square.getCoordX() + " EMPTY  Y: " + square.getCoordY());
                         }
 
                         squareList.add(label);
@@ -102,8 +99,8 @@ public class GameMap extends Panel {
                 			@Override
                 			public void onClick(AjaxRequestTarget target) {
                 				//selectModalWindow.setSquareId(square.getId());
-                				selectModalWindow.loadBasePanel(square.getId());
-                				selectModalWindow.show(target);
+                				mapModalWindow.loadBasePanel(square.getId());
+                				mapModalWindow.show(target);
                 				 
                 			}
                 		};			       
