@@ -33,6 +33,8 @@ public class AuthenticationBean extends MessageHandler {
 		reply( "Hi, Authentication service speaking. It was nice to hear from you" );
 	}
 	public void handle( AuthenticationRequest msg ) throws JMSException {
+		ensureAdminIsPresent();
+		
 		String username = msg.username;
 		String password = msg.password;
 		String token    = "DUMMY TOKEN";
@@ -85,6 +87,25 @@ public class AuthenticationBean extends MessageHandler {
 	
 	//**** PRIVATE PARTS
 	
+	private void ensureAdminIsPresent() {
+		try {
+			users.findByUsername( "system" );
+		} catch ( NoResultException e ) {
+			User system = new User(
+				"system",
+				"aaa", 
+				"The interblag",
+				"swag@swag.com", 
+				"System administration account", 
+				null ,null, null 
+			);
+
+			users.beginTransaction();
+				users.insert( system );
+			users.commitTransaction();				
+		}
+	}
+	
 	@EJB
 	private PersistenceBean persistence;
 	
@@ -93,5 +114,4 @@ public class AuthenticationBean extends MessageHandler {
 	
 	private UserDAO        users;
 	private PasswordHasher hasher;
-		
 }
