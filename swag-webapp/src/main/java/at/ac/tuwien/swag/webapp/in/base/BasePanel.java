@@ -122,6 +122,7 @@ public abstract class BasePanel extends Panel {
 
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+				//fetchBuildings();
 				Building building = buildings.get(type);
 				
 	                if (building != null) {
@@ -146,7 +147,10 @@ public abstract class BasePanel extends Panel {
 	                    buildingsDao.beginTransaction();
 	                    buildingsDao.insert(building);
 	                    buildingsDao.commitTransaction();
+	                    
 	                    updateBildingCounter(building, this) ;
+	                    
+	                    buildings.put(type, building);
 	                }
 	                 
 	                target.add(buildWood);
