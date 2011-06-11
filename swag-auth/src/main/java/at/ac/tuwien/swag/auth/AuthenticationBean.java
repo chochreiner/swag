@@ -18,7 +18,7 @@ import at.ac.tuwien.swag.util.MessageHandler;
 import at.ac.tuwien.swag.util.PasswordHasher;
 import at.ac.tuwien.swag.util.PersistenceBean;
 
-@MessageDriven( mappedName="swag.queue.Authentication" )
+@MessageDriven(mappedName = "swag.queue.Authentication")
 public class AuthenticationBean extends MessageHandler {
 
 	@PostConstruct
