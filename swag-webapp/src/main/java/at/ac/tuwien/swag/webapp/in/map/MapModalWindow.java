@@ -72,7 +72,7 @@ public abstract class MapModalWindow extends ModalWindow {
 	}
 	
 	public void loadForeignSquareModalPanel() {
-		 setTitle("Empty sqaure - No one is here");
+		 setTitle("Foreign Sqaure - Come on?");
 		setContent(new ForeignSquareModalPanel(this.getContentId()){
 			
 			private static final long serialVersionUID = 2266595948958730018L;
