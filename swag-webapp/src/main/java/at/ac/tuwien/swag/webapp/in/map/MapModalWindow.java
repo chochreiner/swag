@@ -57,7 +57,7 @@ public abstract class MapModalWindow extends ModalWindow {
 	}
 	
 	public void loadEmptySquareModalPanel() {
-		 setTitle("Empty sqaure - No one is here");
+		 setTitle("Empty square - No one is here");
 		setContent(new EmptySquareModalPanel(this.getContentId()){
 		
 			private static final long serialVersionUID = 8794745869537409170L;
