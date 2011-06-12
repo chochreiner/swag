@@ -63,10 +63,13 @@ private HashMap<BuildingType, Building> buildings;
     private BaseUtils baseutils;
 	private MapUser mapUser;
 
-    public BasePanel(String id, long squareId) {
+    public BasePanel(String id) {
         super(id);
 
+        SwagWebSession session = (SwagWebSession) getSession(); 
+        this.squareId = session.getSelectedSquareId();
         baseutils = new BaseUtils();
+        
         // Retrieves the square
         square = squareDao.findById(squareId);
 
@@ -198,8 +201,8 @@ private HashMap<BuildingType, Building> buildings;
 	                    
 	                    buildingsDao.beginTransaction();
 	                    	buildingsDao.insert(building);
-	                    	squareDao.insert(square);
-	                    	mapUserDao.insert(mapUser);
+	                    	//squareDao.insert(square);
+	                    	//mapUserDao.insert(mapUser);
 	                    buildingsDao.commitTransaction();
 	                    
 	                    updateBildingCounter(building, this) ;
