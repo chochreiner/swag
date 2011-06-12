@@ -18,6 +18,10 @@ public interface LoginService {
 	                                                                            TimeoutExpiredException, 
 	                                                                            JMSException;
 
+	boolean isOnline( String username ) throws JMSException, TimeoutExpiredException;
+	
+	void logout( String username );
+	
 	boolean userExists( String username ) throws JMSException, TimeoutExpiredException;
 
 	void storeUser( User user ) throws JMSException, TimeoutExpiredException;

@@ -59,11 +59,19 @@ public final class SwagWebSession extends AuthenticatedWebSession {
     @Override
     public void signOut() {
         super.signOut();
+
+        String user = null;
+        
+        if ( credentials != null )
+        	user = credentials.username;
         
         credentials 		= null;
         mapname     		= null;
         homebase    		= null;
         selectedSquareId	= 0;
+
+        if ( user != null )
+        	login.logout( user );
     }
 
     @Override

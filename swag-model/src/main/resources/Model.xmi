@@ -24,6 +24,7 @@
     <attributes name="address" type="//@types.0"/>
     <attributes name="email" type="//@types.0"/>
     <attributes name="fullname" type="//@types.0"/>
+    <attributes name="isOnline" type="//@types.4"/>
     <associations name="maps" nullable="true" type="//@types.13" multiplicity="OneToMany" isMapped="true"/>
   </types>
   <types xsi:type="metamodel:Entity" name="Map">

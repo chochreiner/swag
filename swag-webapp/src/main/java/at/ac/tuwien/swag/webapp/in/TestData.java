@@ -49,11 +49,13 @@ public class TestData extends InPage {
 
             @Override
             public Component getLazyLoadComponent(String markupId) {
-                squareDao.deleteAll();
-                mapUserDao.deleteAll();
-                mapDao.deleteAll();
-                userDao.deleteAll();
-
+            	squareDao.beginTransaction();
+            		squareDao.deleteAll();
+            		mapUserDao.deleteAll();
+            		mapDao.deleteAll();
+            		userDao.deleteAll();
+            	squareDao.commitTransaction();
+            		
                 setupUser();
                 setupMap();
                 assignPlayerToMap();
@@ -66,12 +68,21 @@ public class TestData extends InPage {
     private void setupUser() {
         System.out.println("####### Register users #######");
 
+        User system = new User();
+        system.setUsername("system");
+        system.setFullname("Administration account");
+        system.setAddress("The interblag");
+        system.setEmail("swaf@swag.com");
+        system.setPassword(hasher.hash("aaa"));
+        system.setIsOnline( false );
+        
         User nero = new User();
         nero.setUsername("nero");
         nero.setFullname("Nero Claudius Caesar Augustus Germanicus");
         nero.setAddress("Forum Romanum 1, Rom");
         nero.setEmail("chef@imperiumRomanum.it");
         nero.setPassword(hasher.hash("servus"));
+        nero.setIsOnline( false );
 
         User ariovist = new User();
         ariovist.setUsername("ariovist");
@@ -79,10 +90,12 @@ public class TestData extends InPage {
         ariovist.setAddress("Erberg 1");
         ariovist.setEmail("chef@markomannenweb.de");
         ariovist.setPassword(hasher.hash("bier1234"));
+        ariovist.setIsOnline( false );
 
         userDao.beginTransaction();
-        userDao.insert(nero);
-        userDao.insert(ariovist);
+        	userDao.insert(nero);
+        	userDao.insert(ariovist);
+        	userDao.insert( system );
         userDao.commitTransaction();
     }
 
@@ -106,9 +119,9 @@ public class TestData extends InPage {
         System.out.println("####### Create Map and Squares #######");
 
         int startX = 1;
-        int endX = 50;
+        int endX = 20;
         int startY = 1;
-        int endY = 50;
+        int endY = 20;
 
         Map map = new Map();
         map.setMaxNumUsers(100);
@@ -137,9 +150,9 @@ public class TestData extends InPage {
             mapDao.beginTransaction();
             try {
             	this.mapDao.insert(map);
-            	for (Square sq : squares.toArray( new Square[0] ) ) {
-            		squareDao.insert(sq);
-            	}
+//            	for (Square sq : squares.toArray( new Square[0] ) ) {
+//            		squareDao.insert(sq);
+//            	}
             } finally {
             	mapDao.commitTransaction();            	
             }
