@@ -3,6 +3,7 @@ package at.ac.tuwien.swag.webapp.in.form;
 import static at.ac.tuwien.swag.util.MapMaker.map;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.NoResultException;
@@ -17,7 +18,9 @@ import at.ac.tuwien.swag.model.dao.SquareDAO;
 import at.ac.tuwien.swag.model.dao.UserDAO;
 import at.ac.tuwien.swag.model.domain.Map;
 import at.ac.tuwien.swag.model.domain.MapUser;
+import at.ac.tuwien.swag.model.domain.SharedRessourceType;
 import at.ac.tuwien.swag.model.domain.Square;
+import at.ac.tuwien.swag.model.domain.StoredRessource;
 import at.ac.tuwien.swag.model.domain.User;
 import at.ac.tuwien.swag.webapp.SwagWebSession;
 
@@ -131,6 +134,11 @@ public class RegisterToMapForm extends Form<Void> {
 				mapUser.setMap( playground );
 				mapUser.setUser( user );
 				mapUser.setSquares( usersquares );
+				
+				mapUser.setClayRessource(new StoredRessource(1500, SharedRessourceType.CLAY, new Date(), 1.0, mapUser));
+				mapUser.setWoodRessource(new StoredRessource(1500, SharedRessourceType.WOOD, new Date(), 1.0, mapUser));
+				mapUser.setGrainRessource(new StoredRessource(1500, SharedRessourceType.GRAIN, new Date(), 1.0, mapUser));
+				mapUser.setIronRessource(new StoredRessource(1500, SharedRessourceType.IRON, new Date(), 1.0, mapUser));
 
 				// add mapuser to map
 				playground.getUsers().add( mapUser );

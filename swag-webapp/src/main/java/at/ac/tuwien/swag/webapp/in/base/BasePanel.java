@@ -35,7 +35,7 @@ private HashMap<BuildingType, Building> buildings;
     private BuildingDAO buildingsDao;
 
     @Inject
-    private SquareDAO squareDAO;
+    private SquareDAO squareDao;
 
     @Inject
     private MapUserDAO mapUserDao;
@@ -58,18 +58,20 @@ private HashMap<BuildingType, Building> buildings;
 	private BookmarkablePageLink<?> troopsLink;
 
 	private FeedbackPanel feedbackPanel;
-	private MapUserDAO mapUserDAO;
 
     private Square square;
     private BaseUtils baseutils;
 	private MapUser mapUser;
 
-    public BasePanel(String id, long squareId) {
+    public BasePanel(String id) {
         super(id);
 
+        SwagWebSession session = (SwagWebSession) getSession(); 
+        this.squareId = session.getSelectedSquareId();
         baseutils = new BaseUtils();
+        
         // Retrieves the square
-        square = squareDAO.findById(squareId);
+        square = squareDao.findById(squareId);
 
         setMapuser();
 
@@ -97,7 +99,7 @@ private HashMap<BuildingType, Building> buildings;
         values.put("username", session.getUsername());
         values.put("mapname", session.getMapname());
 
-        List<MapUser> buffer = mapUserDAO.findByQuery(query, values);
+        List<MapUser> buffer = mapUserDao.findByQuery(query, values);
 
         if (!buffer.isEmpty()) {
             mapUser = buffer.get(0);
@@ -181,9 +183,15 @@ private HashMap<BuildingType, Building> buildings;
 	                    Integer newLevel = building.getLevel() + 1;
 	                    building.setLevel(newLevel);
 
+	                   // buildingsDao.beginTransaction();
+	                    //	buildingsDao.update(building);
+	                    	//buildingsDao.commitTransaction();
+	                    	
+	                    	
 	                    buildingsDao.beginTransaction();
 	                    	buildingsDao.update(building);
-	                    	buildingsDao.commitTransaction();
+	                     	mapUserDao.update(baseutils.reduceRessources(mapUser, 500));
+	                    buildingsDao.commitTransaction();
 	                    updateBildingCounter(building, this) ;
 
 	                    info("upgraded");
@@ -199,9 +207,8 @@ private HashMap<BuildingType, Building> buildings;
 	                    
 	                    buildingsDao.beginTransaction();
 	                    	buildingsDao.insert(building);
-	                    	squareDAO.insert(square);
-	                    	mapUserDao.insert(mapUser);
-	                    buildingsDao.commitTransaction();
+	                    	mapUserDao.update(baseutils.reduceRessources(mapUser, 1500));
+	                     buildingsDao.commitTransaction();
 	                    
 	                    updateBildingCounter(building, this) ;
 	                    

@@ -7,19 +7,19 @@ public class BaseUtils {
 
     public boolean checkRessources(MapUser mapuser, Integer res) {
 
-        if (mapuser.getClayRessource().getAmount() < res) {
+        if (mapuser.getClayRessource() == null || mapuser.getClayRessource().getAmount() < res) {
             return false;
         }
 
-        if (mapuser.getGrainRessource().getAmount() < res) {
+        if (mapuser.getGrainRessource() == null || mapuser.getGrainRessource().getAmount() < res) {
             return false;
         }
 
-        if (mapuser.getIronRessource().getAmount() < res) {
+        if (mapuser.getIronRessource() == null || mapuser.getIronRessource().getAmount() < res) {
             return false;
         }
 
-        if (mapuser.getWoodRessource().getAmount() < res) {
+        if (mapuser.getWoodRessource() == null || mapuser.getWoodRessource().getAmount() < res) {
             return false;
         }
 

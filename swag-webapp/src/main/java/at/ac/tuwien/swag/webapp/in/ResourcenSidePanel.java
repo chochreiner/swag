@@ -9,6 +9,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 
 import at.ac.tuwien.swag.model.dao.MapUserDAO;
 import at.ac.tuwien.swag.model.domain.MapUser;
+import at.ac.tuwien.swag.model.domain.RessourceType;
 import at.ac.tuwien.swag.webapp.SwagWebSession;
 import at.ac.tuwien.swag.webapp.in.map.MapPage;
 
@@ -25,25 +26,47 @@ public class ResourcenSidePanel extends Panel {
     public ResourcenSidePanel(String id) {
         super(id);
 
-        SwagWebSession session = (SwagWebSession) getSession();
-
         setMapuser();
 
-        if (mapuser != null) {
-            add(new Label("wood", mapuser.getWoodRessource().getAmount().toString()));
-            add(new Label("grain", mapuser.getGrainRessource().getAmount().toString()));
-            add(new Label("clay", mapuser.getClayRessource().getAmount().toString()));
-            add(new Label("iron", mapuser.getIronRessource().getAmount().toString()));
-        } else {
-            add(new Label("wood", ""));
-            add(new Label("grain", ""));
-            add(new Label("clay", ""));
-            add(new Label("iron", ""));
-
-        }
-
+        add(setRessourceLabel("wood", RessourceType.WOOD, mapuser));
+        add(setRessourceLabel("grain", RessourceType.GRAIN, mapuser));
+        add(setRessourceLabel("clay", RessourceType.CLAY, mapuser));
+        add(setRessourceLabel("iron", RessourceType.IRON, mapuser));
     }
 
+    private Label setRessourceLabel(String id, RessourceType typ, MapUser mapuser) {
+    	
+    	String resCount="";
+    	switch(typ) {
+    	
+    	case WOOD:
+    		if(mapuser != null && mapuser.getWoodRessource() !=null) {
+    			resCount = mapuser.getWoodRessource().getAmount().toString();
+    		}
+    		break;
+    		
+    	case IRON:
+    		if(mapuser != null && mapuser.getIronRessource() !=null) {
+    			resCount = mapuser.getIronRessource().getAmount().toString();
+    		}
+    		break;
+    		
+    	case CLAY:
+    		if(mapuser != null && mapuser.getClayRessource() !=null) {
+    			resCount = mapuser.getClayRessource().getAmount().toString();
+    		}
+    		break;
+    		
+    	case GRAIN:
+    		if(mapuser != null && mapuser.getGrainRessource() !=null) {
+    			resCount = mapuser.getGrainRessource().getAmount().toString();
+    		}
+    		break;
+    	}
+    	
+    	return  new Label(id, resCount);
+    }
+    
     private void setMapuser() {
         String query =
             "SELECT m FROM MapUser m LEFT JOIN FETCH m.squares WHERE m.user.username = :username AND m.map.name = :mapname";
@@ -65,7 +88,5 @@ public class ResourcenSidePanel extends Panel {
         } else {
             setResponsePage(MapPage.class);
         }
-
     }
-
 }

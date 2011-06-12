@@ -62,10 +62,11 @@ public final class SwagWebSession extends AuthenticatedWebSession {
         
         String user = credentials.username;
         
-        credentials = null;
-        mapname     = null;
-        homebase    = null;
-        
+        credentials 		= null;
+        mapname     		= null;
+        homebase    		= null;
+        selectedSquareId	= 0;
+
         login.logout( user );
     }
 
@@ -80,6 +81,7 @@ public final class SwagWebSession extends AuthenticatedWebSession {
 
     private AuthenticationReply credentials;
     private String mapname;
+    private long selectedSquareId;
     private SquareDTO homebase;
 
     public String getUsername() {
@@ -100,5 +102,13 @@ public final class SwagWebSession extends AuthenticatedWebSession {
 
 	public void setHomebase(SquareDTO homebase) {
 		this.homebase = homebase;
+	}
+
+	public long getSelectedSquareId() {
+		return selectedSquareId;
+	}
+
+	public void setSelectedSquareId(long selectedSquareId) {
+		this.selectedSquareId = selectedSquareId;
 	}
 }
