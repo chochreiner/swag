@@ -114,6 +114,13 @@ The ant run target deploys the single components and the application can be acce
 
 \subsection{Components}
 
+The different components of the swag application communicate with each other via JMS, this means that they are very loosely
+coupled. 
+One can redeploy or exchange one component without the other components even noticing it, this is even possible during
+the execution of the application.
+This means that failure of single components doesn't necessarily bring the whole application to it's knees but allows
+it to continue with reduced functionality.
+
 \subsubsection{swag-model}
 This component contains the models, data access objects and data transfer objects, that were created for the second task. These classes are generated on every build process. 
 
@@ -125,11 +132,18 @@ Holds some handy utility classes that are handy in multiple components.
 
 \subsubsection{swag-auth}
 
+This component is used by other components to authenticate users and store their account data.
+
 \subsubsection{swag-executor}
+
+This component is a task scheduler that can execute different jobs at a given time or repeatedly.
 
 \subsubsection{swag-webapp}
 
+This is the main user interface, implemented as a web application with the wicket framework.
+
 \subsubsection{swag-notification}
+
 This component contains a message driven bean that sends out notification (user to user and game events)  e-mails via smtp.
 
 
