@@ -183,9 +183,15 @@ private HashMap<BuildingType, Building> buildings;
 	                    Integer newLevel = building.getLevel() + 1;
 	                    building.setLevel(newLevel);
 
+	                   // buildingsDao.beginTransaction();
+	                    //	buildingsDao.update(building);
+	                    	//buildingsDao.commitTransaction();
+	                    	
+	                    	
 	                    buildingsDao.beginTransaction();
 	                    	buildingsDao.update(building);
-	                    	buildingsDao.commitTransaction();
+	                     	mapUserDao.update(baseutils.reduceRessources(mapUser, 500));
+	                    buildingsDao.commitTransaction();
 	                    updateBildingCounter(building, this) ;
 
 	                    info("upgraded");
@@ -201,9 +207,8 @@ private HashMap<BuildingType, Building> buildings;
 	                    
 	                    buildingsDao.beginTransaction();
 	                    	buildingsDao.insert(building);
-	                    	//squareDao.insert(square);
-	                    	//mapUserDao.insert(mapUser);
-	                    buildingsDao.commitTransaction();
+	                    	mapUserDao.update(baseutils.reduceRessources(mapUser, 1500));
+	                     buildingsDao.commitTransaction();
 	                    
 	                    updateBildingCounter(building, this) ;
 	                    
