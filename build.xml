@@ -2,7 +2,20 @@
 
 <project name="swag" default="build" basedir=".">
 
+	<!-- replace maven-build.xml class path def with this
+	<path id="build.classpath">
+	  	<fileset dir="../lib/"> <include name="**/*.jar"/> </fileset>
+	  </path>
+	  <path id="build.test.classpath">
+	  	<fileset dir="../lib/"> <include name="**/*.jar"/> </fileset>
+	  </path>
+	-->
+	
 	<import file="ant-macros.xml"/>
+	
+	<target name="möp" depends="clean">
+		<call-targets target="build"/>
+	</target>
 	
 	<target name="build" depends="generate">
 		<property name="maven.test.skip" value="true"/>
@@ -12,7 +25,9 @@
 
 		<antcall  target="setup"/>	
 		
+		<!-- do the build and copy dance! -->
 		<call-targets target="build" />
+		
 		<call-targets target="deploy"/>
 
 		<antcall target="stop-domain"/>
@@ -20,6 +35,12 @@
 	<target name="clean">
 		<antcall target="delete-domain"/>
 
+		<delete>
+			<fileset dir="lib">
+				<include name="swag*jar"/>
+			</fileset>
+		</delete>
+		
 		<call-targets target="clean"/>
 	</target>
 	<target name="run">
@@ -32,6 +53,10 @@
 	<target name="rebuild">
 		<antcall target="clean"/>
 		<antcall target="build"/>
+	</target>
+
+	<target name="install">
+		<call-targets target="install"/>
 	</target>
 
 	<target name="compile">
@@ -89,18 +114,22 @@
 		</exec>
 	</target>
 
+	<target name="package">
+		<call-targets target="package"/>
+	</target>
+	
 	<macrodef name="call-targets">
 		<attribute name="target" />
 		<sequential>
 			<echo message=">>>>> @{target}"/>
 
+			<call-target dir="swag-util"         target="@{target}" />
 			<call-target dir="swag-model"        target="@{target}" />
+			<call-target dir="swag-messages"     target="@{target}" />
 			<call-target dir="swag-auth"         target="@{target}" />
 			<call-target dir="swag-executor"     target="@{target}" />
-			<call-target dir="swag-webapp"       target="@{target}" />
-			<call-target dir="swag-util"         target="@{target}" />
-			<call-target dir="swag-messages"     target="@{target}" />
 			<call-target dir="swag-notification" target="@{target}" />
+			<call-target dir="swag-webapp"       target="@{target}" />
 		</sequential>
 	</macrodef>
 

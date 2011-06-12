@@ -6,10 +6,8 @@
 
 <project name="swag-webapp" default="package" basedir=".">
 
+	<import file="../ant-macros.xml"/>
 	<import file="ant-build.xml"/>
-	
-	<target name="build" depends="setup,package">		
-	</target>
 	
   <!-- ====================================================================== -->
   <!-- Import maven-build.xml into the current project                        -->
