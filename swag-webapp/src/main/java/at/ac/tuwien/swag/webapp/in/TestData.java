@@ -13,6 +13,7 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import at.ac.tuwien.swag.model.dao.MapDAO;
 import at.ac.tuwien.swag.model.dao.MapUserDAO;
 import at.ac.tuwien.swag.model.dao.SquareDAO;
+import at.ac.tuwien.swag.model.dao.StoredRessourceDAO;
 import at.ac.tuwien.swag.model.dao.UserDAO;
 import at.ac.tuwien.swag.model.domain.Map;
 import at.ac.tuwien.swag.model.domain.MapUser;
@@ -35,6 +36,8 @@ public class TestData extends InPage {
     private MapUserDAO mapUserDao;
     @Inject
     private SquareDAO squareDao;
+    @Inject
+    private StoredRessourceDAO  storedRessourceDao;
 
     @Inject
     private PasswordHasher hasher;
@@ -52,6 +55,7 @@ public class TestData extends InPage {
             	squareDao.beginTransaction();
             		squareDao.deleteAll();
             		mapUserDao.deleteAll();
+            		storedRessourceDao.deleteAll();
             		mapDao.deleteAll();
             		userDao.deleteAll();
             	squareDao.commitTransaction();
@@ -199,8 +203,7 @@ public class TestData extends InPage {
 
         ariovistMap.setClayRessource(new StoredRessource(1500, SharedRessourceType.CLAY, new Date(), 1.0, ariovistMap));
         ariovistMap.setWoodRessource(new StoredRessource(1500, SharedRessourceType.WOOD, new Date(), 1.0, ariovistMap));
-        ariovistMap
-            .setGrainRessource(new StoredRessource(1500, SharedRessourceType.GRAIN, new Date(), 1.0, ariovistMap));
+        ariovistMap.setGrainRessource(new StoredRessource(1500, SharedRessourceType.GRAIN, new Date(), 1.0, ariovistMap));
         ariovistMap.setIronRessource(new StoredRessource(1500, SharedRessourceType.IRON, new Date(), 1.0, ariovistMap));
 
         users.add(ariovistMap);
