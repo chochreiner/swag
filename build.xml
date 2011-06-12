@@ -94,8 +94,8 @@
 		<sequential>
 			<echo message=">>>>> @{target}"/>
 
-			<call-target dir="swag-auth"         target="@{target}" />
 			<call-target dir="swag-model"        target="@{target}" />
+			<call-target dir="swag-auth"         target="@{target}" />
 			<call-target dir="swag-executor"     target="@{target}" />
 			<call-target dir="swag-webapp"       target="@{target}" />
 			<call-target dir="swag-util"         target="@{target}" />
