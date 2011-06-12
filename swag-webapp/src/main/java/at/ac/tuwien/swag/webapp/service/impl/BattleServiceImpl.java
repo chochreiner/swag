@@ -29,8 +29,8 @@ public class BattleServiceImpl implements BattleService {
 
         soldierDAO.beginTransaction();
 
-        reduceTroops(defender, def);
-        reduceTroops(attacker, att);
+        reduceTroops(defender, att);
+        reduceTroops(attacker, def);
 
         soldierDAO.commitTransaction();
 
