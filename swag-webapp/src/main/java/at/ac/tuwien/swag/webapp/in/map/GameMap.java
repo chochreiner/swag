@@ -97,7 +97,8 @@ public class GameMap extends Panel {
                             if (checkIfBaseBuildings(square)) {
                                 label = new Label("square", "X: " + square.getCoordX() +" Y: lalala" + square.getCoordY());
                                 label.add(new SimpleAttributeModifier("class", "baseSquare"));
-                            }else {
+                            }
+                            if(!square.getIsHomeBase()&& !checkIfBaseBuildings(square)){
                             	label =new Label("square", "X: " + square.getCoordX() + " EMPTY  Y: " + square.getCoordY());
                             }
                         }
@@ -117,9 +118,15 @@ public class GameMap extends Panel {
                 				if(checkIfMySquare(square)) {
                 					mapModalWindow.loadBasePanel();
                 				}else{
+                					if (square.getIsHomeBase()) {
+                						mapModalWindow.loadForeignSquareModalPanel();
+                					}
                 					if(checkIfBaseBuildings(square)){
                 						mapModalWindow.loadForeignSquareModalPanel();
-                					}else { mapModalWindow.loadEmptySquareModalPanel(); }
+                					}
+                					if(!square.getIsHomeBase()&& !checkIfBaseBuildings(square)){
+                						mapModalWindow.loadEmptySquareModalPanel(); 
+                					}
                 				}
                 				mapModalWindow.show(target); 
                 			}
