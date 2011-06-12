@@ -12,6 +12,8 @@ eclipse-workspace
 *.settings
 build/
 src/gen/
+lib/
+lib.zip
 
 #================
 #Mac OS X hidden files/folders
