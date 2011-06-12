@@ -13,7 +13,7 @@
   <types xsi:type="metamodel:Entity" name="Message">
     <attributes name="timestamp" type="//@types.3"/>
     <attributes name="subject" type="//@types.0"/>
-    <attributes name="text" type="//@types.0"/>
+    <attributes name="text" type="//@types.22"/>
     <attributes name="read" type="//@types.4"/>
     <associations name="from" type="//@types.11" multiplicity="ManyToOne"/>
     <associations name="to" type="//@types.11" multiplicity="ManyToMany"/>
@@ -25,8 +25,6 @@
     <attributes name="email" type="//@types.0"/>
     <attributes name="fullname" type="//@types.0"/>
     <associations name="maps" nullable="true" type="//@types.13" multiplicity="OneToMany" isMapped="true"/>
-    <associations name="sentMessages" type="//@types.10" multiplicity="OneToMany"/>
-    <associations name="receivedMessages" type="//@types.10" multiplicity="ManyToMany"/>
   </types>
   <types xsi:type="metamodel:Entity" name="Map">
     <attributes name="maxNumUsers" type="//@types.1"/>
@@ -39,10 +37,10 @@
   <types xsi:type="metamodel:Entity" name="MapUser">
     <associations name="map" type="//@types.12" multiplicity="ManyToOne"/>
     <associations name="user" type="//@types.11" multiplicity="ManyToOne"/>
-    <associations name="woodRessource" type="//@types.14"  multiplicity="OneToOne"/>
-    <associations name="clayRessource" type="//@types.14"   multiplicity="OneToOne"/>
-    <associations name="grainRessource" type="//@types.14"   multiplicity="OneToOne"/>
-    <associations name="ironRessource" type="//@types.14"  multiplicity="OneToOne"/>
+    <associations name="woodRessource" type="//@types.14"/>
+    <associations name="clayRessource" type="//@types.14"/>
+    <associations name="grainRessource" type="//@types.14"/>
+    <associations name="ironRessource" type="//@types.14"/>
     <associations name="squares" type="//@types.15" multiplicity="OneToMany"/>
   </types>
   <types xsi:type="metamodel:Entity" name="StoredRessource">
@@ -50,7 +48,7 @@
     <attributes name="ressourceType" type="//@types.5"/>
     <attributes name="lastUpdate" type="//@types.3"/>
     <attributes name="currentRate" type="//@types.2"/>
-     <associations name="mapUser" type="//@types.13" multiplicity="OneToOne" />
+    <associations name="mapUser" type="//@types.13"/>
   </types>
   <types xsi:type="metamodel:Entity" name="Square">
     <attributes name="coordX" type="//@types.1"/>
@@ -71,8 +69,8 @@
   <types xsi:type="metamodel:Entity" name="Building">
     <attributes name="level" type="//@types.1"/>
     <attributes name="type" type="//@types.7"/>
-    <associations name="square" type="//@types.15" multiplicity="ManyToOne"/>
     <attributes name="upgrading" type="//@types.4"/>
+    <associations name="square" type="//@types.15" multiplicity="ManyToOne"/>
   </types>
   <types xsi:type="metamodel:Entity" name="Boost">
     <attributes name="type" type="//@types.8"/>
@@ -91,9 +89,10 @@
     <associations name="troop" type="//@types.19" multiplicity="ManyToOne"/>
   </types>
   <types xsi:type="metamodel:Entity" name="LogMessage" tableName="logmMessages">
-    <attributes name="timestamp" type="//@types.3" />
+    <attributes name="timestamp" type="//@types.3"/>
     <attributes name="type" type="//@types.0"/>
     <attributes name="subject" type="//@types.0"/>
     <attributes name="text" type="//@types.0"/>
-  </types>  
+  </types>
+  <types xsi:type="metamodel:BuiltinType" name="Text"/>
 </metamodel:Model>

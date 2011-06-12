@@ -17,11 +17,11 @@ context Attribute ERROR "Attribute without type: '" + name + "'":
 context Association ERROR "Association without type: '" + name + "'":
 	type != null;
 	
-context Association ERROR "One sided association: '" + name + "', all associations must be present on both Entitities" :
-	type.associations.exists( a | a.type == this.entity() );
+//context Association ERROR "One sided association: '" + name + "', all associations must be present on both Entitities" :
+//	type.associations.exists( a | a.type == this.entity() );
 	
-context Association ERROR "Wrong multiplicity: '" + multiplicity + "', check the other side of this association too." :
-	type.associations.exists( a | a.multiplicity == multiplicity.opposite() );
+//context Association ERROR "Wrong multiplicity: '" + multiplicity + "', check the other side of this association too." :
+//	type.associations.exists( a | a.multiplicity == null || a.multiplicity == multiplicity.opposite() );
 
 context Association ERROR "ManyToOne relationships cannot be mapped, use mappedBy on the other side" + multiplicity : 
 	!(multiplicity == Multiplicity::ManyToOne && isMapped());

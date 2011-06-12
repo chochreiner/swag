@@ -72,9 +72,7 @@ public class AuthenticationBean extends MessageHandler {
 			hasher.hash( msg.user.getPassword() ),
 			msg.user.getAddress(),
 			msg.user.getEmail(),
-			msg.user.getFullname(),
-			null,
-			null
+			msg.user.getFullname()
 		);
 		
 		users.beginTransaction();
@@ -96,7 +94,7 @@ public class AuthenticationBean extends MessageHandler {
 				"The interblag",
 				"swag@swag.com", 
 				"System administration account", 
-				null ,null, null 
+				null 
 			);
 
 			users.beginTransaction();

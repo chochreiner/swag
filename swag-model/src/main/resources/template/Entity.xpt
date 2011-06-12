@@ -52,6 +52,9 @@
 				«IF attr.type.name == "Date"»
 					@Temporal(TemporalType.TIMESTAMP)
 				«ENDIF»
+				«IF attr.type.name == "Text"»
+					@Lob
+				«ENDIF»
 				«IF model().enums().contains( attr.type )»
 					@Enumerated(EnumType.STRING)
 				«ENDIF»

@@ -20,14 +20,14 @@ public class MessageDetail extends InPage {
 
         String id = parameters.get("id").toString();
 
-        MessageDTO message = messages.getMessagebyId(Long.getLong(id), "TODO");
+        MessageDTO message = messages.getMessagebyId( Long.parseLong(id), "TODO");
 
         if (message == null) {
             add(new Label("subject", "wrong id"));
             add(new Label("text", "wrong id"));
         } else {
             if (!message.getRead()) {
-                messages.updateReadStatus(message.getId());
+                messages.updateReadStatus( message.getId() );
             }
 
             add(new Label("subject", message.getSubject()));

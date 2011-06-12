@@ -26,7 +26,10 @@ typeName( Field this ):
 	"'ERROR: YOU SHOULD NEVER EVER SEE THIS, AND IM TOO LAZY TO WRITE A HELPFUL MESSAGE NOW'";
 
 typeName( Attribute this ):
-	type.name;
+	if ( type.name == "Text" ) then
+		"String"
+	else 
+		type.name;
 
 typeName( Association this ):
 	switch ( multiplicity ) {
@@ -55,7 +58,10 @@ dtoTypeName( Field this ):
 	"'ERROR: YOU SHOULD NEVER EVER SEE THIS, AND IM TOO LAZY TO WRITE A HELPFUL MESSAGE NOW'";
 
 dtoTypeName( Attribute this ):
-	type.name;
+	if ( type.name == "Text" ) then
+		"String"
+	else
+		type.name;
 
 dtoTypeName( Association this ):
 	switch ( multiplicity ) {
