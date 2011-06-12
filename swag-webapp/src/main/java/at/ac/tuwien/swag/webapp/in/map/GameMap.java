@@ -90,6 +90,10 @@ public class GameMap extends Panel {
                                 label.add(new SimpleAttributeModifier("class", "homeBaseSquare"));
                             }
                         } else {
+                        	if (square.getIsHomeBase()) {
+                                label = new Label("square", "FOREIGN-HOMEBASE");
+                                label.add(new SimpleAttributeModifier("class", "homeBaseSquare"));
+                            }
                             if (checkIfBaseBuildings(square)) {
                                 label = new Label("square", "X: " + square.getCoordX() +" Y: lalala" + square.getCoordY());
                                 label.add(new SimpleAttributeModifier("class", "baseSquare"));
