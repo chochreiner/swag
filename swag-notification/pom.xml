@@ -23,7 +23,7 @@
   <dependencies>
     <dependency>
       <groupId>at.ac.tuwien</groupId>
-      <artifactId>swag-model</artifactId>
+      <artifactId>swag-messages</artifactId>
     </dependency>
     <dependency>
       <groupId>at.ac.tuwien</groupId>
@@ -39,7 +39,20 @@
       <artifactId>junit</artifactId>
       <scope>test</scope>
     </dependency>
-
+	<dependency>
+      <groupId>dumbster</groupId>
+      <artifactId>dumbster</artifactId>
+      <exclusions>
+        <exclusion>
+          <artifactId>mail</artifactId>
+          <groupId>javax.mail</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>activation</artifactId>
+          <groupId>javax.activation</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
   </dependencies>
 
   <build>
