@@ -144,6 +144,8 @@ For development purposes we used maven in order to build, setup and deploy the a
 %TODO add additional technologies
 
 \section{Planned but omitted implementations}
+Due to some implementation and particularly configuration and execution issues with the Glassfish Server, we could not implement all planed features. This chapter lists all significant omitted features.
+
 \paragraph{timed actions}
 
 \paragraph{advanced troop and battle management}
@@ -156,14 +158,13 @@ For development purposes we used maven in order to build, setup and deploy the a
 
 
 \section{Possible Improvements}
-\paragraph{Jabber connection}
-
 \paragraph{Server side caching of components of the web application}
+Due to the fact that browser based games normally suffer from numerous page reloads, server side caching of single components can achieve a great leap forward concerning performance issues. Some components, like maps change only rarely and they could be cached on the server. The framework wicket provides some functionality to control the caching of components on the server. \footnote{https://cwiki.apache.org/WICKET/caching-in-wicket-15.html} This manual caching configurations can produce severe issues for the update of web components, therefor they should only be used in combination of a comprehensive test coverage of the application.
 
 \paragraph{Caching of database queries}
+Modern databases provide numerous possibilities to improve the performance of queries. Some options cover the general handling of queries, but there are also some additions functionalities e.g. views, that can cache certain records and therfore reduce the load on the database.
 
-\paragraph{Performance Monitoring} \footnote{http://jamonapi.sourceforge.net/}
-
-
+\paragraph{Performance Monitoring}
+Numerous performance issues can only be identified during runtime. Therefore you have to implement some performance monitoring functionality. There are to different approaches for performance monitoring. The first approach is the global monitoring on the application server. This approach can only detect severe performance issues. In order to identify these issues you often have to implement some specific monitoring functionality , e.g. with JAMON. \footnote{http://jamonapi.sourceforge.net/}
 
 \end{document}
