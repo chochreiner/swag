@@ -57,7 +57,16 @@ public abstract class EmptySquareModalPanel extends Panel {
             		mapUserDao.update(baseutils.reduceRessources(mapUser, 2500));
             	squareDao.commitTransaction();
                 */
-            	onSettle(target, squareId);
+            	
+                if(baseutils.checkRessources(getMapuser(session.getUsername(), session.getMapname()), 2500)) {
+                	onSettle(target, squareId);
+				}else {
+
+					info("You have not enough resources to settle here");
+					onCancel(target);
+				}
+				
+                
             }
 
 			@Override
@@ -67,8 +76,7 @@ public abstract class EmptySquareModalPanel extends Panel {
 			}
         });
     }
-	
-	private MapUser getMapuser(String username, String mapname, Square square) {
+	private MapUser getMapuser(String username, String mapname) {
         String query =
             "SELECT m FROM MapUser m LEFT JOIN FETCH m.squares WHERE m.user.username = :username AND m.map.name = :mapname";
 
@@ -81,9 +89,6 @@ public abstract class EmptySquareModalPanel extends Panel {
         List<MapUser> buffer = mapUserDao.findByQuery(query, values);
 
         if (!buffer.isEmpty()) {
-        	if (!buffer.get(0).getSquares().contains(square)) {
-                setResponsePage(MapPage.class);
-            }
         	
             return buffer.get(0);
         } else {
@@ -92,6 +97,6 @@ public abstract class EmptySquareModalPanel extends Panel {
             return null;
         }
     }
-	
 	abstract void onSettle(AjaxRequestTarget target, long squareId);
+	abstract void onCancel(AjaxRequestTarget target);
 }

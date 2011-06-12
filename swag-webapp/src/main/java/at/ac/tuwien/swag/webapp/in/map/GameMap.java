@@ -88,6 +88,12 @@ public class GameMap extends Panel {
 				
 				close(target);
 			}
+
+			@Override
+			void onAttack(AjaxRequestTarget target, long squareId) {
+				// TODO Auto-generated method stub
+				close(target);
+			}
         };
     }
     

@@ -9,5 +9,6 @@ public class OutNavigation extends Panel {
     public OutNavigation(String id) {
         super(id);
         add(new BookmarkablePageLink<String>("home", StartPage.class));
+        add(new BookmarkablePageLink<String>("dropDB", DropDBPage.class));
     }
 }

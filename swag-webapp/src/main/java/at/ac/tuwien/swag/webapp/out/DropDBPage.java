@@ -1,8 +1,6 @@
-package at.ac.tuwien.swag.webapp.in.admin;
+package at.ac.tuwien.swag.webapp.out;
 
 import org.apache.wicket.Component;
-import org.apache.wicket.authroles.authorization.strategies.role.Roles;
-import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.ajax.markup.html.AjaxLazyLoadPanel;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -10,10 +8,8 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import com.google.inject.Inject;
 
 import at.ac.tuwien.swag.model.SQLHelper;
-import at.ac.tuwien.swag.webapp.in.InPage;
 
-@AuthorizeInstantiation({Roles.ADMIN})
-public class DropDBPage extends InPage {
+public class DropDBPage extends OutPage {
 	private static final long serialVersionUID = 1L;
 
 	@Inject
