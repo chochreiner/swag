@@ -150,9 +150,9 @@ public class TestData extends InPage {
             mapDao.beginTransaction();
             try {
             	this.mapDao.insert(map);
-            	for (Square sq : squares.toArray( new Square[0] ) ) {
-            		squareDao.insert(sq);
-            	}
+//            	for (Square sq : squares.toArray( new Square[0] ) ) {
+//            		squareDao.insert(sq);
+//            	}
             } finally {
             	mapDao.commitTransaction();            	
             }
