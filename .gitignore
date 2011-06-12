@@ -20,3 +20,8 @@ src/gen/
 
 target/
 
+*.aux
+*.log
+*.toc
+*.pdf
+
