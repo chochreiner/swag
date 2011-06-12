@@ -35,7 +35,7 @@
   <property name="maven.test.reports" value="${maven.build.dir}/test-reports"/>
   <property name="maven.reporting.outputDirectory" value="${maven.build.dir}/site"/>
 
-  <property name="maven.repo.local" value="${user.home}/.m2/repository"/>
+  <property name="maven.repo.local" value="lib/repository"/>
   <property name="maven.settings.offline" value="false"/>
   <property name="maven.settings.interactiveMode" value="true"/>
 
@@ -61,6 +61,8 @@
   <!-- ====================================================================== -->
 
   <target name="compile" depends="get-deps" description="Compile the code">
+  	<echo message="${maven.repo.local}"/>
+  	
     <mkdir dir="${maven.build.outputDir}"/>
     <javac destdir="${maven.build.outputDir}" 
            nowarn="false" 

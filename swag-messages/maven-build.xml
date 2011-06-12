@@ -35,7 +35,7 @@
   <property name="maven.test.reports" value="${maven.build.dir}/test-reports"/>
   <property name="maven.reporting.outputDirectory" value="${maven.build.dir}/site"/>
 
-  <property name="maven.repo.local" value="${user.home}/.m2/repository"/>
+  <property name="maven.repo.local" value="lib/repository"/>
   <property name="maven.settings.offline" value="true"/>
   <property name="maven.settings.interactiveMode" value="true"/>
 
@@ -43,62 +43,13 @@
   <!-- Defining classpaths                                                    -->
   <!-- ====================================================================== -->
 
-  <path id="build.classpath">
-    <pathelement location="${maven.repo.local}/at/ac/tuwien/swag-model/1.0-SNAPSHOT/swag-model-1.0-SNAPSHOT.jar"/>
-    <pathelement location="${maven.repo.local}/com/google/inject/guice/3.0/guice-3.0.jar"/>
-    <pathelement location="${maven.repo.local}/javax/inject/javax.inject/1/javax.inject-1.jar"/>
-    <pathelement location="${maven.repo.local}/aopalliance/aopalliance/1.0/aopalliance-1.0.jar"/>
-    <pathelement location="${maven.repo.local}/com/google/inject/extensions/guice-multibindings/3.0/guice-multibindings-3.0.jar"/>
-    <pathelement location="${maven.repo.local}/com/google/inject/extensions/guice-servlet/3.0/guice-servlet-3.0.jar"/>
-    <pathelement location="${maven.repo.local}/com/google/inject/extensions/guice-persist/3.0/guice-persist-3.0.jar"/>
-    <pathelement location="${maven.repo.local}/org/hibernate/hibernate-entitymanager/3.5.1-Final/hibernate-entitymanager-3.5.1-Final.jar"/>
-    <pathelement location="${maven.repo.local}/org/hibernate/hibernate-core/3.5.1-Final/hibernate-core-3.5.1-Final.jar"/>
-    <pathelement location="${maven.repo.local}/antlr/antlr/2.7.6/antlr-2.7.6.jar"/>
-    <pathelement location="${maven.repo.local}/commons-collections/commons-collections/3.1/commons-collections-3.1.jar"/>
-    <pathelement location="${maven.repo.local}/dom4j/dom4j/1.6.1/dom4j-1.6.1.jar"/>
-    <pathelement location="${maven.repo.local}/xml-apis/xml-apis/1.0.b2/xml-apis-1.0.b2.jar"/>
-    <pathelement location="${maven.repo.local}/javax/transaction/jta/1.1/jta-1.1.jar"/>
-    <pathelement location="${maven.repo.local}/org/hibernate/hibernate-annotations/3.5.1-Final/hibernate-annotations-3.5.1-Final.jar"/>
-    <pathelement location="${maven.repo.local}/org/hibernate/hibernate-commons-annotations/3.2.0.Final/hibernate-commons-annotations-3.2.0.Final.jar"/>
-    <pathelement location="${maven.repo.local}/cglib/cglib/2.2/cglib-2.2.jar"/>
-    <pathelement location="${maven.repo.local}/asm/asm/3.1/asm-3.1.jar"/>
-    <pathelement location="${maven.repo.local}/javassist/javassist/3.9.0.GA/javassist-3.9.0.GA.jar"/>
-    <pathelement location="${maven.repo.local}/org/hibernate/javax/persistence/hibernate-jpa-2.0-api/1.0.0.Final/hibernate-jpa-2.0-api-1.0.0.Final.jar"/>
-    <pathelement location="${maven.repo.local}/com/google/code/gson/gson/1.7.1/gson-1.7.1.jar"/>
-    <pathelement location="${maven.repo.local}/org/slf4j/slf4j-api/1.6.1/slf4j-api-1.6.1.jar"/>
-    <pathelement location="${maven.repo.local}/org/slf4j/slf4j-log4j12/1.6.1/slf4j-log4j12-1.6.1.jar"/>
-    <pathelement location="${maven.repo.local}/log4j/log4j/1.2.16/log4j-1.2.16.jar"/>
-    <pathelement location="${maven.repo.local}/javax/jms/jms/1.1/jms-1.1.jar"/>
-  </path>
-  <path id="build.test.classpath">
-    <pathelement location="${maven.repo.local}/at/ac/tuwien/swag-model/1.0-SNAPSHOT/swag-model-1.0-SNAPSHOT.jar"/>
-    <pathelement location="${maven.repo.local}/com/google/inject/guice/3.0/guice-3.0.jar"/>
-    <pathelement location="${maven.repo.local}/javax/inject/javax.inject/1/javax.inject-1.jar"/>
-    <pathelement location="${maven.repo.local}/aopalliance/aopalliance/1.0/aopalliance-1.0.jar"/>
-    <pathelement location="${maven.repo.local}/com/google/inject/extensions/guice-multibindings/3.0/guice-multibindings-3.0.jar"/>
-    <pathelement location="${maven.repo.local}/com/google/inject/extensions/guice-servlet/3.0/guice-servlet-3.0.jar"/>
-    <pathelement location="${maven.repo.local}/com/google/inject/extensions/guice-persist/3.0/guice-persist-3.0.jar"/>
-    <pathelement location="${maven.repo.local}/org/hibernate/hibernate-entitymanager/3.5.1-Final/hibernate-entitymanager-3.5.1-Final.jar"/>
-    <pathelement location="${maven.repo.local}/org/hibernate/hibernate-core/3.5.1-Final/hibernate-core-3.5.1-Final.jar"/>
-    <pathelement location="${maven.repo.local}/antlr/antlr/2.7.6/antlr-2.7.6.jar"/>
-    <pathelement location="${maven.repo.local}/commons-collections/commons-collections/3.1/commons-collections-3.1.jar"/>
-    <pathelement location="${maven.repo.local}/dom4j/dom4j/1.6.1/dom4j-1.6.1.jar"/>
-    <pathelement location="${maven.repo.local}/xml-apis/xml-apis/1.0.b2/xml-apis-1.0.b2.jar"/>
-    <pathelement location="${maven.repo.local}/javax/transaction/jta/1.1/jta-1.1.jar"/>
-    <pathelement location="${maven.repo.local}/org/hibernate/hibernate-annotations/3.5.1-Final/hibernate-annotations-3.5.1-Final.jar"/>
-    <pathelement location="${maven.repo.local}/org/hibernate/hibernate-commons-annotations/3.2.0.Final/hibernate-commons-annotations-3.2.0.Final.jar"/>
-    <pathelement location="${maven.repo.local}/cglib/cglib/2.2/cglib-2.2.jar"/>
-    <pathelement location="${maven.repo.local}/asm/asm/3.1/asm-3.1.jar"/>
-    <pathelement location="${maven.repo.local}/javassist/javassist/3.9.0.GA/javassist-3.9.0.GA.jar"/>
-    <pathelement location="${maven.repo.local}/org/hibernate/javax/persistence/hibernate-jpa-2.0-api/1.0.0.Final/hibernate-jpa-2.0-api-1.0.0.Final.jar"/>
-    <pathelement location="${maven.repo.local}/com/google/code/gson/gson/1.7.1/gson-1.7.1.jar"/>
-    <pathelement location="${maven.repo.local}/org/slf4j/slf4j-api/1.6.1/slf4j-api-1.6.1.jar"/>
-    <pathelement location="${maven.repo.local}/org/slf4j/slf4j-log4j12/1.6.1/slf4j-log4j12-1.6.1.jar"/>
-    <pathelement location="${maven.repo.local}/log4j/log4j/1.2.16/log4j-1.2.16.jar"/>
-    <pathelement location="${maven.repo.local}/junit/junit/3.8.1/junit-3.8.1.jar"/>
-    <pathelement location="${maven.repo.local}/javax/jms/jms/1.1/jms-1.1.jar"/>
-  </path>
-
+	  <path id="build.classpath">
+	  	<fileset dir="../lib/"> <include name="**/*.jar"/> </fileset>
+	  </path>
+	  <path id="build.test.classpath">
+	  	<fileset dir="../lib/"> <include name="**/*.jar"/> </fileset>
+	  </path>
+	
   <!-- ====================================================================== -->
   <!-- Cleaning up target                                                     -->
   <!-- ====================================================================== -->

@@ -16,9 +16,11 @@ import org.apache.wicket.model.IModel;
 import com.google.inject.Inject;
 
 import at.ac.tuwien.swag.model.dao.MapUserDAO;
+import at.ac.tuwien.swag.model.dao.SquareDAO;
 import at.ac.tuwien.swag.model.domain.MapUser;
 import at.ac.tuwien.swag.model.domain.Square;
 import at.ac.tuwien.swag.webapp.SwagWebSession;
+import at.ac.tuwien.swag.webapp.in.base.BaseUtils;
 
 public class GameMap extends Panel {
     private static final long serialVersionUID = -2473064801663338918L;
@@ -31,14 +33,22 @@ public class GameMap extends Panel {
 	@Inject
     private MapUserDAO mapUserDao;
 	
+	@Inject
+	private SquareDAO squareDao;
+	
+	 @Inject
+	 private BaseUtils baseutils;
+
+	private List<Square> foreignSquares;
+	
     public GameMap(String id, IModel<List<List<Square>>> gameMapList) {
         super(id);
 
         SwagWebSession session = (SwagWebSession) getSession(); 
-    	
-        this.mapUser = getMapuser(session.getUsername(), session.getMapname());
-        this.gameMapList = gameMapList;
-
+        this.gameMapList	= gameMapList;
+        this.mapUser		= getMapuser(session.getUsername(), session.getMapname());
+        this.foreignSquares = getForeignSquare(session.getUsername(), session.getMapname());
+        
         this.setOutputMarkupId(true);
 
         this.setupGameMapView();
@@ -64,9 +74,17 @@ public class GameMap extends Panel {
             }
 
 			@Override
-			void onSettle(AjaxRequestTarget target, Square square) {
+			void onSettle(AjaxRequestTarget target, long squareId) {
 				
+				Square square	= squareDao.findById(squareId);
+				
+				square.setUser(mapUser);
 				mapUser.getSquares().add(square);
+				
+				squareDao.beginTransaction();
+        			squareDao.update(square);
+        			mapUserDao.update(baseutils.reduceRessources(mapUser, 2500));
+        		squareDao.commitTransaction();
 				
 				close(target);
 			}
@@ -92,30 +110,25 @@ public class GameMap extends Panel {
 
                         Label label = null;
                         if(checkIfMySquare(square)) {
-
-                            label = new Label("square", "X: " + square.getCoordX() + " AAAAA Y: " + square.getCoordY());
-                            if (checkIfBaseBuildings(square)) {
                                 label = new Label("square", "BASEOWNEDBYME");
                                 label.add(new SimpleAttributeModifier("class", "baseSquare"));
-                            }
                             if (square.getIsHomeBase()) {
                                 label = new Label("square", "HOMEBASE");
                                 label.add(new SimpleAttributeModifier("class", "homeBaseSquare"));
                             }
                         } else {
-                        	if (square.getIsHomeBase()) {
-                                label = new Label("square", "FOREIGN-HOMEBASE");
-                                label.add(new SimpleAttributeModifier("class", "homeBaseSquare"));
-                            }
-                            if (checkIfBaseBuildings(square)) {
-                                label = new Label("square", "X: " + square.getCoordX() +" Y: lalala" + square.getCoordY());
+                        	label =new Label("square", "X: " + square.getCoordX() + " EMPTY "+square.getId()+"  Y: " + square.getCoordY());
+
+                            if(foreignSquares.contains(square)){
+                            	label = new Label("square", "FOREIGNBASE");
                                 label.add(new SimpleAttributeModifier("class", "baseSquare"));
-                            }
-                            if(!square.getIsHomeBase()&& !checkIfBaseBuildings(square)){
-                            	label =new Label("square", "X: " + square.getCoordX() + " EMPTY  Y: " + square.getCoordY());
+                                if (square.getIsHomeBase()) {
+                                    label = new Label("square", "FOREIGN-HOMEBASE");
+                                    label.add(new SimpleAttributeModifier("class", "homeBaseSquare"));
+                                }
                             }
                         }
-
+                        
                         squareList.add(label);
                         
 /////////////////////////////////////////// MODAL WINDOW ////////////////////////////////////////////////
@@ -131,13 +144,9 @@ public class GameMap extends Panel {
                 				if(checkIfMySquare(square)) {
                 					mapModalWindow.loadBasePanel();
                 				}else{
-                					if (square.getIsHomeBase()) {
+                					if(foreignSquares.contains(square)){
                 						mapModalWindow.loadForeignSquareModalPanel();
-                					}
-                					if(checkIfBaseBuildings(square)){
-                						mapModalWindow.loadForeignSquareModalPanel();
-                					}
-                					if(!square.getIsHomeBase()&& !checkIfBaseBuildings(square)){
+                					}else {
                 						mapModalWindow.loadEmptySquareModalPanel(); 
                 					}
                 				}
@@ -203,5 +212,15 @@ public class GameMap extends Panel {
             return true;
         }
         return false;
+    }
+    
+    private List<Square> getForeignSquare(String username, String mapname) {
+    	String query ="SELECT s FROM MapUser m JOIN m.squares s WHERE m.user.username != :username AND m.map.name = :mapname";
+        Map<String, String> values = new HashMap<String, String>();
+        values.put("username", username);
+        values.put("mapname", mapname);
+        List<Square> buffer = squareDao.findByQuery(query, values);
+
+            return buffer;
     }
 }

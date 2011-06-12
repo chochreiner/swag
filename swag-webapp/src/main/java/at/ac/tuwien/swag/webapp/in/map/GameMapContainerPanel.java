@@ -142,7 +142,7 @@ public class GameMapContainerPanel extends Panel{
 				}else {startY --;endY --;}
 				
 				//target.addChildren(gameMapContainer, Label.class);
-				target.addComponent(gameMapView);
+				target.add(gameMapView);
 			}
         });
     	
@@ -156,7 +156,7 @@ public class GameMapContainerPanel extends Panel{
 					endY = gameMapProvider.getMapYSize();
 				}else { startY ++; endY ++;}
 				
-				target.addComponent(gameMapView);
+				target.add(gameMapView);
 			}
         });
     	
@@ -169,7 +169,7 @@ public class GameMapContainerPanel extends Panel{
 					startX = gameMapProvider.getMapXSize() -(MAP_DIMENSION-1);
 					endX = gameMapProvider.getMapXSize();
 				}else {startX ++; endX ++;}
-				target.addComponent(gameMapView);
+				target.add(gameMapView);
 			}
         });
     	
@@ -181,7 +181,7 @@ public class GameMapContainerPanel extends Panel{
 				if(startX == 1 || startX < 0) {
 					startX = 1; endX = MAP_DIMENSION;	
 				}else { startX --; endX --;}
-				target.addComponent(gameMapView);
+				target.add(gameMapView);
 			}
         });
     }

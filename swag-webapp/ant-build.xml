@@ -2,7 +2,6 @@
 
 <project name="swag-webapp-helpers" basedir=".">
 	<!-- import our own ant tasks -->
-	<import file="../ant-macros.xml"/>
 	
 	<target name="run"></target>
 	

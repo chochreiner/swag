@@ -6,8 +6,6 @@
 
 <project name="swag-messages" default="package" basedir=".">
 
-	<target name="build" depends="compile"/>
-	
   <!-- ====================================================================== -->
   <!-- Import maven-build.xml into the current project                        -->
   <!-- ====================================================================== -->

@@ -10,4 +10,9 @@
 	
 	<!-- default targets -->
 	<target name="init" depends="init-deploy,init-domain,init-jms"/>
+	
+	<target name="build" depends="init, package">
+		<echo message="${packaging.file}"></echo>
+		<copy file="${packaging.file}" todir="../lib"/>
+	</target>
 </project>
