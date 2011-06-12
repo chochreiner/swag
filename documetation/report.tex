@@ -147,14 +147,21 @@ For development purposes we used maven in order to build, setup and deploy the a
 Due to some implementation and particularly configuration and execution issues with the Glassfish Server, we could not implement all planed features. This chapter lists all significant omitted features.
 
 \paragraph{timed actions}
+buildung of buildings
+building of soldiers --> depending on upgrades
+
+
 
 \paragraph{advanced troop and battle management}
 - select single troop parts
 - calcluate way and implement way time
 - implement destruction of buildings
 
-\paragraph{Highscores as a Webservice}
+\paragraph{Highscores as a webservice}
+The highscores should display some ranking for users. These ranking is divided in to sections, the economic part and the military part. The economic part should cover the level of the buildings and the resources while the military part should cover the current offensive power. Due to the fact that the highscore generation requires multiple inefficient queries, this generation should only be carried out every 15 minutes. The generation should be executed on an own component and this component should provide the statistics via a WDSL connection. This connection has numerous advantages, the main advantage is the simple integration of the statistics in the web application, but also other stakeholders can implement these statistics in order to produce own advanced statistics.
 
+\paragraph{upgrades for soldiers}
+The building Upgrades in the base should provide specific upgrades for every soldier. These upgrades improve either the speed or the attack strength of the soldiers.
 
 
 \section{Possible Improvements}
