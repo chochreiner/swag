@@ -39,9 +39,11 @@ private HashMap<BuildingType, Building> buildings;
 
     @Inject
     private MapUserDAO mapUserDao;
-
+      
+    @Inject
+    private BaseUtils baseutils;
+    
 	private long squareId;
-
 	private Form<?> buildWood;
 	private Form<?> buildClay;
 	private Form<?> buildStable;
@@ -59,8 +61,7 @@ private HashMap<BuildingType, Building> buildings;
 
 	private FeedbackPanel feedbackPanel;
 
-    private Square square;
-    private BaseUtils baseutils;
+    private Square square; 
 	private MapUser mapUser;
 
     public BasePanel(String id) {
@@ -68,7 +69,6 @@ private HashMap<BuildingType, Building> buildings;
 
         SwagWebSession session = (SwagWebSession) getSession(); 
         this.squareId = session.getSelectedSquareId();
-        baseutils = new BaseUtils();
         
         // Retrieves the square
         square = squareDao.findById(squareId);
@@ -78,6 +78,8 @@ private HashMap<BuildingType, Building> buildings;
         fetchBuildings();
 
         feedbackPanel = new FeedbackPanel("feedback");
+        feedbackPanel.setOutputMarkupId(true);	
+        
         add(feedbackPanel);
 
         PageParameters params = new PageParameters();
@@ -123,6 +125,13 @@ private HashMap<BuildingType, Building> buildings;
          stableLink.setVisible(false);
          destructionLink.setVisible(false);
          upgradeLink.setVisible(false);
+         troopsLink.setVisible(false);
+         
+         barracksLink.setOutputMarkupId(true);	
+         stableLink.setOutputMarkupId(true);	
+         destructionLink.setOutputMarkupId(true);	
+         upgradeLink.setOutputMarkupId(true);
+         troopsLink.setOutputMarkupId(true);
          
          add(barracksLink);
          add(stableLink);
@@ -156,6 +165,15 @@ private HashMap<BuildingType, Building> buildings;
         buildGrain			= createForm("buildGrain", "grainButton", BuildingType.GRAIN);
         buildIron			= createForm("buildIron", "ironButton", BuildingType.IRON);
 
+        buildWood.setOutputMarkupId(true);		
+        buildClay.setOutputMarkupId(true);
+        buildStable.setOutputMarkupId(true);		
+        buildBarracks.setOutputMarkupId(true);		
+        buildUpgrades.setOutputMarkupId(true);		
+        buildDestruction.setOutputMarkupId(true);	
+        buildGrain.setOutputMarkupId(true);			
+        buildIron.setOutputMarkupId(true);			
+        
         add(buildWood);
         add(buildClay);
         add(buildStable);
@@ -172,6 +190,7 @@ private HashMap<BuildingType, Building> buildings;
         final Building building = buildings.get(type);
 
         AjaxButton newButton = new AjaxButton(button) {
+			private static final long serialVersionUID = -9098940045535772960L;
 
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
@@ -203,10 +222,13 @@ private HashMap<BuildingType, Building> buildings;
 	                    building.setUpgrading(false); // TODO --> sanitize
 	                    building.setSquare(square);
 	                    square.getBuildings().add(building);  
-	                    mapUser.getSquares().add(square);
+	                    //mapUser.getSquares().add(square);
+	                    
+	                    
 	                    
 	                    buildingsDao.beginTransaction();
 	                    	buildingsDao.insert(building);
+	                    	squareDao.update(square);
 	                    	mapUserDao.update(baseutils.reduceRessources(mapUser, 1500));
 	                     buildingsDao.commitTransaction();
 	                    
@@ -227,13 +249,13 @@ private HashMap<BuildingType, Building> buildings;
 	                
 	                checkVisiblityOfLinks();
 	                
-	                add(barracksLink);
-	                add(stableLink);
-	                add(destructionLink);
-	                add(upgradeLink);
-	                add(troopsLink );
+	                target.add(barracksLink);
+	                target.add(stableLink);
+	                target.add(destructionLink);
+	                target.add(upgradeLink);
+	                target.add(troopsLink );
 	                
-	                add(feedbackPanel);
+	                target.add(feedbackPanel);
 			}
 
 			@Override

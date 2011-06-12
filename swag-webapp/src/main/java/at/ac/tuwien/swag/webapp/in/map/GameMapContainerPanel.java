@@ -33,8 +33,6 @@ public class GameMapContainerPanel extends Panel{
 	private int endY;
 	private WebMarkupContainer gameMapView;
 	private MapUser mapUser;
-	private SquareDTO homebase;
-	private String mapName;
 	
 	private static int MAP_DIMENSION  = 5;
 	
@@ -50,7 +48,6 @@ public class GameMapContainerPanel extends Panel{
 	public GameMapContainerPanel(String id,String mapName) {
 		super(id);
 		
-		this.mapName = mapName;
 		startX = 1;
    		endX = 5;
    		startY =1;
@@ -68,7 +65,7 @@ public class GameMapContainerPanel extends Panel{
 				return gameMapProvider.getPartialMap(startX, startY, endX, endY);
 			}
 		};   
-		gameMapView = new GameMap("gameMapView", mapUser, gameMapList);
+		gameMapView = new GameMap("gameMapView", gameMapList);
         add(gameMapView);
         
         this.setupNavigationLinks();

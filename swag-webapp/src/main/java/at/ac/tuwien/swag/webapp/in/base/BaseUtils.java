@@ -1,10 +1,16 @@
 package at.ac.tuwien.swag.webapp.in.base;
 
+import com.google.inject.Inject;
+
+import at.ac.tuwien.swag.model.dao.StoredRessourceDAO;
 import at.ac.tuwien.swag.model.domain.MapUser;
 import at.ac.tuwien.swag.model.domain.StoredRessource;
 
 public class BaseUtils {
 
+	@Inject
+	private StoredRessourceDAO sRDao;
+	
     public boolean checkRessources(MapUser mapuser, Integer res) {
 
         if (mapuser.getClayRessource() == null || mapuser.getClayRessource().getAmount() < res) {
@@ -45,6 +51,13 @@ public class BaseUtils {
         mapuser.setIronRessource(iron);
         mapuser.setWoodRessource(wood);
 
+        
+        	sRDao.update(clay);
+        	sRDao.update(grain);
+        	sRDao.update(iron);
+        	sRDao.update(wood);
+       
+        
         return mapuser;
     }
 
