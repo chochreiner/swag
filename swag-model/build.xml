@@ -11,6 +11,7 @@
 	<target name="setup" depends="generate"/>
 	<target name="deploy"/>
 	<target name="undeploy"/>
+	<target name="run"></target>
 	
 	<target name="build" depends="setup,package"/>
 	

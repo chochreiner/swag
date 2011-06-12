@@ -10,9 +10,9 @@
 		<antcall target="create-domain"/>
 		<antcall target="start-domain"/>
 
-		<call-targets target="build" />
-		
 		<antcall  target="setup"/>	
+		
+		<call-targets target="build" />
 		<call-targets target="deploy"/>
 
 		<antcall target="stop-domain"/>
@@ -103,7 +103,6 @@
 			<call-target dir="swag-util"         target="@{target}" />
 			<call-target dir="swag-messages"     target="@{target}" />
 			<call-target dir="swag-notification" target="@{target}" />
-			<call-target dir="mailserver"        target="@{target}" />
 		</sequential>
 	</macrodef>
 
