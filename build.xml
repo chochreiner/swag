@@ -49,6 +49,9 @@
 	<target name="deploy">
 		<call-targets target="deploy"/>
 	</target>
+	<target name="undeploy">
+		<call-targets target="undeploy"/>
+	</target>
 	<target name="redeploy">
 		<call-targets target="redeploy"/>
 	</target>

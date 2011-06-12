@@ -46,13 +46,11 @@ public class Inbox extends Panel {
 
                     if (message.getRead()) {
                         item.add(new Label("subject", message.getSubject()));
-
                     } else {
                         item.add(new Label("subject", "<b>" + message.getSubject() + "</b>")
                             .setEscapeModelStrings(false));
                     }
 
-                    item.add(new Label("subject", message.getSubject()));
                     item.add(new Label("sender", message.getFrom().getUsername()));
                     item.add(new Label("date", formatter.format(message.getTimestamp())));
                     item.add(new BookmarkablePageLink<String>("view", MessageDetail.class, param));

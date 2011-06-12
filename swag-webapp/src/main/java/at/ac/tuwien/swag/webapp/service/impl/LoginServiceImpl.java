@@ -56,7 +56,7 @@ public class LoginServiceImpl implements LoginService {
 				user.getAddress(),
 				user.getEmail(), 
 				user.getFullname(), 
-				null, null, null ); 
+				null ); 
 
 		storeUser( dto );
     }

@@ -7,6 +7,7 @@ import org.apache.wicket.markup.html.form.RequiredTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.model.Model;
 
+import at.ac.tuwien.swag.webapp.SwagWebSession;
 import at.ac.tuwien.swag.webapp.in.MainPage;
 
 public class LoginForm extends Form<Void> {
@@ -22,6 +23,8 @@ public class LoginForm extends Form<Void> {
 
         username = new RequiredTextField<String>("username", new Model<String>());
         password = new PasswordTextField("password", new Model<String>());
+        
+        ((SwagWebSession) getSession()).ping();
         
         add(username);
         add(password);

@@ -41,7 +41,7 @@
 			«FOREACH attributes AS attr»
 				«IF attr.unique»
 					@SuppressWarnings("unchecked")
-					public «name» findBy«attr.name.toFirstUpper()»( «attr.type.name» «attr.name» ) {
+					public «name» findBy«attr.name.toFirstUpper()»( «attr.typeName()» «attr.name» ) {
 						return («name») getEntityManager().createQuery(
 							"SELECT obj FROM «name» obj WHERE obj.«attr.name» = :val" )
 							.setParameter( "val", «attr.name» )
@@ -49,7 +49,7 @@
 					}
 				«ELSE»
 					@SuppressWarnings("unchecked")
-					public List<«name»> findBy«attr.name.toFirstUpper()»( «attr.type.name» «attr.name» ) {
+					public List<«name»> findBy«attr.name.toFirstUpper()»( «attr.typeName()» «attr.name» ) {
 						return getEntityManager().createQuery(
 							"SELECT obj FROM «name» obj WHERE obj.«attr.name» = :val" )
 							.setParameter( "val", «attr.name» )

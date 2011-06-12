@@ -25,6 +25,17 @@ public final class SwagWebSession extends AuthenticatedWebSession {
         mapname = null;
     }
 
+    /**
+     * Ping auth server so glassfish instantiates it.
+     */
+    public void ping() {
+        try {
+			login.userExists( "system" );
+		} catch ( JMSException e ) {
+		} catch ( TimeoutExpiredException e ) {
+		}
+    }
+    
     // authentication authorization stuff
     @Override
     public boolean authenticate(String username, String password) {
