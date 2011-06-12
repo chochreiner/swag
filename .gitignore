@@ -24,4 +24,4 @@ target/
 *.log
 *.toc
 *.pdf
-
+*.synctex.gz

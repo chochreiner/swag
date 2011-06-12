@@ -119,9 +119,9 @@ public class TestData extends InPage {
         System.out.println("####### Create Map and Squares #######");
 
         int startX = 1;
-        int endX = 50;
+        int endX = 20;
         int startY = 1;
-        int endY = 50;
+        int endY = 20;
 
         Map map = new Map();
         map.setMaxNumUsers(100);
