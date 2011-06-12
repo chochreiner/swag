@@ -8,6 +8,7 @@
 
 	<import file="ant-build.xml"/>
 
+	<target name="run"></target>
 	
 	<target name="build" depends="setup,package"/>
 

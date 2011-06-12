@@ -4,6 +4,8 @@
 	<!-- import our own ant tasks -->
 	<import file="../ant-macros.xml"/>
 	
+	<target name="run"></target>
+	
 	<!-- ***** PROPERTIES ***************************************************************** -->
 	<!-- application data -->
 	<property name="application.name" value="swag-webapp"/>

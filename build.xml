@@ -24,8 +24,6 @@
 	</target>
 	<target name="run">
 		<antcall target="start-domain"/>
-		
-		<call-targets target="run"/>
 	</target>
 
 	<target name="stop">
