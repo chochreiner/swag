@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="swag-executor-helpers" basedir=".">
+<project name="mailserver-helpers" basedir=".">
 	<!-- import our own ant tasks -->
 	<import file="../ant-macros.xml"/>
 	
@@ -13,9 +13,7 @@
 	<target name="setup" depends="setup-jms"/>
 	
 	<target name="setup-jms">
-		<create-jms-queue name="swag.queue.Exec"/>
 	</target>
 	<target name="clean-jms">
-		<delete-jms-resource name="swag.queue.Exec"/>
 	</target>
 </project>

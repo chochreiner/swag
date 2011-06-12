@@ -8,8 +8,6 @@
 
 	<import file="../ant-macros.xml"/>
 	
-	<property name="packaging.type" value="jar"/>
-	
 	<target name="build" depends="setup,package"/>
 	
   <!-- ====================================================================== -->

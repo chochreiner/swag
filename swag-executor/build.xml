@@ -7,7 +7,10 @@
 <project name="swag-executor" default="package" basedir=".">
 
 	<import file="ant-build.xml"/>
+
 	
+	<target name="build" depends="setup,package"/>
+
   <!-- ====================================================================== -->
   <!-- Import maven-build.xml into the current project                        -->
   <!-- ====================================================================== -->

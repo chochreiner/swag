@@ -169,7 +169,7 @@
 						</goals>
 						<configuration>
 							<sources>
-								<source>target/generated-sources/</source>
+								<source>src/gen/</source>
 							</sources>
 						</configuration>
 					</execution>
