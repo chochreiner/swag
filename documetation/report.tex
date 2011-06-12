@@ -110,8 +110,10 @@ The ant run target deploys the single components and the application can be acce
 This component contains the models, data access objects and data transfer objects, that were created for the second task. These classes are generated on every build process. 
 
 \subsubsection{swag-messages}
+Provides an abstraction for the usage of jms queues in other components and definitions for data transfer objects used in jms messages.
 
 \subsubsection{swag-util}
+Holds some handy utility classes that are handy in multiple components.
 
 \subsubsection{swag-auth}
 
@@ -119,7 +121,8 @@ This component contains the models, data access objects and data transfer object
 
 \subsubsection{swag-webapp}
 
-\subsubsection{mailserver}
+\subsubsection{swag-notification}
+This component contains a message driven bean that sends out notification (user to user and game events)  e-mails via smtp.
 
 
 \subsection{Technology stack}
