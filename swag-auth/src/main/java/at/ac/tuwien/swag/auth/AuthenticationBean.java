@@ -134,7 +134,8 @@ public class AuthenticationBean extends MessageHandler {
 				"The interblag",
 				"swag@swag.com", 
 				"System administration account", 
-				null 
+				false,
+				null
 			);
 
 			users.beginTransaction();

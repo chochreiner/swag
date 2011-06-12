@@ -44,6 +44,8 @@ public class LoginServiceImpl implements LoginService {
    			throw new AuthenticationException("Username or password are incorrect" );	
     		
    		return auth;
+    	
+//    	return new AuthenticationReply( username, new String[] {"ADMIN", "USER"}, "TOKEN" );
     }
 
 	public boolean isOnline( String username ) throws JMSException, TimeoutExpiredException {
