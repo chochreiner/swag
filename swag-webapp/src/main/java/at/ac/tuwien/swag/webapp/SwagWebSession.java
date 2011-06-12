@@ -1,5 +1,9 @@
 package at.ac.tuwien.swag.webapp;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import javax.jms.JMSException;
 
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
@@ -8,6 +12,8 @@ import org.apache.wicket.request.Request;
 
 import at.ac.tuwien.swag.messages.TimeoutExpiredException;
 import at.ac.tuwien.swag.messages.auth.AuthenticationReply;
+import at.ac.tuwien.swag.model.dao.MapDAO;
+import at.ac.tuwien.swag.model.domain.Map;
 import at.ac.tuwien.swag.model.dto.SquareDTO;
 import at.ac.tuwien.swag.webapp.service.AuthenticationException;
 import at.ac.tuwien.swag.webapp.service.LoginService;
@@ -20,6 +26,9 @@ public final class SwagWebSession extends AuthenticatedWebSession {
     @Inject
     private LoginService login;
 
+    @Inject
+    MapDAO mapDao;
+    
     public SwagWebSession(Request request) {
         super(request);
         mapname = null;
@@ -41,6 +50,15 @@ public final class SwagWebSession extends AuthenticatedWebSession {
     public boolean authenticate(String username, String password) {
     	try {
 			credentials = login.authenticate( username, password );
+			
+			 // If a map exist set the first one
+	        String query = "SELECT mu.map FROM MapUser mu JOIN mu.user u WHERE u.username=:username";
+	        HashMap<String, String> params = new HashMap<String, String>();
+	        params.put("username", username);
+	        List<Map> maps = mapDao.findByQuery(query, params);
+	        if(!maps.isEmpty()){
+	        	this.mapname = maps.get(0).getName();
+	        }
 			
             signIn(true);
             return true;
