@@ -1,16 +1,21 @@
 package at.ac.tuwien.swag.webapp.service.impl;
 
+import static at.ac.tuwien.swag.util.MapMaker.map;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.jms.JMSException;
+import javax.jms.Queue;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 
+import at.ac.tuwien.swag.messages.JMSHelper;
+import at.ac.tuwien.swag.messages.TimeoutExpiredException;
+import at.ac.tuwien.swag.messages.email.EmailRequest;
 import at.ac.tuwien.swag.model.dao.MessageDAO;
 import at.ac.tuwien.swag.model.dao.UserDAO;
 import at.ac.tuwien.swag.model.domain.Message;
@@ -21,14 +26,24 @@ import at.ac.tuwien.swag.webapp.service.LogService;
 import at.ac.tuwien.swag.webapp.service.MessageService;
 
 import com.google.inject.Inject;
-
-import static at.ac.tuwien.swag.util.MapMaker.map;
+import com.google.inject.name.Named;
 
 public class MessageServiceImpl implements MessageService {
 
     private MessageDAO messages;
     private UserDAO users;
 
+    @Inject
+    @Named( "swag.queue.Notification" )
+    private Queue notification; 
+
+    @Inject
+    private JMSHelper jms;
+    
+    @Inject
+    @Named("MESSAGE_TIMEOUT")
+    private long timeout;
+    
     @Inject
     private LogService logger;
 
@@ -176,7 +191,8 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public void sendMessage(String subject, String text, Set<String> reciever, String sender) {
-
+    	List<User> offline = new ArrayList<User>();
+    	
         messages.beginTransaction();
         try {
         	Message message = new Message();
@@ -190,6 +206,10 @@ public class MessageServiceImpl implements MessageService {
 
         	Set<User> to = message.getTo();
         	for ( String rec : reciever ) {
+        		User user = users.findByUsername( rec );
+        		
+        		if ( !user.getIsOnline() ) offline.add( user );
+        		
         		to.add(  users.findByUsername( rec ) );
         	}
         	messages.update(message);
@@ -197,45 +217,35 @@ public class MessageServiceImpl implements MessageService {
         	messages.commitTransaction();        	
         }
 
+       	sendNotification( subject, text, offline );
+        
         logger.logUserAction("send Message", "user [" + sender + "] sent a message.");
     }
 
-    @Override
-    public void sendNotification(String subject, String text, String reciever) {
-        checkPostmaster();
-
-        Message message = new Message();
-        message.setTimestamp(new Date());
-        message.setSubject(subject);
-        message.setText(text);
-        message.setRead(false);
-        message.setFrom(users.findByUsername("postmaster"));
-
-        Set<User> recieverAsUser = new HashSet<User>();
-        recieverAsUser.add(users.findByUsername(reciever));
-
-        message.setTo(recieverAsUser);
-
-        messages.insert(message);
-
-        // TODO check online status and send mails
-        // TODO set transaction
-
-        logger.logUserAction("send Notification", "user [" + reciever + "] recieved a notification.");
-    }
-
-    private void checkPostmaster() {
-        // create postmaster aka root oder so
-
-        try {
-            users.findByUsername("postmaster");
-        } catch (NoResultException e) {
-            users.beginTransaction();
-            User user = new User();
-            user.setUsername("postmaster");
-            users.insert(user);
-            users.commitTransaction();
-        }
+    private void sendNotification(String subject, String text, Iterable<User> receivers ) {
+    	users.beginTransaction(); 
+    	try {
+    		for ( User user : receivers ) {
+    			try {
+					jms.request( notification, Boolean.class,
+						new EmailRequest(
+							user.getEmail(),
+							"swag@swag.com",
+							subject,
+							text,
+							new Date()
+						),	
+						timeout
+					);
+				} catch ( JMSException e ) {
+				} catch ( TimeoutExpiredException e ) {
+				}
+    			
+//    			logger.logUserAction("send Notification", "user [" + user.getUsername() + "] recieved a notification.");	
+    		}
+    	} finally {
+    		users.commitTransaction();
+    	}
     }
 
     @Override

@@ -18,7 +18,7 @@
 		<module>swag-util</module>
 		<module>swag-messages</module>
 		<module>swag-notification</module>
-		<module>mailserver</module>
+		<!-- <module>mailserver</module> -->
 		<!-- <module>swag-ear</module> -->
 	</modules>
 

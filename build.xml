@@ -10,12 +10,9 @@
 		<antcall target="create-domain"/>
 		<antcall target="start-domain"/>
 
-		<create-jms-pool/>
-		<create-jdbc-pool name="PostgresqlPool"/>
-		<call-target target="create-mail"/>
-
 		<call-targets target="build" />
 		
+		<antcall  target="setup"/>	
 		<call-targets target="deploy"/>
 
 		<antcall target="stop-domain"/>
@@ -43,7 +40,9 @@
 		<call-targets target="compile"/>
 	</target>
 	<target name="setup">
-	<!--	<copy file="lib/postgresql-jdbc.jar" todir="${domain.dir}/lib/ext"/> -->
+		<create-jms-pool/>
+		<create-jdbc-pool name="PostgresqlPool"/>
+		<antcall target="create-mail"/>
 		
 		<call-targets target="setup"/>
 	</target>
@@ -62,7 +61,11 @@
 	</target>
 
 	<target name="create-mail">
-				<!-- create mail resources -->
+		<property name="MAIL_SMTP_USER"     value="swa"/>
+		<property name="MAIL_SMTP_PASSWORD" value="swa11"/>
+		<property name="MAIL_SMTP_PORT"     value="2525"/>		
+
+		<!-- create mail resources -->
 		<asadmin command="create-javamail-resource"
 		         parameters="--mailhost=smtp.gmail.com 
 		                     --mailuser=swag
@@ -72,11 +75,12 @@
 		                     --storeprotocolclass=com.sun.mail.imap.IMAPStore
 		                     --transprotocol smtp
 		                     --transprotocolclass com.sun.mail.smtp.SMTPSSLTransport 
-		                     --property mail-smtp.user=${MAIL_SMTP_USER}:mail-smtp.port=465:mail-smtp.password=$MAIL_SMTP_PASSWORD:mail-smtp.auth=true:mail-smtp.socketFactory.fallback=false:mail-smtp.socketFactory.class=javax.net.ssl.SSLSocketFactory:mail-smtp.socketFactory.port=$MAIL_SMTP_PORT:mail-smtp.starttls.enable=true mail/classifieds"/>
+	 	                     --property mail-smtp.user=${MAIL_SMTP_USER}:mail-smtp.port=${MAIL_SMTP_PORT}:mail-smtp.password=${MAIL_SMTP_PASSWORD}:mail-smtp.auth=true:mail-smtp.socketFactory.fallback=false:mail-smtp.socketFactory.class=javax.net.ssl.SSLSocketFactory:mail-smtp.socketFactory.port=$MAIL_SMTP_PORT:mail-smtp.starttls.enable=true
+		                     mail/session"/>
 	</target>
 
 	<target name="delete-mail">
-		
+		<asadmin command="delete-javamail-resource" parameters="mail/session"/>
 	</target>
 
 	<target name="make-ant-files">
