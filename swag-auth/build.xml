@@ -9,6 +9,8 @@
 	<target name="build" depends="setup,package">		
 	</target>
 	
+	<target name="run"></target>
+	
   <!-- ====================================================================== -->
   <!-- Import maven-build.xml into the current project                        -->
   <!-- ====================================================================== -->
