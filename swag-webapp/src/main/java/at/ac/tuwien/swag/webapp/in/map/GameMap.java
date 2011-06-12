@@ -1,6 +1,8 @@
 package at.ac.tuwien.swag.webapp.in.map;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
@@ -10,6 +12,10 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
+
+import com.google.inject.Inject;
+
+import at.ac.tuwien.swag.model.dao.MapUserDAO;
 import at.ac.tuwien.swag.model.domain.MapUser;
 import at.ac.tuwien.swag.model.domain.Square;
 import at.ac.tuwien.swag.webapp.SwagWebSession;
@@ -22,10 +28,15 @@ public class GameMap extends Panel {
     private MapUser mapUser;
 	private MapModalWindow mapModalWindow;
 
-    public GameMap(String id, MapUser mapUser, IModel<List<List<Square>>> gameMapList) {
+	@Inject
+    private MapUserDAO mapUserDao;
+	
+    public GameMap(String id, IModel<List<List<Square>>> gameMapList) {
         super(id);
 
-        this.mapUser = mapUser;
+        SwagWebSession session = (SwagWebSession) getSession(); 
+    	
+        this.mapUser = getMapuser(session.getUsername(), session.getMapname());
         this.gameMapList = gameMapList;
 
         this.setOutputMarkupId(true);
@@ -53,7 +64,9 @@ public class GameMap extends Panel {
             }
 
 			@Override
-			void onSettle(AjaxRequestTarget target, long squareId) {
+			void onSettle(AjaxRequestTarget target, Square square) {
+				
+				mapUser.getSquares().add(square);
 				
 				close(target);
 			}
@@ -145,6 +158,29 @@ public class GameMap extends Panel {
         };
     }
 
+    
+    private MapUser getMapuser(String username, String mapname) {
+        String query =
+            "SELECT m FROM MapUser m LEFT JOIN FETCH m.squares WHERE m.user.username = :username AND m.map.name = :mapname";
+
+        SwagWebSession session = (SwagWebSession) getSession();
+
+        Map<String, String> values = new HashMap<String, String>();
+        values.put("username", session.getUsername());
+        values.put("mapname", session.getMapname());
+
+        List<MapUser> buffer = mapUserDao.findByQuery(query, values);
+
+        if (!buffer.isEmpty()) {
+        	
+            return buffer.get(0);
+        } else {
+            setResponsePage(MapPage.class);
+            
+            return null;
+        }
+    }
+    
     /**
      * 
      * @param sq

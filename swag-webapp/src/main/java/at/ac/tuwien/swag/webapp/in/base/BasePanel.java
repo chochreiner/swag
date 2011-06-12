@@ -39,9 +39,11 @@ private HashMap<BuildingType, Building> buildings;
 
     @Inject
     private MapUserDAO mapUserDao;
+      
+    @Inject
+    private BaseUtils baseutils;
     
 	private long squareId;
-
 	private Form<?> buildWood;
 	private Form<?> buildClay;
 	private Form<?> buildStable;
@@ -59,11 +61,7 @@ private HashMap<BuildingType, Building> buildings;
 
 	private FeedbackPanel feedbackPanel;
 
-    private Square square;
-    
-    @Inject
-    private BaseUtils baseutils;
-    
+    private Square square; 
 	private MapUser mapUser;
 
     public BasePanel(String id) {
@@ -80,6 +78,8 @@ private HashMap<BuildingType, Building> buildings;
         fetchBuildings();
 
         feedbackPanel = new FeedbackPanel("feedback");
+        feedbackPanel.setOutputMarkupId(true);	
+        
         add(feedbackPanel);
 
         PageParameters params = new PageParameters();
@@ -125,6 +125,13 @@ private HashMap<BuildingType, Building> buildings;
          stableLink.setVisible(false);
          destructionLink.setVisible(false);
          upgradeLink.setVisible(false);
+         troopsLink.setVisible(false);
+         
+         barracksLink.setOutputMarkupId(true);	
+         stableLink.setOutputMarkupId(true);	
+         destructionLink.setOutputMarkupId(true);	
+         upgradeLink.setOutputMarkupId(true);
+         troopsLink.setOutputMarkupId(true);
          
          add(barracksLink);
          add(stableLink);
@@ -158,6 +165,15 @@ private HashMap<BuildingType, Building> buildings;
         buildGrain			= createForm("buildGrain", "grainButton", BuildingType.GRAIN);
         buildIron			= createForm("buildIron", "ironButton", BuildingType.IRON);
 
+        buildWood.setOutputMarkupId(true);		
+        buildClay.setOutputMarkupId(true);
+        buildStable.setOutputMarkupId(true);		
+        buildBarracks.setOutputMarkupId(true);		
+        buildUpgrades.setOutputMarkupId(true);		
+        buildDestruction.setOutputMarkupId(true);	
+        buildGrain.setOutputMarkupId(true);			
+        buildIron.setOutputMarkupId(true);			
+        
         add(buildWood);
         add(buildClay);
         add(buildStable);
@@ -238,6 +254,8 @@ private HashMap<BuildingType, Building> buildings;
 	                target.add(destructionLink);
 	                target.add(upgradeLink);
 	                target.add(troopsLink );
+	                
+	                target.add(feedbackPanel);
 			}
 
 			@Override

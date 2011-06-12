@@ -65,7 +65,7 @@ public class GameMapContainerPanel extends Panel{
 				return gameMapProvider.getPartialMap(startX, startY, endX, endY);
 			}
 		};   
-		gameMapView = new GameMap("gameMapView", mapUser, gameMapList);
+		gameMapView = new GameMap("gameMapView", gameMapList);
         add(gameMapView);
         
         this.setupNavigationLinks();
