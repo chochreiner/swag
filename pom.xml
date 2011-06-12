@@ -23,10 +23,10 @@
 	</modules>
 
 	<repositories>
-		<!--<repository>
+		<repository>
 			<id>swag-local-repo</id>
 			<url>file://${project.basedir}/lib</url>
-		</repository>-->
+		</repository>
 		<repository>
 			<id>repository.jboss.org</id>
 			<name>JBoss.org Maven repository</name>
