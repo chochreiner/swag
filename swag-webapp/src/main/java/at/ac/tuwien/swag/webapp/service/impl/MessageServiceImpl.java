@@ -57,6 +57,7 @@ public class MessageServiceImpl implements MessageService {
                         "",
                         "",
                         "",
+                        false,
                         null
                     ),
                     null
@@ -87,6 +88,7 @@ public class MessageServiceImpl implements MessageService {
         			"",
         			"",
         			"",
+        			false,
         			null
         		),
         		null
@@ -121,6 +123,7 @@ public class MessageServiceImpl implements MessageService {
             		"",
             		"",
             		"",
+            		false,
             		null
             	),
             	null
@@ -162,6 +165,7 @@ public class MessageServiceImpl implements MessageService {
                 "",
                 "",
                 "",
+                false, 
                 null
             ),
             null);
