@@ -241,7 +241,7 @@ public class MessageServiceImpl implements MessageService {
 				} catch ( TimeoutExpiredException e ) {
 				}
     			
-    			logger.logUserAction("send Notification", "user [" + user.getUsername() + "] recieved a notification.");	
+//    			logger.logUserAction("send Notification", "user [" + user.getUsername() + "] recieved a notification.");	
     		}
     	} finally {
     		users.commitTransaction();
