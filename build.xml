@@ -12,6 +12,7 @@
 
 		<create-jms-pool/>
 		<create-jdbc-pool name="PostgresqlPool"/>
+		<call-target target="create-mail"/>
 
 		<call-targets target="build" />
 		
@@ -58,6 +59,24 @@
 
 	<target name="generate">
 		<call-target dir="swag-model" target="generate"/>
+	</target>
+
+	<target name="create-mail">
+				<!-- create mail resources -->
+		<asadmin command="create-javamail-resource"
+		         parameters="--mailhost=smtp.gmail.com 
+		                     --mailuser=swag
+		                     --fromaddress=swag@swag.com
+		                     --enabled=true 
+		                     --storeprotocol=imap
+		                     --storeprotocolclass=com.sun.mail.imap.IMAPStore
+		                     --transprotocol smtp
+		                     --transprotocolclass com.sun.mail.smtp.SMTPSSLTransport 
+		                     --property mail-smtp.user=${MAIL_SMTP_USER}:mail-smtp.port=465:mail-smtp.password=$MAIL_SMTP_PASSWORD:mail-smtp.auth=true:mail-smtp.socketFactory.fallback=false:mail-smtp.socketFactory.class=javax.net.ssl.SSLSocketFactory:mail-smtp.socketFactory.port=$MAIL_SMTP_PORT:mail-smtp.starttls.enable=true mail/classifieds"/>
+	</target>
+
+	<target name="delete-mail">
+		
 	</target>
 
 	<target name="make-ant-files">
