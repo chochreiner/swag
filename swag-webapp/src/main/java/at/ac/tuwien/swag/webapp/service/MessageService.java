@@ -17,8 +17,6 @@ public interface MessageService {
 
     public MessageDTO getMessagebyId(Long id, String user);
 
-    public void sendNotification(String subject, String text, String reciever);
-
     public void updateReadStatus(Long id);
 
 }

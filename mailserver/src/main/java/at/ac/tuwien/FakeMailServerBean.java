@@ -1,6 +1,6 @@
 package at.ac.tuwien;
 
-import com.dumbster.smtp.SimpleSmtpServer;
+//import com.dumbster.smtp.SimpleSmtpServer;
 import javax.annotation.PreDestroy;
 import javax.ejb.Singleton;
 import javax.ejb.LocalBean;
@@ -9,10 +9,10 @@ import javax.ejb.LocalBean;
 @LocalBean
 public class FakeMailServerBean {
 
-    private SimpleSmtpServer server = SimpleSmtpServer.start(2525);
+//    private SimpleSmtpServer server = SimpleSmtpServer.start(2525);
 
     @PreDestroy
     public void stop() {
-        server.stop();
+//        server.stop();
     }
 }
