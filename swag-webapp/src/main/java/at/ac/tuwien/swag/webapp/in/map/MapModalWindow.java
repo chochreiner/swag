@@ -39,9 +39,9 @@ public abstract class MapModalWindow extends ModalWindow {
         });
     }
 	
-	public void loadBasePanel(MapUser mapUser, long squareId) {
-		 setTitle("Base on sqaure "+squareId);
-		setContent(new BasePanel(this.getContentId(), squareId){
+	public void loadBasePanel() {
+		 setTitle("Base on sqaure");
+		setContent(new BasePanel(this.getContentId()){
 
 			private static final long serialVersionUID = 8122892907898863542L;
 
@@ -62,6 +62,19 @@ public abstract class MapModalWindow extends ModalWindow {
 		setContent(new EmptySquareModalPanel(this.getContentId()){
 		
 			private static final long serialVersionUID = 8794745869537409170L;
+
+			@Override
+			public void onSelect(AjaxRequestTarget target, String selection) {
+				// TODO Auto-generated method stub	
+			}
+		});
+	}
+	
+	public void loadForeignSquareModalPanel() {
+		 setTitle("Empty sqaure - No one is here");
+		setContent(new ForeignSquareModalPanel(this.getContentId()){
+			
+			private static final long serialVersionUID = 2266595948958730018L;
 
 			@Override
 			public void onSelect(AjaxRequestTarget target, String selection) {

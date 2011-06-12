@@ -12,6 +12,7 @@ import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.IModel;
 import at.ac.tuwien.swag.model.domain.MapUser;
 import at.ac.tuwien.swag.model.domain.Square;
+import at.ac.tuwien.swag.webapp.SwagWebSession;
 
 public class GameMap extends Panel {
     private static final long serialVersionUID = -2473064801663338918L;
@@ -99,11 +100,15 @@ public class GameMap extends Panel {
                 			@Override
                 			public void onClick(AjaxRequestTarget target) {
                 				
+                				// Sets current selected squareId
+                				SwagWebSession session = (SwagWebSession) getSession(); 
+                		        session.setSelectedSquareId(square.getId());
+                				
                 				if(checkIfMySquare(square)) {
-                					mapModalWindow.loadBasePanel(mapUser, square.getId());
+                					mapModalWindow.loadBasePanel();
                 				}else{
                 					if(checkIfBaseBuildings(square)){
-                						
+                						mapModalWindow.loadForeignSquareModalPanel();
                 					}else { mapModalWindow.loadEmptySquareModalPanel(); }
                 				}
                 				mapModalWindow.show(target); 
