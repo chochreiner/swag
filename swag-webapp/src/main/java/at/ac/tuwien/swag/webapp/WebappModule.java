@@ -14,7 +14,9 @@ import at.ac.tuwien.swag.model.dao.BuildingDAO;
 import at.ac.tuwien.swag.model.dao.MapDAO;
 import at.ac.tuwien.swag.model.dao.MapUserDAO;
 import at.ac.tuwien.swag.model.dao.SquareDAO;
+import at.ac.tuwien.swag.model.dao.StoredRessourceDAO;
 import at.ac.tuwien.swag.model.dao.UserDAO;
+import at.ac.tuwien.swag.webapp.in.base.BaseUtils;
 import at.ac.tuwien.swag.webapp.service.BattleService;
 import at.ac.tuwien.swag.webapp.service.ExecutorService;
 import at.ac.tuwien.swag.webapp.service.LogService;
@@ -71,6 +73,7 @@ public class WebappModule extends ServletModule {
         bind(MapUserDAO.class);
         bind(SquareDAO.class);
         bind(BuildingDAO.class);
+        bind(StoredRessourceDAO.class);
 
         // /**** WEBAPP SERVICES ******************************//
         bind(LoginService.class).to(LoginServiceImpl.class);
@@ -79,7 +82,7 @@ public class WebappModule extends ServletModule {
         bind(LogService.class).to(LogServiceImpl.class);
         bind(RessourceService.class).to(RessourceServiceImpl.class);
         bind(BattleService.class).to(BattleServiceImpl.class);
-
+        bind(BaseUtils.class);
         bind(ExecutorService.class).to(ExecutorServiceImpl.class);
 
         // /**** JMS ******************************************//
