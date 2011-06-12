@@ -183,10 +183,10 @@ public class TestData extends InPage {
         neroMap.setMap(playground);
         neroMap.setUser(nero);
         neroMap.setSquares(nerosquares);
-        neroMap.setClayRessource(new StoredRessource(1500, SharedRessourceType.CLAY, new Date(), 1.0, neroMap));
-        neroMap.setWoodRessource(new StoredRessource(1500, SharedRessourceType.WOOD, new Date(), 1.0, neroMap));
-        neroMap.setGrainRessource(new StoredRessource(1500, SharedRessourceType.GRAIN, new Date(), 1.0, neroMap));
-        neroMap.setIronRessource(new StoredRessource(1500, SharedRessourceType.IRON, new Date(), 1.0, neroMap));
+        neroMap.setClayRessource(new StoredRessource(15000, SharedRessourceType.CLAY, new Date(), 1.0, neroMap));
+        neroMap.setWoodRessource(new StoredRessource(15000, SharedRessourceType.WOOD, new Date(), 1.0, neroMap));
+        neroMap.setGrainRessource(new StoredRessource(15000, SharedRessourceType.GRAIN, new Date(), 1.0, neroMap));
+        neroMap.setIronRessource(new StoredRessource(15000, SharedRessourceType.IRON, new Date(), 1.0, neroMap));
 
         users.add(neroMap);
 

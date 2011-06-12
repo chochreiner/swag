@@ -51,12 +51,12 @@ public class BaseUtils {
         mapuser.setIronRessource(iron);
         mapuser.setWoodRessource(wood);
 
-        sRDao.beginTransaction();
+        
         	sRDao.update(clay);
         	sRDao.update(grain);
         	sRDao.update(iron);
         	sRDao.update(wood);
-        sRDao.commitTransaction();
+       
         
         return mapuser;
     }

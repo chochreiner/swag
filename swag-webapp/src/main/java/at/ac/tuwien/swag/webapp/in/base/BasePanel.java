@@ -39,7 +39,7 @@ private HashMap<BuildingType, Building> buildings;
 
     @Inject
     private MapUserDAO mapUserDao;
-
+    
 	private long squareId;
 
 	private Form<?> buildWood;
@@ -174,6 +174,7 @@ private HashMap<BuildingType, Building> buildings;
         final Building building = buildings.get(type);
 
         AjaxButton newButton = new AjaxButton(button) {
+			private static final long serialVersionUID = -9098940045535772960L;
 
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
@@ -205,13 +206,14 @@ private HashMap<BuildingType, Building> buildings;
 	                    building.setUpgrading(false); // TODO --> sanitize
 	                    building.setSquare(square);
 	                    square.getBuildings().add(building);  
-	                    mapUser.getSquares().add(square);
+	                    //mapUser.getSquares().add(square);
 	                    
-	                    baseutils.reduceRessources(mapUser, 1500);
+	                    
 	                    
 	                    buildingsDao.beginTransaction();
 	                    	buildingsDao.insert(building);
-	                    	mapUserDao.update( mapUser);
+	                    	squareDao.update(square);
+	                    	mapUserDao.update(baseutils.reduceRessources(mapUser, 1500));
 	                     buildingsDao.commitTransaction();
 	                    
 	                    updateBildingCounter(building, this) ;
@@ -231,13 +233,11 @@ private HashMap<BuildingType, Building> buildings;
 	                
 	                checkVisiblityOfLinks();
 	                
-	                add(barracksLink);
-	                add(stableLink);
-	                add(destructionLink);
-	                add(upgradeLink);
-	                add(troopsLink );
-	                
-	                add(feedbackPanel);
+	                target.add(barracksLink);
+	                target.add(stableLink);
+	                target.add(destructionLink);
+	                target.add(upgradeLink);
+	                target.add(troopsLink );
 			}
 
 			@Override
