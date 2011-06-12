@@ -118,8 +118,6 @@ The ant run target deploys the single components and the application can be acce
 
 \subsubsection{swag-webapp}
 
-\subsubsection{swag-notification}
-
 \subsubsection{mailserver}
 
 
@@ -146,14 +144,6 @@ For development purposes we used maven in order to build, setup and deploy the a
 \section{Planned but omitted implementations}
 Due to some implementation and particularly configuration and execution issues with the Glassfish Server, we could not implement all planed features. This chapter lists all significant omitted features.
 
-\paragraph{timed actions}
-
-
-buildung of buildings
-building of soldiers --> depending on upgrades
-
-
-
 \paragraph{advanced troop and battle management}
 We have planned some handy features in the area of battles an troops. On of the features is the dedicated selection of soldiers for a specific battle. This feature  allows the user to only send selected soldiers instead of the whole troop. The second feature that has to be omitted was the planned routing component, that calculates the duration for the march for the specific soldiers, depending on the slowest one. This component would have enriched the game in order to role out special tactics to attack other players. The last component in this area is the destruction of buildings. For this feature we planned, that the attacker can use his destruction units in order to destroy hostile buildings. When all defendant soldiers are dead, the destruction units need some time, according to the amount of units, and the level of the building, to tear the building down.
 
@@ -162,6 +152,10 @@ The highscores should display some ranking for users. These ranking is divided i
 
 \paragraph{upgrades for soldiers}
 The building Upgrades in the base should provide specific upgrades for every soldier. These upgrades improve either the speed or the attack strength of the soldiers.
+
+\paragraph{timed actions}
+The most important feature would could not implement due to time issues, is the task issue component. We have planned to implement an action executor, that carries out tasks in the future, e.g. finishing a building or attacking a hostile village. Therefore the web application creates a issue at the action executor via JMS and sets a timestamp in the future to this issue. When the time has arrived, the action executor asynchronous executes the issue, updates the database and sends notifications to the users about the event. This timing should be carried out by the Quartz scheduler, that has already been implemented. This scheduler stores the issues and invokes them, when their time has come.
+
 
 \section{Possible Improvements}
 \paragraph{Server side caching of components of the web application}
