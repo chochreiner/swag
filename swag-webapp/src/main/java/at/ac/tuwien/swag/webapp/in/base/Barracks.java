@@ -16,6 +16,6 @@ public class Barracks extends InPage {
         FeedbackPanel feedbackPanel = new FeedbackPanel("feedback");
         add(feedbackPanel);
 
-        add(new BarracksForm("barracksForm"));
+        add(new BarracksForm("barracksForm", parameters.get("square").toLong()));
     }
 }

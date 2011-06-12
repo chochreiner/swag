@@ -16,7 +16,7 @@ public class Stable extends InPage {
         FeedbackPanel feedbackPanel = new FeedbackPanel("feedback");
         add(feedbackPanel);
 
-        add(new StableForm("stableForm"));
+        add(new StableForm("stableForm", parameters.get("square").toLong()));
 
     }
 }

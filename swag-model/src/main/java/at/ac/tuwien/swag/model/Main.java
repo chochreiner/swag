@@ -120,30 +120,30 @@ public class Main {
         neroStartsquare.setIsHomeBase(true);
         nerosquares.add(neroStartsquare);
 
-        MapUser neroMap = new MapUser(playground, nero, neroresources, nerosquares);
-
-        users.add(neroMap);
-
-        List<StoredRessource> ariovistresources = new ArrayList<StoredRessource>();
-
-        List<Square> ariovistsquares = new ArrayList<Square>();
-        Square ariovistStartsquare = squares.get(50);
-
-        ariovistStartsquare.setIsHomeBase(true);
-        ariovistsquares.add(ariovistStartsquare);
-
-        MapUser ariovistMap = new MapUser(playground, ariovist, ariovistresources, ariovistsquares);
-
-        users.add(ariovistMap);
-
-        playground.setUsers(users);
-
-        tx.begin();
-        em.persist(neroMap);
-        em.persist(ariovistMap);
-        em.merge(playground);
-        em.merge(neroStartsquare);
-        tx.commit();
+        // MapUser neroMap = new MapUser(playground, nero, neroresources, nerosquares);
+        //
+        // users.add(neroMap);
+        //
+        // List<StoredRessource> ariovistresources = new ArrayList<StoredRessource>();
+        //
+        // List<Square> ariovistsquares = new ArrayList<Square>();
+        // Square ariovistStartsquare = squares.get(50);
+        //
+        // ariovistStartsquare.setIsHomeBase(true);
+        // ariovistsquares.add(ariovistStartsquare);
+        //
+        // MapUser ariovistMap = new MapUser(playground, ariovist, ariovistresources, ariovistsquares);
+        //
+        // users.add(ariovistMap);
+        //
+        // playground.setUsers(users);
+        //
+        // tx.begin();
+        // em.persist(neroMap);
+        // em.persist(ariovistMap);
+        // em.merge(playground);
+        // em.merge(neroStartsquare);
+        // tx.commit();
 
         System.out.println("####### Build Building for Nero #######");
 

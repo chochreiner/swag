@@ -1,6 +1,7 @@
 package at.ac.tuwien.swag.webapp.in.base;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -19,10 +20,13 @@ import at.ac.tuwien.swag.model.domain.Building;
 import at.ac.tuwien.swag.model.domain.BuildingType;
 import at.ac.tuwien.swag.model.domain.MapUser;
 import at.ac.tuwien.swag.model.domain.Square;
+import at.ac.tuwien.swag.webapp.SwagWebSession;
+import at.ac.tuwien.swag.webapp.in.map.MapPage;
 
 import com.google.inject.Inject;
 
 public abstract class BasePanel extends Panel {
+
 private static final long serialVersionUID = -7684943204211861124L;
 
 private HashMap<BuildingType, Building> buildings;
@@ -35,8 +39,6 @@ private HashMap<BuildingType, Building> buildings;
 
     @Inject
     private MapUserDAO mapUserDao;
-    
-    private Square square;
 
 	private long squareId;
 
@@ -56,16 +58,20 @@ private HashMap<BuildingType, Building> buildings;
 	private BookmarkablePageLink<?> troopsLink;
 
 	private FeedbackPanel feedbackPanel;
+	private MapUserDAO mapUserDAO;
 
+    private Square square;
+    private BaseUtils baseutils;
 	private MapUser mapUser;
-    
-    public BasePanel(String id, MapUser mapUser, long squareId) {
+
+    public BasePanel(String id, long squareId) {
         super(id);
-        
-        this.squareId = squareId;
-        this.mapUser = mapUser;
+
+        baseutils = new BaseUtils();
         // Retrieves the square
         square = squareDAO.findById(squareId);
+
+        setMapuser();
 
         fetchBuildings();
 
@@ -79,6 +85,29 @@ private HashMap<BuildingType, Building> buildings;
         setupForm();
         
         checkVisiblityOfLinks();
+    }
+
+    private void setMapuser() {
+        String query =
+            "SELECT m FROM MapUser m LEFT JOIN FETCH m.squares WHERE m.user.username = :username AND m.map.name = :mapname";
+
+        SwagWebSession session = (SwagWebSession) getSession();
+
+        Map<String, String> values = new HashMap<String, String>();
+        values.put("username", session.getUsername());
+        values.put("mapname", session.getMapname());
+
+        List<MapUser> buffer = mapUserDAO.findByQuery(query, values);
+
+        if (!buffer.isEmpty()) {
+            mapUser = buffer.get(0);
+        } else {
+            setResponsePage(MapPage.class);
+        }
+
+        if (!mapUser.getSquares().contains(square)) {
+            setResponsePage(MapPage.class);
+        }
     }
 
     private void setupLinks(PageParameters params) {
@@ -202,8 +231,7 @@ private HashMap<BuildingType, Building> buildings;
 
 			@Override
 			protected void onError(AjaxRequestTarget target, Form<?> form) {
-				// TODO Auto-generated method stub
-				
+				// TODO Auto-generated method stub	
 			}
         };
 
@@ -225,15 +253,16 @@ private HashMap<BuildingType, Building> buildings;
                     newButton.setModel(new Model<String>("upgrade to " + newLevel));
                 }
 
-                if (building.getUpgrading()) {
-                    newButton.setEnabled(false);
-                }
-
-            } else {
-                newButton.setModel(new Model<String>("build"));
-
-                // TODO check ressources for upgrading
+            if (!baseutils.checkRessources(mapUser, 500)) {
+                newButton.setEnabled(false);
             }
+
+        } else {
+            newButton.setModel(new Model<String>("build"));
+            if (!baseutils.checkRessources(mapUser, 1000)) {
+                newButton.setEnabled(false);
+            }
+        }
     }
     
     private void fetchBuildings() {
@@ -251,6 +280,4 @@ private HashMap<BuildingType, Building> buildings;
     
    public abstract void onCancel(AjaxRequestTarget target);
    public abstract void onSubmitButton(AjaxRequestTarget target, long squareId);
-
-   public abstract void onSelect(AjaxRequestTarget target, String selection);
 }

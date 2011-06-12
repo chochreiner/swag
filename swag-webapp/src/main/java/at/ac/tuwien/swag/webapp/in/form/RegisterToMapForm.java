@@ -1,5 +1,7 @@
 package at.ac.tuwien.swag.webapp.in.form;
 
+import static at.ac.tuwien.swag.util.MapMaker.map;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,22 +23,21 @@ import at.ac.tuwien.swag.webapp.SwagWebSession;
 
 import com.google.inject.Inject;
 
-import static at.ac.tuwien.swag.util.MapMaker.map;
-
 public class RegisterToMapForm extends Form<Void> {
-	private static final long serialVersionUID = 4979391078353931660L;
+    private static final long serialVersionUID = 4979391078353931660L;
 
-	@Inject
-	MapDAO mapDao;
+    @Inject
+    MapDAO mapDao;
 
-	@Inject
-	MapUserDAO mapUserDao;
+    @Inject
+    MapUserDAO mapUserDao;
 
-	@Inject
-	private UserDAO userDao;
+    @Inject
+    private UserDAO userDao;
 
-	@Inject
+    @Inject
     private SquareDAO squareDao;
+
 	private String mapname;
 
 	private DropDownChoice<String> allmaps;
