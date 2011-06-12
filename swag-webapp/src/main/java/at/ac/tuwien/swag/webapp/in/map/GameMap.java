@@ -51,6 +51,12 @@ public class GameMap extends Panel {
                 // Handle Cancel action
               //  close(target);
             }
+
+			@Override
+			void onSettle(AjaxRequestTarget target, long squareId) {
+				
+				close(target);
+			}
         };
     }
     

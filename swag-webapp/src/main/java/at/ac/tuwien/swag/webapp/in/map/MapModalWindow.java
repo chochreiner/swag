@@ -64,8 +64,9 @@ public abstract class MapModalWindow extends ModalWindow {
 			private static final long serialVersionUID = 8794745869537409170L;
 
 			@Override
-			public void onSelect(AjaxRequestTarget target, String selection) {
-				// TODO Auto-generated method stub	
+			void onSettle(AjaxRequestTarget target, long squareId) {
+				MapModalWindow.this.onSettle(target, squareId);
+				
 			}
 		});
 	}
@@ -96,6 +97,6 @@ public abstract class MapModalWindow extends ModalWindow {
 
 
 	abstract void onCancel(AjaxRequestTarget target);
-
+	abstract void onSettle(AjaxRequestTarget target, long squareId);
     abstract void onSelect(AjaxRequestTarget target, String selection);
 }
