@@ -23,7 +23,7 @@ public class MapPage extends InPage {
 
         } else {
             setResponsePage(ChangeMap.class);
-            add(new Label("gameMapContainer", "YOU HAVE NOT MAP SELECTED"));
+            add(new Label("gameMapContainer", "YOU HAVE NO MAP SELECTED"));
         }
     }
 }
