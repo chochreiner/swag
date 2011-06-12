@@ -6,6 +6,8 @@ import at.ac.tuwien.swag.messages.JMSHelper;
 import at.ac.tuwien.swag.messages.TimeoutExpiredException;
 import at.ac.tuwien.swag.messages.auth.AuthenticationReply;
 import at.ac.tuwien.swag.messages.auth.AuthenticationRequest;
+import at.ac.tuwien.swag.messages.auth.IsOnlineRequest;
+import at.ac.tuwien.swag.messages.auth.LogoutRequest;
 import at.ac.tuwien.swag.messages.auth.StoreUserRequest;
 import at.ac.tuwien.swag.messages.auth.UserExistsRequest;
 import at.ac.tuwien.swag.model.domain.User;
@@ -44,6 +46,24 @@ public class LoginServiceImpl implements LoginService {
    		return auth;
     }
 
+	public boolean isOnline( String username ) throws JMSException, TimeoutExpiredException {
+		return jms.request( authentication, Boolean.class, new IsOnlineRequest( username ), timeout );
+	}
+	
+	public void logout( String username ) {
+		LogoutRequest req = new LogoutRequest( username );
+		
+		for ( int i = 0; i < 3; i++ ) {
+			try {
+				if ( jms.request( authentication, Boolean.class, req, timeout ) ) {
+					break;
+				}
+			} catch ( JMSException e1 ) {
+			} catch ( TimeoutExpiredException e1 ) {
+			}
+		}
+	}
+	
     public boolean userExists( String username ) throws JMSException, TimeoutExpiredException {
 		return jms.request( authentication, Boolean.class, new UserExistsRequest( username ), timeout );
     }
@@ -56,6 +76,7 @@ public class LoginServiceImpl implements LoginService {
 				user.getAddress(),
 				user.getEmail(), 
 				user.getFullname(), 
+				false,
 				null ); 
 
 		storeUser( dto );
