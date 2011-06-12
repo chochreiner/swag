@@ -3,6 +3,7 @@ package at.ac.tuwien.swag.webapp.in.map;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 
+import at.ac.tuwien.swag.model.domain.Square;
 import at.ac.tuwien.swag.webapp.in.base.BasePanel;
 
 public abstract class MapModalWindow extends ModalWindow {
@@ -63,8 +64,8 @@ public abstract class MapModalWindow extends ModalWindow {
 			private static final long serialVersionUID = 8794745869537409170L;
 
 			@Override
-			void onSettle(AjaxRequestTarget target, long squareId) {
-				MapModalWindow.this.onSettle(target, squareId);
+			void onSettle(AjaxRequestTarget target, Square square) {
+				MapModalWindow.this.onSettle(target, square);
 				
 			}
 		});
@@ -96,6 +97,6 @@ public abstract class MapModalWindow extends ModalWindow {
 
 
 	abstract void onCancel(AjaxRequestTarget target);
-	abstract void onSettle(AjaxRequestTarget target, long squareId);
+	abstract void onSettle(AjaxRequestTarget target, Square square);
     abstract void onSelect(AjaxRequestTarget target, String selection);
 }
