@@ -14,12 +14,14 @@ public abstract class ForeignSquareModalPanel extends Panel {
         super(id);
 
         // Create the form, to use later for the buttons
-        Form form = new Form("attackForm");
+        Form<Object> form = new Form<Object>("attackForm");
         add(form);
 
         // 
         form.add(new AjaxButton("attack") {
-            public void onSubmit(AjaxRequestTarget target, Form form) {
+			private static final long serialVersionUID = 5232221086822182182L;
+
+			public void onSubmit(AjaxRequestTarget target, Form<?> form) {
             	onSelect(target, "huhuhu");
             }
 

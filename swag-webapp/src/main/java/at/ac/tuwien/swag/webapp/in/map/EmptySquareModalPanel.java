@@ -16,12 +16,14 @@ public abstract class EmptySquareModalPanel extends Panel {
         super(id);
 
         // Create the form, to use later for the buttons
-        Form form = new Form("form");
+        Form<?> form = new Form<Object>("form");
         add(form);
 
         // 
         form.add(new AjaxButton("settleMe") {
-            public void onSubmit(AjaxRequestTarget target, Form form) {
+			private static final long serialVersionUID = -4995261824564883849L;
+
+			public void onSubmit(AjaxRequestTarget target, Form<?> form) {
             	SwagWebSession session = (SwagWebSession) getSession(); 
                 long squareId = session.getSelectedSquareId();
             	
