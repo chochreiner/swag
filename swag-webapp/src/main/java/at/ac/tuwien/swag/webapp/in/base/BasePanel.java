@@ -35,7 +35,7 @@ private HashMap<BuildingType, Building> buildings;
     private BuildingDAO buildingsDao;
 
     @Inject
-    private SquareDAO squareDAO;
+    private SquareDAO squareDao;
 
     @Inject
     private MapUserDAO mapUserDao;
@@ -58,7 +58,6 @@ private HashMap<BuildingType, Building> buildings;
 	private BookmarkablePageLink<?> troopsLink;
 
 	private FeedbackPanel feedbackPanel;
-	private MapUserDAO mapUserDAO;
 
     private Square square;
     private BaseUtils baseutils;
@@ -69,7 +68,7 @@ private HashMap<BuildingType, Building> buildings;
 
         baseutils = new BaseUtils();
         // Retrieves the square
-        square = squareDAO.findById(squareId);
+        square = squareDao.findById(squareId);
 
         setMapuser();
 
@@ -97,7 +96,7 @@ private HashMap<BuildingType, Building> buildings;
         values.put("username", session.getUsername());
         values.put("mapname", session.getMapname());
 
-        List<MapUser> buffer = mapUserDAO.findByQuery(query, values);
+        List<MapUser> buffer = mapUserDao.findByQuery(query, values);
 
         if (!buffer.isEmpty()) {
             mapUser = buffer.get(0);
@@ -199,7 +198,7 @@ private HashMap<BuildingType, Building> buildings;
 	                    
 	                    buildingsDao.beginTransaction();
 	                    	buildingsDao.insert(building);
-	                    	squareDAO.insert(square);
+	                    	squareDao.insert(square);
 	                    	mapUserDao.insert(mapUser);
 	                    buildingsDao.commitTransaction();
 	                    
