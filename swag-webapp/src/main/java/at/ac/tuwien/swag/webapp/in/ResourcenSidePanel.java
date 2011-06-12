@@ -26,14 +26,12 @@ public class ResourcenSidePanel extends Panel {
     public ResourcenSidePanel(String id) {
         super(id);
 
-        SwagWebSession session = (SwagWebSession) getSession();
-
         setMapuser();
 
-            add(setRessourceLabel("wood", RessourceType.WOOD, mapuser));
-            add(setRessourceLabel("grain", RessourceType.GRAIN, mapuser));
-            add(setRessourceLabel("clay", RessourceType.CLAY, mapuser));
-            add(setRessourceLabel("iron", RessourceType.IRON, mapuser));
+        add(setRessourceLabel("wood", RessourceType.WOOD, mapuser));
+        add(setRessourceLabel("grain", RessourceType.GRAIN, mapuser));
+        add(setRessourceLabel("clay", RessourceType.CLAY, mapuser));
+        add(setRessourceLabel("iron", RessourceType.IRON, mapuser));
     }
 
     private Label setRessourceLabel(String id, RessourceType typ, MapUser mapuser) {
