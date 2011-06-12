@@ -8,9 +8,8 @@ import org.apache.wicket.request.mapper.parameter.PageParameters;
 import com.google.inject.Inject;
 
 import at.ac.tuwien.swag.model.SQLHelper;
-import at.ac.tuwien.swag.webapp.in.InPage;
 
-public class DropDBPage extends InPage {
+public class DropDBPage extends OutPage {
 	private static final long serialVersionUID = 1L;
 
 	@Inject
