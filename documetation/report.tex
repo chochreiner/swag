@@ -1,5 +1,5 @@
 \documentclass[a4paper]{article}
-\usepackage[cm]{fullpage}
+%\usepackage[cm]{fullpage}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
@@ -53,22 +53,95 @@
 
 \normalsize Tobias Hochwallner, 0557189
 
+\end{center}
+\pagebreak
+
+
 \tableofcontents
 
-\end{center}
+
 \pagebreak
 
 \section{Deployment Guide}
 
-The system uses glassfish there for GLASSFISH\_HOME must be set and uses PostgreSQL 8.4 with user swa and password swa11.
+\subsection{Prerequesits}
 
-To build and deploy the system run the following commands:
-\begin{itemize}
-	\item ant build
-    \item ant run
-\end{itemize}
+\paragraph{Database}
+The system uses a PostgreSQL 8.4 database with the name \emph{swa} and a corresponding user with the username \emph{swa} and the password \emph{swa11}.
+
+\paragraph{Application Server}
+The prototype uses the Glassfish 3.1 application server for deploying the different components ant the Glassfish JMS implementation for the communication between these components. Therefore the $GLASSFISH\_HOME$ environment variable has to be set.
+
+\paragraph{Build and setup the environment}
+\begin{verbatim}
+ant build
+\end{verbatim}
+
+The ant build target executes different tasks in order to prepare and build the prototype. These tasks cover the generation of models, creation of JMS resources and compiled the code. 
+
+%TODO: insert single tasks that are excuted for the run task
+
+
+\paragraph{Execute the prototype}
+\begin{verbatim}
+ant run
+\end{verbatim}
+
+The ant run target deploys the single components and the application can be accessed via \emph{http://localhost:8080/swag}.
+
+%TODO: insert single tasks that are excuted for the build task
+
 
 \section{Final Architecture}
+
+
+\subsection{System Architecture}
+
+\subsubsection{swag-model}
+
+\subsubsection{swag-messages}
+
+\subsubsection{swag-util}
+
+\subsubsection{swag-auth}
+
+\subsubsection{swag-executor}
+
+\subsubsection{swag-webapp}
+
+\subsubsection{swag-notification}
+
+\subsubsection{mailserver}
+
+
+\subsection{Technology stack}
+\paragraph{Apache Wicket}\footnote{http://wicket.apache.org/}
+The Apache Wicket Framework was used for the creation of the Web application.
+
+\paragraph{Guice}\footnote{http://code.google.com/p/google-guice/}
+Guice was used for the dependency injection.
+
+\paragraph{Quartz Scheduler} \footnote{http://www.quartz-scheduler.org/}
+For the implementation of our delayed actions, we integrated the quartz scheduler, that provides the necessary functionality to schedule tasks, that are executed to specific dates in the future.
+
+\paragraph{JMS}
+The JMS technology was used for the communication between the components. For this prototype, we relied on the JMS implementation of the Glassfish Server.
+
+\paragraph{Maven}
+For development purposes we used maven in order to build, setup and deploy the applications. In order to meet the requirements, we transformed our maven targets to ant with <TODO insert Plugin>
+
+
+
+%TODO add addtionial technologies
+
+
+
+ 
+
+
+
+
+
 
 \section{Possible Improvements}
 
