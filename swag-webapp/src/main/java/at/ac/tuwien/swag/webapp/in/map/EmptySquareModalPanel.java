@@ -67,31 +67,6 @@ public abstract class EmptySquareModalPanel extends Panel {
 			}
         });
     }
-	
-	private MapUser getMapuser(String username, String mapname, Square square) {
-        String query =
-            "SELECT m FROM MapUser m LEFT JOIN FETCH m.squares WHERE m.user.username = :username AND m.map.name = :mapname";
 
-        SwagWebSession session = (SwagWebSession) getSession();
-
-        Map<String, String> values = new HashMap<String, String>();
-        values.put("username", session.getUsername());
-        values.put("mapname", session.getMapname());
-
-        List<MapUser> buffer = mapUserDao.findByQuery(query, values);
-
-        if (!buffer.isEmpty()) {
-        	if (!buffer.get(0).getSquares().contains(square)) {
-                setResponsePage(MapPage.class);
-            }
-        	
-            return buffer.get(0);
-        } else {
-            setResponsePage(MapPage.class);
-            
-            return null;
-        }
-    }
-	
 	abstract void onSettle(AjaxRequestTarget target, long squareId);
 }
