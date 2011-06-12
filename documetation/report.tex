@@ -100,11 +100,19 @@ The ant run target deploys the single components and the application can be acce
 \includegraphics[width=0.8\textwidth]{Arch.png}
 \end{center}
 \caption{System Architecture}
+\end{figure}
 
+\begin{figure}[htb]
+\begin{center}
+\leavevmode
+\includegraphics[width=0.8\textwidth]{Domain.png}
+\end{center}
+\caption{Domain model}
 \end{figure}
 
 
-\subsection{System Architecture}
+
+\subsection{Components}
 
 \subsubsection{swag-model}
 This component contains the models, data access objects and data transfer objects, that were created for the second task. These classes are generated on every build process. 
@@ -112,6 +120,7 @@ This component contains the models, data access objects and data transfer object
 \subsubsection{swag-messages}
 
 \subsubsection{swag-util}
+This sub project contains some general helper utilities for the other components. 
 
 \subsubsection{swag-auth}
 
