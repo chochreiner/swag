@@ -47,7 +47,7 @@ public abstract class EmptySquareModalPanel extends Panel {
 			public void onSubmit(AjaxRequestTarget target, Form<?> form) {
             	SwagWebSession session = (SwagWebSession) getSession(); 
                 long squareId = session.getSelectedSquareId();
-            	
+            	/*
                 Square square	= squareDao.findById(squareId);
                 MapUser mapUser = getMapuser(session.getUsername(), session.getMapname(), square);
                 mapUser.getSquares().add(square);
@@ -56,8 +56,8 @@ public abstract class EmptySquareModalPanel extends Panel {
             		squareDao.update(square);
             		mapUserDao.update(baseutils.reduceRessources(mapUser, 2500));
             	squareDao.commitTransaction();
-                
-            	onSettle(target, square);
+                */
+            	onSettle(target, squareId);
             }
 
 			@Override
@@ -93,5 +93,5 @@ public abstract class EmptySquareModalPanel extends Panel {
         }
     }
 	
-	abstract void onSettle(AjaxRequestTarget target, Square square);
+	abstract void onSettle(AjaxRequestTarget target, long squareId);
 }
