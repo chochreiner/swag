@@ -187,7 +187,7 @@ public class TestData extends InPage {
         users.add(neroMap);
 
         List<Square> ariovistsquares = new ArrayList<Square>();
-        Square ariovistStartsquare = playground.getSquares().get(50);
+        Square ariovistStartsquare = playground.getSquares().get(4);
 
         ariovistStartsquare.setIsHomeBase(true);
         ariovistsquares.add(ariovistStartsquare);
